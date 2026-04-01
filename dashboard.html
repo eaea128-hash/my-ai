@@ -15,6 +15,7 @@
 <h2>最近分析紀錄</h2>
 <ul id="history"></ul>
   <script type="module">
+    import { supabase } from './supabase.js'
     async function loadHistory() {
 
   const { data: userData } = await supabase.auth.getUser()
@@ -92,7 +93,7 @@
 
     window.logout = logout
     checkUser()
+    loadHistory()
   </script>
-  loadHistory()
 </body>
 </html>
