@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Product Analyzer | 分析頁</title>
+  <style>
+    body {
+      font-family: Arial, "Noto Sans TC", sans-serif;
+      background: #f7f8fc;
+      margin: 0;
+      padding: 0;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      padding: 32px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .user-box {
+      font-size: 14px;
+      color: #4b5563;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 8px;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      padding: 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      font-size: 15px;
+      resize: vertical;
+      box-sizing: border-box;
+      margin-bottom: 16px;
+    }
+
+    .helper {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .status {
+      margin: 16px 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .status.info {
+      background: #eff6ff;
+      color: #1d4ed8;
+      display: block;
+    }
+
+    .status.error {
+      background: #fef2f2;
+      color: #dc2626;
+      display: block;
+    }
+
+    .result-box {
+      margin-top: 24px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 20px;
+      white-space: pre-wrap;
+      line-height: 1.7;
+      min-height: 120px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .nav-links {
+      margin-top: 24px;
+    }
+
+    .nav-links a {
+      color: #2563eb;
+      text-decoration: none;
+      margin-right: 16px;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div>
+        <h1>AI Product Analyzer｜分析頁</h1>
+        <div class="user-box">目前登入者：<span id="user-email">載入中...</span></div>
+      </div>
+      <div>
+        <button class="btn btn-secondary" id="back-dashboard-btn">回 Dashboard</button>
+        <button class="btn btn-secondary" id="logout-btn">登出</button>
+      </div>
+    </div>
+
+    <div>
+      <label for="user-input">請輸入你的產品需求 / 想分析的內容</label>
+      <textarea id="user-input" placeholder="例如：我想做一個給中小企業 PM 使用的 AI 產品分析工具，功能包含需求整理、競品分析、PRD草稿產出、訂閱制收費..."></textarea>
+      <div class="helper">
+        建議輸入越完整越好，例如：目標客群、痛點、功能、收費方式、競品、想要的分析角度。
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="analyze-btn">開始分析</button>
+      <button class="btn btn-secondary" id="clear-btn">清空內容</button>
+      <button class="btn btn-secondary" id="demo-btn">帶入範例</button>
+    </div>
+
+    <div id="status-box" class="status"></div>
+
+    <div class="section-title">分析結果</div>
+    <div id="result-box" class="result-box">尚未開始分析</div>
+
+    <div class="nav-links">
+      <a href="/index.html">回首頁</a>
+      <a href="/dashboard.html">回 Dashboard</a>
+    </div>
+  </div>
+
+  <script type="module">
+    import { supabase } from './supabase.js';
+
+    const userEmailEl = document.getElementById('user-email');
+    const inputEl = document.getElementById('user-input');
+    const resultBox = document.getElementById('result-box');
+    const statusBox = document.getElementById('status-box');
+    const analyzeBtn = document.getElementById('analyze-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const demoBtn = document.getElementById('demo-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const backDashboardBtn = document.getElementById('back-dashboard-btn');
+
+    let currentUser = null;
+
+    function showStatus(message, type = 'info') {
+      statusBox.textContent = message;
+      statusBox.className = `status ${type}`;
+    }
+
+    function clearStatus() {
+      statusBox.textContent = '';
+      statusBox.className = 'status';
+    }
+
+    async function checkLogin() {
+      const { data, error } = await supabase.auth.getUser();
+
+      if (error || !data?.user) {
+        alert('請先登入');
+        window.location.href = '/login.html';
+        return;
+      }
+
+      currentUser = data.user;
+      userEmailEl.textContent = currentUser.email || '未知使用者';
+    }
+
+    async function handleAnalyze() {
+      const userInput = inputEl.value.trim();
+
+      if (!userInput) {
+        showStatus('請先輸入要分析的內容', 'error');
+        return;
+      }
+
+      clearStatus();
+      resultBox.textContent = '分析中，請稍候...';
+      analyzeBtn.disabled = true;
+      analyzeBtn.textContent = '分析中...';
+
+      try {
+        const response = await fetch('/.netlify/functions/analyze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            input: userInput,
+            userId: currentUser?.id || null
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || '分析失敗');
+        }
+
+        const finalText = data.result || '未收到分析結果';
+        resultBox.textContent = finalText;
+
+        // 寫入 Supabase analyses table
+        const { error: insertError } = await supabase
+          .from('analyses')
+          .insert([
+            {
+              user_id: currentUser.id,
+              input_text: userInput,
+              result: { text: finalText }
+            }
+          ]);
+
+        if (insertError) {
+          showStatus('分析完成，但寫入資料庫失敗：' + insertError.message, 'error');
+          return;
+        }
+
+        showStatus('分析完成，已成功儲存紀錄', 'info');
+      } catch (err) {
+        console.error(err);
+        resultBox.textContent = '分析失敗，請稍後再試';
+        showStatus(err.message || '系統錯誤', 'error');
+      } finally {
+        analyzeBtn.disabled = false;
+        analyzeBtn.textContent = '開始分析';
+      }
+    }
+
+    async function handleLogout() {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        alert('登出失敗：' + error.message);
+        return;
+      }
+      window.location.href = '/login.html';
+    }
+
+    function fillDemo() {
+      inputEl.value = `產品名稱：AI Product Analyzer
+
+目標客群：
+中小企業 PM、BD、創業者
+
+核心痛點：
+1. 不知道需求怎麼整理
+2. 不會寫 PRD
+3. 不知道怎麼做競品分析
+4. 想快速驗證 SaaS 商業模式
+
+希望分析內容：
+1. 產品定位
+2. 核心功能建議
+3. MVP 範圍
+4. 訂閱制收費建議
+5. 上線風險與下一步`;
+    }
+
+    clearBtn.addEventListener('click', () => {
+      inputEl.value = '';
+      resultBox.textContent = '尚未開始分析';
+      clearStatus();
+    });
+
+    demoBtn.addEventListener('click', fillDemo);
+    analyzeBtn.addEventListener('click', handleAnalyze);
+    logoutBtn.addEventListener('click', handleLogout);
+    backDashboardBtn.addEventListener('click', () => {
+      window.location.href = '/dashboard.html';
+    });
+
+    checkLogin();
+  </script>
+</body>
+</html>
