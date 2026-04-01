@@ -10,8 +10,10 @@
   <p>目前使用者：<span id="user-email">載入中...</span></p>
 
   <button onclick="window.location.href='/analyze.html'">前往分析頁</button>
+  
   <button onclick="logout()">登出</button>
-
+<h2>最近分析紀錄</h2>
+<ul id="history"></ul>
   <script type="module">
     async function loadHistory() {
 
