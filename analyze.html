@@ -232,6 +232,8 @@ async function getCurrentUser() {
     }
 
     async function handleAnalyze() {
+      const user = await getCurrentUser()
+if (!user) return
       const userInput = inputEl.value.trim();
 
       if (!userInput) {
