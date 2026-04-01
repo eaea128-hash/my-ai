@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+</head>
+
+<body>
+
+<h2>Dashboard</h2>
+
+<p id="user"></p>
+
+<button onclick="logout()">Logout</button>
+
+<script type="module">
+
+import { supabase } from "./supabase.js"
+
+async function checkUser(){
+
+const { data } = await supabase.auth.getUser()
+
+if(!data.user){
+
+window.location.href = "login.html"
+return
+
+}
+
+document.getElementById("user").innerText =
+"Logged in as: " + data.user.email
+
+}
+
+checkUser()
+
+async function logout(){
+
+await supabase.auth.signOut()
+
+window.location.href = "login.html"
+
+}
+
+</script>
+
+</body>
+</html>
