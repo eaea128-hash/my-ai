@@ -35,6 +35,34 @@
 
   renderHistory(data)
 }
+    function renderHistory(items){
+
+  const list = document.getElementById("history")
+
+  list.innerHTML = ""
+
+  if(items.length === 0){
+    list.innerHTML = "<li>尚無分析紀錄</li>"
+    return
+  }
+
+  items.forEach(item=>{
+
+    const li = document.createElement("li")
+
+    const date = new Date(item.created_at).toLocaleString()
+
+    li.innerHTML = `
+      <strong>${item.input_text.slice(0,40)}</strong>
+      <br>
+      <small>${date}</small>
+    `
+
+    list.appendChild(li)
+
+  })
+
+}
     import { supabase } from './supabase.js'
 
     const userEmail = document.getElementById('user-email')
@@ -65,5 +93,6 @@
     window.logout = logout
     checkUser()
   </script>
+  loadHistory()
 </body>
 </html>
