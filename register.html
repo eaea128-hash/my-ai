@@ -1,45 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
-<title>Register</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register</title>
 </head>
-
 <body>
+  <h1>Register</h1>
 
-<h2>Register</h2>
+  <input type="email" id="email" placeholder="Email" />
+  <br /><br />
 
-<input id="email" placeholder="email">
-<br><br>
+  <input type="password" id="password" placeholder="Password" />
+  <br /><br />
 
-<input id="password" type="password" placeholder="password">
-<br><br>
+  <button onclick="register()">Register</button>
 
-<button onclick="register()">Register</button>
+  <p id="msg"></p>
 
-<script type="module">
+  <script type="module">
+    import { supabase } from './supabase.js'
 
-import { supabase } from "./supabase.js"
+    const msg = document.getElementById('msg')
 
-async function register(){
+    async function register() {
+      const email = document.getElementById('email').value.trim()
+      const password = document.getElementById('password').value.trim()
 
-const email = document.getElementById("email").value
-const password = document.getElementById("password").value
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password
+      })
 
-const { data, error } = await supabase.auth.signUp({
-email,
-password
-})
+      console.log('register result:', { data, error })
 
-if(error){
-alert(error.message)
-return
-}
+      if (error) {
+        msg.textContent = '註冊失敗：' + error.message
+        alert('註冊失敗：' + error.message)
+        return
+      }
 
-alert("註冊成功，請登入")
+      msg.textContent = '註冊成功，請前往登入'
+      alert('註冊成功，請前往登入')
+      window.location.href = '/login.html'
+    }
 
-}
-
-</script>
-
+    window.register = register
+  </script>
 </body>
 </html>
