@@ -13,6 +13,26 @@
   <button onclick="logout()">登出</button>
 
   <script type="module">
+    async function loadHistory() {
+
+  const { data: userData } = await supabase.auth.getUser()
+
+  const user = userData.user
+
+  const { data, error } = await supabase
+    .from('analyses')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(5)
+
+  if (error) {
+    console.error(error)
+    return
+  }
+
+  renderHistory(data)
+}
     import { supabase } from './supabase.js'
 
     const userEmail = document.getElementById('user-email')
