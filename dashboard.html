@@ -10,89 +10,89 @@
   <p>目前使用者：<span id="user-email">載入中...</span></p>
 
   <button onclick="window.location.href='/analyze.html'">前往分析頁</button>
-  
   <button onclick="logout()">登出</button>
-<h2>最近分析紀錄</h2>
-<ul id="history"></ul>
+
+  <h2>最近分析紀錄</h2>
+  <ul id="history"></ul>
+
   <script type="module">
-    import { supabase } from './supabase.js'
-    async function loadHistory() {
-
-  const { data: userData } = await supabase.auth.getUser()
-
-  const user = userData.user
-
-  const { data, error } = await supabase
-    .from('analyses')
-    .select('*')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
-    .limit(5)
-
-  if (error) {
-    console.error(error)
-    return
-  }
-
-  renderHistory(data)
-}
-    function renderHistory(items){
-
-  const list = document.getElementById("history")
-
-  list.innerHTML = ""
-
-  if(items.length === 0){
-    list.innerHTML = "<li>尚無分析紀錄</li>"
-    return
-  }
-
-  items.forEach(item=>{
-
-    const li = document.createElement("li")
-
-    const date = new Date(item.created_at).toLocaleString()
-
-    li.innerHTML = `
-      <strong>${item.input_text.slice(0,40)}</strong>
-      <br>
-      <small>${date}</small>
-    `
-
-    list.appendChild(li)
-
-  })
-
-}
     import { supabase } from './supabase.js'
 
     const userEmail = document.getElementById('user-email')
+    const historyList = document.getElementById('history')
 
     async function checkUser() {
       const { data, error } = await supabase.auth.getUser()
-
-      console.log('getUser result:', { data, error })
+      console.log('checkUser:', { data, error })
 
       if (error || !data?.user) {
         alert('請先登入')
         window.location.href = '/login.html'
-        return
+        return null
       }
 
       userEmail.textContent = data.user.email
+      return data.user
+    }
+
+    async function loadHistory() {
+      const user = await checkUser()
+      if (!user) return
+
+      const { data, error } = await supabase
+        .from('analyses')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(5)
+
+      console.log('loadHistory:', { data, error })
+
+      if (error) {
+        console.error('讀取歷史失敗:', error)
+        historyList.innerHTML = '<li>讀取失敗</li>'
+        return
+      }
+
+      renderHistory(data || [])
+    }
+
+    function renderHistory(items) {
+      historyList.innerHTML = ''
+
+      if (items.length === 0) {
+        historyList.innerHTML = '<li>尚無分析紀錄</li>'
+        return
+      }
+
+      items.forEach((item) => {
+        const li = document.createElement('li')
+        const date = new Date(item.created_at).toLocaleString('zh-TW')
+        const preview = (item.input_text || '').slice(0, 40)
+
+        li.innerHTML = `
+          <strong>${preview}</strong>
+          <br>
+          <small>${date}</small>
+        `
+
+        historyList.appendChild(li)
+      })
     }
 
     async function logout() {
       const { error } = await supabase.auth.signOut()
+
       if (error) {
         alert('登出失敗：' + error.message)
         return
       }
+
       window.location.href = '/login.html'
     }
 
     window.logout = logout
-    checkUser()
+
     loadHistory()
   </script>
 </body>
