@@ -185,7 +185,17 @@
 
   <script type="module">
     import { supabase } from './supabase.js';
+async function getCurrentUser() {
+  const { data, error } = await supabase.auth.getUser()
 
+  if (error || !data.user) {
+    alert('請先登入')
+    window.location.href = '/login.html'
+    return null
+  }
+
+  return data.user
+}
     const userEmailEl = document.getElementById('user-email');
     const inputEl = document.getElementById('user-input');
     const resultBox = document.getElementById('result-box');
