@@ -1,45 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
-<title>Login</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
 </head>
-
 <body>
+  <h1>Login</h1>
 
-<h2>Login</h2>
+  <input type="email" id="email" placeholder="Email" />
+  <br /><br />
 
-<input id="email" placeholder="email">
-<br><br>
+  <input type="password" id="password" placeholder="Password" />
+  <br /><br />
 
-<input id="password" type="password" placeholder="password">
-<br><br>
+  <button onclick="login()">Login</button>
 
-<button onclick="login()">Login</button>
+  <p id="msg"></p>
 
-<script type="module">
+  <script type="module">
+    import { supabase } from './supabase.js'
 
-import { supabase } from "./supabase.js"
+    const msg = document.getElementById('msg')
 
-async function login() {
+    async function login() {
+      const email = document.getElementById('email').value.trim()
+      const password = document.getElementById('password').value.trim()
 
-const email = document.getElementById("email").value
-const password = document.getElementById("password").value
+      msg.textContent = '登入中...'
 
-const { data, error } = await supabase.auth.signInWithPassword({
-email,
-password
-})
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      })
 
-if(error){
-alert(error.message)
-return
-}
+      console.log('login result:', { data, error })
 
-window.location.href = "dashboard.html"
+      if (error) {
+        msg.textContent = '登入失敗：' + error.message
+        alert('登入失敗：' + error.message)
+        return
+      }
 
-}
+      msg.textContent = '登入成功，跳轉中...'
+      window.location.href = '/dashboard.html'
+    }
 
-</script>
-
+    window.login = login
+  </script>
 </body>
 </html>
