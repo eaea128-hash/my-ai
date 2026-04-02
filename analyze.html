@@ -233,16 +233,6 @@ body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:
      登入中...
     </div>
 
-    <button onclick="window.location.href='dashboard.html'" style="
-      background:transparent;
-      border:1px solid rgba(255,255,255,.25);
-      color:#fff;
-      padding:6px 12px;
-      border-radius:6px;
-      font-size:12px;
-      cursor:pointer;
-    ">Dashboard</button>
-
     <button onclick="window.location.href='dashboard.html#history'" style="
       background:transparent;
       border:1px solid rgba(255,255,255,.25);
@@ -829,35 +819,95 @@ const LSTEPS_EXEC=[
 ];
 
 function generate(){
-  const name=document.getElementById('f-name').value.trim();
-  const desc=document.getElementById('f-desc').value.trim();
-  if(!name||!desc){alert('請填寫專案名稱與需求描述');return;}
-  document.getElementById('empty').style.display='none';
-  document.getElementById('out-area').classList.remove('show');
-  document.getElementById('loader').classList.add('show');
-  document.getElementById('gen-btn').disabled=true;
-  document.getElementById('lsteps').innerHTML='';
-  document.getElementById('lfill').style.width='0%';
+  async function generate() {
+  const name = document.getElementById('f-name').value.trim()
+  const desc = document.getElementById('f-desc').value.trim()
 
-  const scenario=detectScenario();
-  let si=0;
-  const t=setInterval(()=>{
-    if(si>=LSTEPS_EXEC.length){
-      clearInterval(t);
-      document.getElementById('lfill').style.width='100%';
-      setTimeout(()=>{
-        document.getElementById('loader').classList.remove('show');
-        renderOutput(SCENARIOS[scenario],name);
-        document.getElementById('gen-btn').disabled=false;
-      },400);
-      return;
+  if (!name || !desc) {
+    alert('請填寫專案名稱與需求描述')
+    return
+  }
+
+  document.getElementById('empty').style.display = 'none'
+  document.getElementById('out-area').classList.remove('show')
+  document.getElementById('loader').classList.add('show')
+  document.getElementById('gen-btn').disabled = true
+  document.getElementById('lsteps').innerHTML = ''
+  document.getElementById('lfill').style.width = '20%'
+  document.getElementById('lmsg').textContent = '正在整理需求並呼叫 AI 分析引擎…'
+
+  try {
+    const sensitiveData = [...document.querySelectorAll('#t-sensitive .toggle-btn.on')].map(el => el.textContent.trim())
+    const drivers = [...document.querySelectorAll('#t-driver .toggle-btn.on')].map(el => el.textContent.trim())
+    const preferredCloud = [...document.querySelectorAll('#t-cloud .toggle-btn.on')].map(el => el.textContent.trim())
+
+    const payload = {
+      projectName: name,
+      description: desc,
+      systemType: document.getElementById('f-systype').value,
+      entity: document.getElementById('f-entity').value,
+      sensitiveData,
+      budget: document.getElementById('f-budget').value,
+      timeline: document.getElementById('f-timeline').value,
+      drivers,
+      preferredCloud,
+      outputStyle: currentStyle
     }
-    const s=LSTEPS_EXEC[si];
-    document.getElementById('lfill').style.width=s.p+'%';
-    document.getElementById('lmsg').textContent=s.m;
-    if(si>0)document.getElementById('lsteps').innerHTML+=`<div class="lstep done">✓ ${LSTEPS_EXEC[si-1].m.replace(/…$/,'')}</div>`;
-    si++;
-  },700);
+
+    document.getElementById('lfill').style.width = '45%'
+    document.getElementById('lmsg').textContent = 'AI 正在生成治理分析、架構建議與成本估算…'
+
+    const res = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+
+    const data = await res.json()
+
+    if (!res.ok || !data.ok) {
+      throw new Error(data.error || '分析失敗')
+    }
+
+    document.getElementById('lfill').style.width = '75%'
+    document.getElementById('lmsg').textContent = '正在寫入分析紀錄…'
+
+    const { data: userData, error: userErr } = await supabase.auth.getUser()
+    if (userErr || !userData.user) {
+      throw new Error('使用者登入資訊失效，請重新登入')
+    }
+
+    const insertPayload = {
+      user_id: userData.user.id,
+      input_text: JSON.stringify(payload, null, 2),
+      result: data.result
+    }
+
+    const { error: insertError } = await supabase
+      .from('analyses')
+      .insert([insertPayload])
+
+    if (insertError) {
+      console.error('Supabase insert error:', insertError)
+      throw new Error('分析成功，但寫入歷史紀錄失敗')
+    }
+
+    document.getElementById('lfill').style.width = '100%'
+    document.getElementById('lmsg').textContent = '分析完成，正在渲染報告…'
+
+    setTimeout(() => {
+      document.getElementById('loader').classList.remove('show')
+      renderOutput(data.result, name)
+      document.getElementById('out-area').classList.add('show')
+      document.getElementById('gen-btn').disabled = false
+    }, 300)
+
+  } catch (err) {
+    console.error(err)
+    document.getElementById('loader').classList.remove('show')
+    document.getElementById('gen-btn').disabled = false
+    alert(err.message || '分析失敗，請稍後再試')
+  }
 }
 
 /* ── Render ── */
