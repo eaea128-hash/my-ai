@@ -300,7 +300,18 @@
           body: JSON.stringify({ inputText })
         })
 
-        const data = await res.json()
+       let data
+const text = await res.text()
+
+try {
+  data = JSON.parse(text)
+} catch (e) {
+  throw new Error(`後端回傳不是 JSON：${text}`)
+}
+
+if (!res.ok) {
+  throw new Error(data.error || '分析失敗')
+}
 
         if (!res.ok) {
           throw new Error(data.error || '分析失敗')
