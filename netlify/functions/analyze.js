@@ -1,49 +1,51 @@
-exports.handler = async function(event) {
+exports.handler = async function (event) {
   try {
-    const body = JSON.parse(event.body || '{}');
-    const input = body.input || '';
-
-    if (!input) {
+    if (event.httpMethod !== 'POST') {
       return {
-        statusCode: 400,
-        body: JSON.stringify({ error: '缺少 input' })
-      };
+        statusCode: 405,
+        body: JSON.stringify({ error: 'Method Not Allowed' })
+      }
     }
 
-    // 先用假資料測試整條流程
-    const mockResult = `
-【產品定位】
-這是一個面向 PM / 創業者的 AI 產品分析工具。
+    const body = JSON.parse(event.body || '{}')
+    const inputText = body.inputText || ''
 
-【核心功能建議】
-1. 需求整理
-2. 競品分析
-3. MVP 建議
-4. PRD 初稿
-5. 收費模式建議
+    if (!inputText.trim()) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: '請提供需求內容 inputText' })
+      }
+    }
 
-【MVP 建議】
-先聚焦在「文字輸入 → 分析結果輸出 → 歷史紀錄保存」。
-
-【收費建議】
-可採用 Free + Pro 訂閱制，Free 每月 5 次，Pro 無限制。
-
-【下一步】
-補上付款、歷史紀錄頁、匯出功能。
-    `.trim();
+    const responseData = {
+      summary: `這是一個根據你輸入需求產生的產品初步分析。你的原始需求重點為：${inputText}`,
+      targetUsers: '中小企業 PM、創業者、產品團隊、BD',
+      features: [
+        '需求分析整理',
+        '目標客群定位',
+        'MVP 功能建議',
+        '商業模式建議',
+        '風險提醒'
+      ],
+      businessModel: '可採 SaaS 月費訂閱制',
+      risks: '若輸入內容太短可能影響分析品質',
+      nextStep: '下一步可以接入真正 AI API'
+    }
 
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        result: mockResult
-      })
-    };
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(responseData)
+    }
   } catch (error) {
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: error.message || 'Server error'
+        error: 'Server error',
+        detail: error.message
       })
-    };
+    }
   }
-};
+}
