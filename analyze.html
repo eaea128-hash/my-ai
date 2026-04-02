@@ -292,7 +292,7 @@
       resultEl.innerHTML = '<p class="loading">系統分析中，請稍候...</p>'
 
       try {
-        const res = await fetch('/.netlify/functions/analyze', {
+        const res = await fetch('/api/analyze', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
