@@ -864,18 +864,6 @@ function generate(){
     })
 
     const data = await res.json()
-    const { data: userData } = await supabase.auth.getUser()
-
-await supabase
-  .from('analyses')
-  .insert([
-    {
-      user_id: userData.user.id,
-      input_text: desc,
-      result: data.result
-    }
-  ])
-
     if (!res.ok || !data.ok) {
       throw new Error(data.error || '分析失敗')
     }
@@ -1070,7 +1058,22 @@ function dlBrief(){
   URL.revokeObjectURL(url);
 }
 <script type="module">
+window.generate = async function () {
 
+  const desc = document.querySelector('#desc').value
+
+  const res = await fetch('/api/analyze', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ input: desc })
+  })
+
+  const data = await res.json()
+
+  console.log(data)
+
+  alert("分析完成")
+}
 import { supabase } from './supabase.js'
 
 async function initAuth() {
