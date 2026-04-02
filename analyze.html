@@ -227,7 +227,44 @@ body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:
 <div class="topbar">
   <div class="top-logo"><div class="top-dot"></div>Smart Archie</div>
   <div class="top-sub">Executive Brief Generator</div>
-  <div class="top-badge">Enterprise v6.0</div>
+
+  <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+   <div id="user-email" style="color:rgba(255,255,255,.75);font-size:12px;font-family:'DM Mono'">
+     登入中...
+    </div>
+
+    <button onclick="window.location.href='dashboard.html'" style="
+      background:transparent;
+      border:1px solid rgba(255,255,255,.25);
+      color:#fff;
+      padding:6px 12px;
+      border-radius:6px;
+      font-size:12px;
+      cursor:pointer;
+    ">Dashboard</button>
+
+    <button onclick="window.location.href='dashboard.html#history'" style="
+      background:transparent;
+      border:1px solid rgba(255,255,255,.25);
+      color:#fff;
+      padding:6px 12px;
+      border-radius:6px;
+      font-size:12px;
+      cursor:pointer;
+    ">歷史紀錄</button>
+
+    <button onclick="logout()" style="
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.25);
+      color:#fff;
+      padding:6px 12px;
+      border-radius:6px;
+      font-size:12px;
+      cursor:pointer;
+    ">登出</button>
+
+    <div class="top-badge">Enterprise v6.0</div>
+  </div>
 </div>
 
 <div class="shell">
@@ -971,6 +1008,35 @@ function dlBrief(){
   const a=document.createElement('a');a.href=url;a.download='executive_brief.txt';a.click();
   URL.revokeObjectURL(url);
 }
+<script type="module">
+
+import { supabase } from './supabase.js'
+
+async function initAuth() {
+  const { data, error } = await supabase.auth.getUser()
+
+  if (error || !data.user) {
+    window.location.href = 'login.html'
+    return
+  }
+
+  document.getElementById('user-email').textContent = data.user.email
+}
+
+async function logout() {
+  await supabase.auth.signOut()
+  window.location.href = 'login.html'
+}
+
+window.logout = logout
+
+initAuth()
+
+// ↓ 下面保持你原本 Claude 的程式
+function generate() {
+
+}
+
 </script>
 </body>
 </html>
