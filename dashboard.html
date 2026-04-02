@@ -4,26 +4,185 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f6f7fb;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 24px;
+    }
+
+    .header-card,
+    .history-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+    }
+
+    h1, h2 {
+      margin-top: 0;
+    }
+
+    .subtext {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .user-line {
+      margin-bottom: 16px;
+      font-size: 15px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button,
+    a.button-link {
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 15px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .primary-btn {
+      background: #1f6feb;
+      color: white;
+    }
+
+    .secondary-btn {
+      background: #e9edf5;
+      color: #222;
+    }
+
+    .history-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .history-item {
+      border-bottom: 1px solid #eee;
+      padding: 14px 0;
+    }
+
+    .history-item:last-child {
+      border-bottom: none;
+    }
+
+    .history-title {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .history-meta {
+      font-size: 13px;
+      color: #777;
+      margin-bottom: 8px;
+    }
+
+    .history-preview {
+      color: #444;
+      line-height: 1.6;
+    }
+
+    .empty-text {
+      color: #666;
+    }
+
+    .result-preview-box {
+      background: #f8fafc;
+      border: 1px solid #e5eaf0;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      white-space: pre-wrap;
+      display: none;
+    }
+
+    .toggle-btn {
+      margin-top: 10px;
+      background: #eef4ff;
+      color: #234;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .error-text {
+      color: #c62828;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h1>Dashboard</h1>
-  <p>目前使用者：<span id="user-email">載入中...</span></p>
+  <div class="container">
+    <div class="header-card">
+      <h1>Dashboard</h1>
+      <p class="subtext">歡迎回來，這裡可以開始新的分析，也可以查看最近分析紀錄。</p>
 
-  <button onclick="window.location.href='/analyze.html'">前往分析頁</button>
-  <button onclick="logout()">登出</button>
+      <div class="user-line">
+        目前使用者：<span id="user-email">載入中...</span>
+      </div>
 
-  <h2>最近分析紀錄</h2>
-  <ul id="history"></ul>
+      <div class="actions">
+        <a class="button-link primary-btn" href="/analyze.html">前往分析頁</a>
+        <button id="logout-btn" class="secondary-btn">登出</button>
+      </div>
+    </div>
+
+    <div class="history-card">
+      <h2>最近分析紀錄</h2>
+      <ul id="history" class="history-list"></ul>
+    </div>
+  </div>
 
   <script type="module">
     import { supabase } from './supabase.js'
 
-    const userEmail = document.getElementById('user-email')
-    const historyList = document.getElementById('history')
+    const userEmailEl = document.getElementById('user-email')
+    const historyEl = document.getElementById('history')
+    const logoutBtn = document.getElementById('logout-btn')
+
+    function escapeHtml(text) {
+      if (text === null || text === undefined) return ''
+      return String(text)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;')
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return ''
+      const d = new Date(dateString)
+      return d.toLocaleString('zh-TW')
+    }
+
+    function getShortText(text, maxLength = 60) {
+      if (!text) return ''
+      return text.length > maxLength ? text.slice(0, maxLength) + '...' : text
+    }
 
     async function checkUser() {
       const { data, error } = await supabase.auth.getUser()
-      console.log('checkUser:', { data, error })
 
       if (error || !data?.user) {
         alert('請先登入')
@@ -31,13 +190,12 @@
         return null
       }
 
-      userEmail.textContent = data.user.email
+      userEmailEl.textContent = data.user.email || '未知使用者'
       return data.user
     }
 
-    async function loadHistory() {
-      const user = await checkUser()
-      if (!user) return
+    async function loadHistory(user) {
+      historyEl.innerHTML = '<li>載入中...</li>'
 
       const { data, error } = await supabase
         .from('analyses')
@@ -46,54 +204,74 @@
         .order('created_at', { ascending: false })
         .limit(5)
 
-      console.log('loadHistory:', { data, error })
-
       if (error) {
-        console.error('讀取歷史失敗:', error)
-        historyList.innerHTML = '<li>讀取失敗</li>'
+        console.error(error)
+        historyEl.innerHTML = `<li class="error-text">讀取歷史紀錄失敗：${escapeHtml(error.message)}</li>`
         return
       }
 
-      renderHistory(data || [])
-    }
-
-    function renderHistory(items) {
-      historyList.innerHTML = ''
-
-      if (items.length === 0) {
-        historyList.innerHTML = '<li>尚無分析紀錄</li>'
+      if (!data || data.length === 0) {
+        historyEl.innerHTML = '<li class="empty-text">目前尚無分析紀錄，先去做第一筆分析吧。</li>'
         return
       }
 
-      items.forEach((item) => {
+      historyEl.innerHTML = ''
+
+      data.forEach((item, index) => {
         const li = document.createElement('li')
-        const date = new Date(item.created_at).toLocaleString('zh-TW')
-        const preview = (item.input_text || '').slice(0, 40)
+        li.className = 'history-item'
+
+        const previewTitle = getShortText(item.input_text || '未命名分析', 45)
+        const createdAt = formatDate(item.created_at)
+
+        let resultPreview = '無結果資料'
+        if (item.result && typeof item.result === 'object') {
+          resultPreview = item.result.summary || JSON.stringify(item.result, null, 2)
+        } else if (item.result) {
+          resultPreview = String(item.result)
+        }
 
         li.innerHTML = `
-          <strong>${preview}</strong>
-          <br>
-          <small>${date}</small>
+          <div class="history-title">${escapeHtml(previewTitle)}</div>
+          <div class="history-meta">${escapeHtml(createdAt)}</div>
+          <div class="history-preview">輸入內容：${escapeHtml(getShortText(item.input_text || '', 90))}</div>
+          <button class="toggle-btn" data-index="${index}">查看分析結果</button>
+          <div class="result-preview-box" id="result-box-${index}">${escapeHtml(resultPreview)}</div>
         `
 
-        historyList.appendChild(li)
+        historyEl.appendChild(li)
+      })
+
+      const toggleButtons = document.querySelectorAll('.toggle-btn')
+      toggleButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = btn.getAttribute('data-index')
+          const box = document.getElementById(`result-box-${idx}`)
+          const isOpen = box.style.display === 'block'
+          box.style.display = isOpen ? 'none' : 'block'
+          btn.textContent = isOpen ? '查看分析結果' : '收起分析結果'
+        })
       })
     }
 
     async function logout() {
       const { error } = await supabase.auth.signOut()
-
       if (error) {
         alert('登出失敗：' + error.message)
         return
       }
-
       window.location.href = '/login.html'
     }
 
-    window.logout = logout
+    logoutBtn.addEventListener('click', logout)
 
-    loadHistory()
+    async function init() {
+      const user = await checkUser()
+      if (!user) return
+      await loadHistory(user)
+    }
+
+    init()
   </script>
 </body>
 </html>
