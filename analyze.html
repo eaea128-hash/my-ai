@@ -864,6 +864,17 @@ function generate(){
     })
 
     const data = await res.json()
+    const { data: userData } = await supabase.auth.getUser()
+
+await supabase
+  .from('analyses')
+  .insert([
+    {
+      user_id: userData.user.id,
+      input_text: desc,
+      result: data.result
+    }
+  ])
 
     if (!res.ok || !data.ok) {
       throw new Error(data.error || '分析失敗')
