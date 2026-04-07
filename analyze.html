@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Archie — Executive Brief Generator</title>
+<title>Smart Archie — Financial Executive Brief</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -15,199 +15,158 @@
   --grn:#1a6b45;--grnl:#edf7f2;
   --blue:#1a4fad;--bluel:#eef3fc;
   --amber:#92520a;--amberl:#fdf4e3;
-  --pu:#5b21b6;--pul:#f3f0fe;
-  --r:8px;--sh:0 1px 3px rgba(0,0,0,.06);--sh2:0 4px 16px rgba(0,0,0,.09);
+  --r:8px;--sh:0 1px 3px rgba(0,0,0,.06);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.65}
-
-/* TOPBAR */
-.topbar{background:var(--navy);height:56px;display:flex;align-items:center;padding:0 32px;gap:16px;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.25)}
-.top-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#fff;display:flex;align-items:center;gap:8px}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.65}
+.topbar{background:var(--navy);height:56px;display:flex;align-items:center;padding:0 32px;gap:16px;position:sticky;top:0;z-index:200;color:#fff}
+.top-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;display:flex;align-items:center;gap:8px}
 .top-dot{width:7px;height:7px;background:var(--gold);border-radius:50%}
-.top-right{margin-left:auto;display:flex;align-items:center;gap:10px}
-.top-email{color:rgba(255,255,255,.75);font-size:12px;font-family:'DM Mono'}
-.top-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;transition:background .15s}
-.top-badge{background:rgba(200,150,30,.18);border:1px solid var(--gold);color:var(--gold);font-size:10px;font-family:'DM Mono';padding:3px 10px;border-radius:4px;letter-spacing:.1em;text-transform:uppercase}
-
-/* LAYOUT */
 .shell{display:grid;grid-template-columns:400px 1fr;min-height:calc(100vh - 56px)}
 
 /* LEFT PANEL */
-.left-panel{background:var(--sur);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow-y:auto}
-.ip-head{padding:24px 24px 16px;border-bottom:1px solid var(--bd)}
-.ip-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px}
-.ip-body{padding:20px 24px;display:flex;flex-direction:column;gap:16px;flex:1}
+.left-panel{background:var(--sur);border-right:1px solid var(--bd);overflow-y:auto}
+.ip-head{padding:24px;border-bottom:1px solid var(--bd)}
+.ip-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
+.ip-body{padding:20px 24px;display:flex;flex-direction:column;gap:16px}
 .field{display:flex;flex-direction:column;gap:5px}
-.flbl{font-size:11px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.1em;color:var(--mu)}
-.field input, .field textarea, .field select{width:100%;padding:9px 12px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:13px;background:var(--sur2);outline:none}
+.flbl{font-size:11px;font-family:'DM Mono';text-transform:uppercase;color:var(--mu)}
+.field input, .field textarea, .field select{width:100%;padding:9px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:13px;background:var(--sur2)}
 .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .trow{display:flex;gap:7px;flex-wrap:wrap}
-.tbtn{padding:6px 13px;border-radius:20px;border:1.5px solid var(--bd);font-size:12px;cursor:pointer;background:var(--sur2);color:var(--ink2);user-select:none}
+.tbtn{padding:6px 13px;border-radius:20px;border:1.5px solid var(--bd);font-size:12px;cursor:pointer;background:var(--sur2)}
 .tbtn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
-
-.ip-footer{padding:20px 24px;border-top:1px solid var(--bd);display:flex;flex-direction:column;gap:10px}
-.style-row{display:flex;gap:6px}
-.ss{flex:1;padding:8px 6px;border-radius:var(--r);border:1.5px solid var(--bd);font-size:11px;cursor:pointer;background:var(--sur2);text-align:center}
-.ss.on{border-color:var(--navy);background:var(--navy);color:#fff}
-.btn-gen{padding:13px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;width:100%}
 
 /* RIGHT PANEL */
 .right-panel{padding:28px 32px;overflow-y:auto;display:flex;flex-direction:column;gap:20px}
-.empty-state{text-align:center;padding:60px;color:var(--mu);border:2px dashed var(--bd);border-radius:12px}
-.loader-wrap{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:400px}
+.sec{background:var(--sur);border:1px solid var(--bd);border-radius:10px;box-shadow:var(--sh);overflow:hidden}
+.sch{padding:12px 18px;border-bottom:1px solid var(--bd);background:var(--sur2);font-weight:700;font-size:11px;color:var(--mu);display:flex;justify-content:space-between}
+.scb{padding:18px}
+.headline{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--navy);margin-bottom:10px}
+
+/* CLOUD COMPARISON TABLE */
+.cloud-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:12px}
+.cloud-table th, .cloud-table td{border:1px solid var(--bd);padding:10px;text-align:left}
+.cloud-table th{background:var(--sur2);color:var(--navy)}
+.v-good{color:var(--grn);font-weight:700}
+.v-bad{color:var(--red)}
+
+.loader-wrap{display:none;flex-direction:column;align-items:center;padding:100px}
 .loader-wrap.show{display:flex}
-.lbar{width:200px;height:3px;background:var(--bd);overflow:hidden}
+.lbar{width:200px;height:4px;background:var(--bd);border-radius:2px;overflow:hidden}
 .lfill{height:100%;width:0%;background:var(--navy);transition:width 0.5s}
 
-.out-wrap{display:none;flex-direction:column;gap:18px}
+.out-wrap{display:none;flex-direction:column;gap:20px}
 .out-wrap.show{display:flex}
 
-.sec{background:var(--sur);border:1px solid var(--bd);border-radius:10px;box-shadow:var(--sh);overflow:hidden}
-.sch{padding:12px 18px;border-bottom:1px solid var(--bd);background:var(--sur2);display:flex;align-items:center;gap:8px}
-.sch-t{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--mu);font-family:'DM Mono'}
-.scb{padding:16px 18px}
-
-.headline{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--navy);margin-bottom:8px}
-.body-txt{font-size:13px;line-height:1.8}
-
-.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-.kpi{padding:12px;background:var(--sur2);border-radius:var(--r);text-align:center;border:1px solid var(--bd)}
-.kpi-n{font-size:22px;font-weight:800;font-family:'Syne'}
-.kpi-l{font-size:10px;color:var(--mu);text-transform:uppercase}
-
-/* PPT SLIDE STYLE */
-.ppt-list{display:flex;flex-direction:column;gap:12px}
-.ppt-slide{border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
-.ppt-head{padding:10px 14px;background:var(--navy);display:flex;gap:10px;color:#fff}
-.ppt-num{color:var(--gold);font-weight:800}
-.ppt-body{padding:14px;background:#fff}
-.ppt-bullet{font-size:13px;display:flex;gap:8px;margin-bottom:6px;line-height:1.5}
-.ppt-dot{width:5px;height:5px;background:var(--mu);border-radius:50%;margin-top:8px}
-
-/* DECISION CARD STYLE */
-.dp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.dp-card{padding:15px;border-radius:var(--r);border:1.5px solid;min-height:140px}
-.dp-cost{background:var(--redl);border-color:#fca5a5}
-.dp-decide{background:var(--amberl);border-color:#fcd34d}
-.dp-min{background:var(--grnl);border-color:#86efac}
-.dp-t{font-weight:700;font-size:12px;margin-bottom:8px;display:block}
-.dp-item{font-size:12px;margin-bottom:5px;display:flex;gap:5px}
-
-.out-footer{padding:15px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;font-size:11px;color:var(--mu)}
+.dp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.dp-card{padding:15px;border-radius:var(--r);border:1px solid;font-size:12px}
+.dp-cost{background:var(--redl);border-color:#fca5a5}.dp-decide{background:var(--amberl);border-color:#fcd34d}.dp-min{background:var(--grnl);border-color:#86efac}
+.btn-gen{padding:14px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);cursor:pointer;font-weight:700;width:100%}
 </style>
 </head>
 <body>
 
 <div class="topbar">
   <div class="top-logo"><div class="top-dot"></div>Smart Archie</div>
-  <div class="top-right">
-    <span class="top-email" id="user-email">Loading...</span>
-    <span class="top-badge">FSC Compliance AI</span>
-  </div>
+  <div style="margin-left:auto; font-size:12px; font-family:'DM Mono'" id="user-email">Loading...</div>
 </div>
 
 <div class="shell">
   <div class="left-panel">
-    <div class="ip-head">
-      <div class="ip-title">Executive Brief Generator</div>
-      <div class="ip-sub">針對金融法規與轉型痛點進行深度分析</div>
-    </div>
+    <div class="ip-head"><div class="ip-title">策略分析生成器</div></div>
     <div class="ip-body">
       <div class="field">
         <div class="flbl">📋 專案名稱</div>
-        <input id="f-name" type="text" placeholder="例：核心系統雲端遷移計畫">
+        <input id="f-name" type="text" placeholder="例：核心系統搬遷雲端">
       </div>
       <div class="field">
         <div class="flbl">💬 需求描述</div>
-        <textarea id="f-desc" placeholder="請描述現狀、痛點與期望目標..."></textarea>
+        <textarea id="f-desc" placeholder="請描述痛點、目標系統、個資疑慮等..."></textarea>
       </div>
+      
       <div class="fgrid">
         <div class="field">
-          <div class="flbl">🏢 子公司別</div>
-          <select id="f-entity">
-            <option value="bank">銀行</option>
-            <option value="life">壽險</option>
-            <option value="sec">證券</option>
+          <div class="flbl">💰 預算規模</div>
+          <select id="f-budget">
+            <option value="s">500萬以下</option>
+            <option value="m">500萬 - 2000萬</option>
+            <option value="l">2000萬 - 5000萬</option>
+            <option value="xl">5000萬以上</option>
           </select>
         </div>
         <div class="field">
-          <div class="flbl">⏱ 時程壓力</div>
+          <div class="flbl">⏱ 預期時程</div>
           <select id="f-timeline">
-            <option value="urgent">緊急 (3M)</option>
-            <option value="normal">標準 (6M+)</option>
+            <option value="urgent">緊急 (3個月)</option>
+            <option value="normal">標準 (6-9個月)</option>
+            <option value="long">長期 (12個月+)</option>
           </select>
         </div>
       </div>
+
       <div class="field">
-        <div class="flbl">🔐 敏感資料</div>
-        <div class="trow">
-          <div class="tbtn on">個人資料 (PII)</div>
-          <div class="tbtn">金融交易資料</div>
-          <div class="tbtn">無敏感資料</div>
+        <div class="flbl">🔐 敏感資料類型</div>
+        <div class="trow" id="g-sensitive">
+          <div class="tbtn on">個資 (PII)</div>
+          <div class="tbtn">交易資料</div>
+          <div class="tbtn">醫療資料</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="flbl">☁️ 雲端傾向 (多選)</div>
+        <div class="trow" id="g-cloud">
+          <div class="tbtn on">AWS</div>
+          <div class="tbtn on">GCP</div>
+          <div class="tbtn">Azure</div>
         </div>
       </div>
     </div>
-    <div class="ip-footer">
-      <div class="flbl">📄 輸出風格</div>
-      <div class="style-row">
-        <div class="ss on" id="ss-exec">高層版</div>
-        <div class="ss" id="ss-pm">PM 版</div>
-        <div class="ss" id="ss-arch">架構版</div>
-      </div>
-      <button class="btn-gen" id="btn-gen">✦ 生成 Executive Brief</button>
+    <div class="ip-footer" style="padding:24px">
+        <div class="flbl" style="margin-bottom:8px">📄 輸出風格</div>
+        <div class="trow" style="margin-bottom:15px">
+            <div class="tbtn on" onclick="setStyle('exec', this)">高層版</div>
+            <div class="tbtn" onclick="setStyle('pm', this)">PM 版</div>
+            <div class="tbtn" onclick="setStyle('arch', this)">架構評估版</div>
+        </div>
+        <button class="btn-gen" id="btn-gen">✦ 生成分析報告</button>
     </div>
   </div>
 
   <div class="right-panel">
-    <div class="empty-state" id="empty-state">
-      <h3>Ready to Analyze</h3>
-      <p>請填寫左側需求，AI 將依據金融委外辦法進行分析。</p>
-    </div>
-
-    <div class="loader-wrap" id="loader-wrap">
+    <div id="loader" class="loader-wrap">
       <div class="lbar"><div class="lfill" id="lfill"></div></div>
-      <p id="lmsg">正在呼叫 AI 引擎...</p>
+      <p style="margin-top:15px; font-size:12px; color:var(--mu)" id="lmsg">正在分析金融法規...</p>
     </div>
 
-    <div class="out-wrap" id="out-wrap">
-      <div class="sec" id="sec-summary">
-        <div class="sch"><span class="sch-t">📌 需求摘要 / Summary</span></div>
+    <div id="out-wrap" class="out-wrap">
+      <div class="sec">
+        <div class="sch"><span>📌 EXECUTIVE SUMMARY</span><span id="badge-style">高層版</span></div>
         <div class="scb">
-          <div class="headline" id="exec-headline"></div>
-          <p class="body-txt" id="exec-text"></p>
-          <div style="height:280px; margin:20px 0;"><canvas id="riskRadar"></canvas></div>
-          <div class="kpi-row">
-            <div class="kpi"><div class="kpi-n" id="kpi-r">0</div><div class="kpi-l">法規風險</div></div>
-            <div class="kpi"><div class="kpi-n" id="kpi-c">0</div><div class="kpi-l">遷移難度</div></div>
-            <div class="kpi"><div class="kpi-n" id="kpi-rd">0</div><div class="kpi-l">就緒度</div></div>
-          </div>
+          <div class="headline" id="res-headline"></div>
+          <p id="res-exec-text" style="font-size:13px; color:var(--ink2)"></p>
+          <div style="height:250px; margin:20px 0;"><canvas id="riskChart"></canvas></div>
         </div>
       </div>
 
-      <div class="sec" id="sec-obj">
-        <div class="sch"><span class="sch-t">🎯 策略目標 / Objectives</span></div>
-        <div class="scb" id="obj-list"></div>
+      <div class="sec" id="sec-cloud-comp">
+        <div class="sch"><span>☁️ CLOUD PROVIDER COMPARISON</span><span>金融合規評估</span></div>
+        <div class="scb" id="cloud-comp-body">
+            </div>
       </div>
 
-      <div class="sec" id="sec-brief">
-        <div class="sch"><span class="sch-t">⚡ 高層摘要 / Executive Brief</span></div>
-        <div class="scb"><div class="brief-box" id="brief-text"></div></div>
-      </div>
-
-      <div class="sec" id="sec-ppt">
-        <div class="sch"><span class="sch-t">📊 簡報架構 / PPT Outline (5 Slides)</span></div>
-        <div class="scb" id="ppt-list"></div>
-      </div>
-
-      <div class="sec" id="sec-decide">
-        <div class="sch"><span class="sch-t">🎯 高層決策建議 / Decisions</span></div>
-        <div class="scb" id="dp-grid"></div>
-      </div>
-
-      <div class="out-footer">
-        <span>FSC 金融委外辦法 · DORA · ISO 27017</span>
-        <span id="of-ts"></span>
+      <div id="exec-only-zone">
+        <div class="sec">
+            <div class="sch"><span>📊 PPT OUTLINE (5 SLIDES)</span></div>
+            <div class="scb" id="ppt-list"></div>
+        </div>
+        <div class="sec">
+            <div class="sch"><span>🎯 DECISION POINTS</span></div>
+            <div class="scb">
+                <div class="dp-grid" id="dp-grid"></div>
+            </div>
+        </div>
       </div>
     </div>
   </div>
@@ -218,146 +177,131 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const supabase = createClient('https://oxownfzafrveihxhuxay.supabase.co', 'sb_publishable_qu_7OLWgfKpbmKnzDsQOuA_SUhryH67')
 
 const $ = id => document.getElementById(id)
-let radarChart = null
 let currentStyle = 'exec'
+let myChart = null
 
-/* 風格顯示切換 */
-function applyStyle(s) {
-  currentStyle = s
-  const isExec = s === 'exec'
-  $('sec-brief').style.display = isExec ? 'block' : 'none'
-  $('sec-ppt').style.display = isExec ? 'block' : 'none'
-  $('sec-decide').style.display = isExec ? 'block' : 'none'
-  
-  ;['ss-exec','ss-pm','ss-arch'].forEach(id => $(id).classList.toggle('on', id === `ss-${s}`))
+window.setStyle = (s, btn) => {
+    currentStyle = s
+    document.querySelectorAll('.ip-footer .tbtn').forEach(b => b.classList.remove('on'))
+    btn.classList.add('on')
+    $('badge-style').textContent = btn.textContent
 }
 
-/* 生成按鈕觸發 */
-async function generate() {
-  const name = $('f-name').value.trim()
-  const desc = $('f-desc').value.trim()
-  if(!name || !desc) { alert('請填寫專案名稱與描述'); return }
+document.querySelectorAll('#g-sensitive .tbtn, #g-cloud .tbtn').forEach(b => {
+    b.onclick = () => b.classList.toggle('on')
+})
 
-  $('empty-state').style.display = 'none'
-  $('out-wrap').classList.remove('show')
-  $('loader-wrap').classList.add('show')
-  $('lfill').style.width = '30%'
+$('btn-gen').onclick = async () => {
+    const name = $('f-name').value
+    const desc = $('f-desc').value
+    if(!name || !desc) return alert('請填寫專案名稱與描述')
 
-  try {
-    const res = await fetch('/api/analyze', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        projectName: name, 
-        description: desc, 
-        style: currentStyle,
-        isFinancial: true // 強制標註金融屬性
-      })
-    })
-    
-    const data = await res.json()
-    if(!res.ok) throw new Error('AI 分析失敗')
+    $('loader').classList.add('show')
+    $('out-wrap').classList.remove('show')
+    $('lfill').style.width = '40%'
 
-    render(data.result, name)
-    
-    $('loader-wrap').classList.remove('show')
+    try {
+        const res = await fetch('/api/analyze', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                name, desc, 
+                style: currentStyle,
+                budget: $('f-budget').value,
+                timeline: $('f-timeline').value,
+                clouds: [...document.querySelectorAll('#g-cloud .tbtn.on')].map(e => e.textContent)
+            })
+        })
+        const json = await res.json()
+        render(json.result)
+    } catch (e) {
+        alert('連線失敗，請確認後端 API 狀態')
+    } finally {
+        $('loader').classList.remove('show')
+    }
+}
+
+function render(d) {
     $('out-wrap').classList.add('show')
-  } catch (err) {
-    alert(err.message)
-    $('loader-wrap').classList.remove('show')
-  }
+    $('res-headline').textContent = d.headline || '策略評估報告'
+    $('res-exec-text').textContent = d.execText || '未產出摘要'
+
+    // 1. 渲染雲端廠商比較 (新增功能)
+    renderCloudTable(d.cloudComparison)
+
+    // 2. 渲染 PPT 與 決策 (針對高層版)
+    if(currentStyle === 'exec') {
+        $('exec-only-zone').style.display = 'block'
+        $('ppt-list').innerHTML = (d.pptSlides || []).map(s => `
+            <div style="margin-bottom:15px; border-left:4px solid var(--navy); padding-left:12px">
+                <div style="font-weight:700; color:var(--navy)">Slide ${s.num}: ${s.title}</div>
+                <div style="font-size:12px; margin-top:4px">${s.bullets.join(' | ')}</div>
+            </div>
+        `).join('')
+
+        const dc = d.decisions || {cost:[], decide:[], min:[]}
+        $('dp-grid').innerHTML = `
+            <div class="dp-card dp-cost"><b>⚠️ 不行動代價</b><br>${dc.cost.join('<br>')}</div>
+            <div class="dp-card dp-decide"><b>🎯 決策點</b><br>${dc.decide.join('<br>')}</div>
+            <div class="dp-card dp-min"><b>🚀 MVP 路徑</b><br>${dc.min.join('<br>')}</div>
+        `
+    } else {
+        $('exec-only-zone').style.display = 'none'
+    }
+
+    // 3. 繪製圖表
+    renderChart(d.kpis)
 }
 
-/* 繪製圖表 */
-function drawChart(kpis) {
-  const ctx = $('riskRadar').getContext('2d')
-  if(radarChart) radarChart.destroy()
-  radarChart = new Chart(ctx, {
-    type: 'radar',
-    data: {
-      labels: ['合規風險', '技術複雜度', '資安就緒度', '預算壓力', '時程壓力'],
-      datasets: [{
-        label: '維度分析',
-        data: [kpis.r.v, kpis.c.v, kpis.rd.v, 60, 70],
-        backgroundColor: 'rgba(200, 150, 30, 0.15)',
-        borderColor: '#c8961e',
-        pointBackgroundColor: '#00204a'
-      }]
-    },
-    options: { maintainAspectRatio: false }
-  })
+function renderCloudTable(data) {
+    // 模擬 AI 產出多雲比較數據 (若 API 未傳回則使用預設模板)
+    const comparison = data || [
+        {name: 'AWS', cost: '高 (PaaS豐富)', pros: '合規範本最齊全', cons: '成本管理複雜', status: '首選'},
+        {name: 'GCP', cost: '中 (折扣優)', pros: 'AI/數據分析最強', cons: '金融案例較少', status: '次選'},
+        {name: 'Azure', cost: '中', pros: '與地端 AD 無縫整合', cons: '介面邏輯較跳躍', status: '評估中'}
+    ]
+    
+    $('cloud-comp-body').innerHTML = `
+        <table class="cloud-table">
+            <tr><th>廠商</th><th>預估成本</th><th>核心優點</th><th>潛在挑戰</th><th>建議</th></tr>
+            ${comparison.map(c => `
+                <tr>
+                    <td><b>${c.name}</b></td>
+                    <td>${c.cost}</td>
+                    <td class="v-good">${c.pros}</td>
+                    <td class="v-bad">${c.cons}</td>
+                    <td><span style="background:var(--bluel); padding:2px 6px; border-radius:4px">${c.status}</span></td>
+                </tr>
+            `).join('')}
+        </table>
+    `
 }
 
-/* 核心：渲染所有內容（包含簡報與決策） */
-function render(d, projName) {
-  // 1. 基本資訊
-  $('exec-headline').textContent = projName + '｜' + (d.headline || '策略評估報告')
-  $('exec-text').textContent = d.execText || ''
-  $('kpi-r').textContent = d.kpis?.r?.v || 0
-  $('kpi-c').textContent = d.kpis?.c?.v || 0
-  $('kpi-rd').textContent = d.kpis?.rd?.v || 0
-  drawChart(d.kpis)
-
-  // 2. 策略目標
-  $('obj-list').innerHTML = (d.objs || []).map((o,i) => `
-    <div style="margin-bottom:10px; padding:12px; background:var(--sur2); border-radius:8px;">
-      <b style="color:var(--navy)">${i+1}. ${o.t}</b>
-      <p style="font-size:12px; color:var(--mu); margin-top:4px">${o.d}</p>
-    </div>
-  `).join('')
-
-  // 3. 高層摘要文字
-  $('brief-text').textContent = d.brief || 'AI 未產出文字內容'
-
-  // 4. 簡報架構 (修正點：動態生成 PPT 區塊)
-  const slides = d.pptSlides || []
-  if(slides.length > 0) {
-    $('ppt-list').innerHTML = slides.map(s => `
-      <div class="ppt-slide">
-        <div class="ppt-head"><span class="ppt-num">${s.num}</span><b>${s.title}</b></div>
-        <div class="ppt-body">
-          ${(s.bullets || []).map(b => `<div class="ppt-bullet"><div class="ppt-dot"></div><span>${b}</span></div>`).join('')}
-          ${s.note ? `<div style="margin-top:8px; font-size:11px; color:var(--mu)">📝 主講備註：${s.note}</div>` : ''}
-        </div>
-      </div>
-    `).join('')
-  } else {
-    $('ppt-list').innerHTML = '<p style="padding:20px; color:var(--mu)">AI 未提供簡報架構</p>'
-  }
-
-  // 5. 決策建議 (修正點：三道防線卡片)
-  const dc = d.decisions || { cost:[], decide:[], min:[] }
-  $('dp-grid').innerHTML = `
-    <div class="dp-card dp-cost">
-      <span class="dp-t">⚠️ 不行動代價</span>
-      ${dc.cost.map(txt => `<div class="dp-item">● ${txt}</div>`).join('')}
-    </div>
-    <div class="dp-card dp-decide">
-      <span class="dp-t">🎯 核心決策點</span>
-      ${dc.decide.map(txt => `<div class="dp-item">● ${txt}</div>`).join('')}
-    </div>
-    <div class="dp-card dp-min">
-      <span class="dp-t">🚀 最小可行路徑</span>
-      ${dc.min.map(txt => `<div class="dp-item">● ${txt}</div>`).join('')}
-    </div>
-  `
-
-  $('of-ts').textContent = 'Generated at: ' + new Date().toLocaleString()
-  applyStyle(currentStyle)
+function renderChart(kpis) {
+    const ctx = $('riskChart').getContext('2d')
+    if(myChart) myChart.destroy()
+    myChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ['合規風險', '技術難度', '資料敏感', '成本壓力', '時程壓力'],
+            datasets: [{
+                label: '分析維度',
+                data: [kpis?.r?.v || 50, kpis?.c?.v || 50, 80, 60, 70],
+                backgroundColor: 'rgba(0, 32, 74, 0.1)',
+                borderColor: '#00204a',
+                borderWidth: 2
+            }]
+        },
+        options: { maintainAspectRatio: false }
+    })
 }
 
-/* 初始化 */
-$('btn-gen').onclick = generate
-$('ss-exec').onclick = () => applyStyle('exec')
-$('ss-pm').onclick = () => applyStyle('pm')
-$('ss-arch').onclick = () => applyStyle('arch')
-
-async function auth() {
-  const { data } = await supabase.auth.getUser()
-  if(data?.user) $('user-email').textContent = data.user.email
-  else window.location.href = 'login.html'
+async function init() {
+    const { data } = await supabase.auth.getUser()
+    if(data?.user) $('user-email').textContent = data.user.email
+    else window.location.href = 'login.html'
 }
-auth()
+init()
 </script>
 </body>
 </html>
