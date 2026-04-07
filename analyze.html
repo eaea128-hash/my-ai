@@ -150,54 +150,56 @@
         finally { $('loader').style.display = 'none' }
     }
 
-    function render(d) {
-        $('out-wrap').style.display = 'flex'
-        $('res-headline').textContent = d.headline || '策略評估報告'
-        $('res-text').textContent = d.execText || 'AI 分析內容中...'
+  function render(d, projName) {
+    const now = new Date().toLocaleString('zh-TW');
+    $('res-headline').textContent = projName + ' ｜ ' + (d.headline || '策略評估報告');
+    $('res-exec-text').textContent = d.execText || '';
+    
+    // 1. 繪製圖表 (這是同事最在意的視覺化分析)
+    renderChart(d.kpis);
 
-        // 渲染雲端比較表
-        const clouds = d.cloudComparison || []
-        $('cloud-table-wrap').innerHTML = `
-            <table class="cloud-table">
-                <tr><th>廠商</th><th>成本</th><th>優點</th><th>挑戰</th><th>建議</th></tr>
-                ${clouds.map(c => `<tr><td><b>${c.name}</b></td><td>${c.cost}</td><td>${c.pros}</td><td>${c.cons}</td><td>${c.status}</td></tr>`).join('')}
-            </table>`
+    // 2. 渲染雲端廠商比較表 (針對不同廠商估價與優缺)
+    if (d.cloudComparison) {
+        renderCloudTable(d.cloudComparison);
+    }
 
-        // 高層版內容
-        if(currentStyle === 'exec') {
-            $('exec-zone').style.display = 'block'
-            $('ppt-wrap').innerHTML = (d.pptSlides || []).map(s => `
+    // 3. 根據「風格」切換顯示內容 (高層版 vs PM版 vs 架構版)
+    // 先隱藏所有風格專屬區塊
+    $('exec-only-zone').style.display = 'none';
+    // 如果你有 PM 區塊，也在這裡先隱藏
+
+    if (currentStyle === 'exec') {
+        $('exec-only-zone').style.display = 'block';
+        
+        // 渲染 5 Slide 簡報架構
+        if (d.pptSlides) {
+            $('ppt-list').innerHTML = d.pptSlides.map(s => `
                 <div class="ppt-slide">
                     <div class="ppt-head"><span>Slide ${s.num}</span><span>${s.title}</span></div>
-                    <div class="ppt-body">${s.bullets.join(' ● ')}</div>
-                </div>`).join('')
-            
-            const dc = d.decisions || {cost:[], decide:[], min:[]}
-            $('dp-wrap').innerHTML = `
-                <div class="dp-card dp-cost"><b>⚠️ 不行動代價</b><br>${dc.cost.join('<br>')}</div>
-                <div class="dp-card dp-decide"><b>🎯 決策點</b><br>${dc.decide.join('<br>')}</div>
-                <div class="dp-card dp-min"><b>🚀 MVP 路徑</b><br>${dc.min.join('<br>')}</div>`
-        } else {
-            $('exec-zone').style.display = 'none'
+                    <div class="ppt-body">
+                        ${s.bullets.map(b => `<div class="ppt-bullet"><div class="ppt-dot"></div>${b}</div>`).join('')}
+                        ${s.note ? `<div style="font-size:11px; color:var(--mu); margin-top:8px">📝 備註：${s.note}</div>` : ''}
+                    </div>
+                </div>`).join('');
         }
 
-        // 渲染圖表
-        if(chartInstance) chartInstance.destroy()
-        chartInstance = new Chart($('riskRadar').getContext('2d'), {
-            type: 'radar',
-            data: {
-                labels: ['合規', '技術', '個資', '預算', '時程'],
-                datasets: [{ label: '維度分析', data: [d.kpis.r.v, d.kpis.c.v, 80, 60, 70], borderColor: '#00204a', backgroundColor: 'rgba(0,32,74,0.05)' }]
-            },
-            options: { maintainAspectRatio: false }
-        })
+        // 渲染 決策建議 (國泰三道防線邏輯)
+        if (d.decisions) {
+            const dc = d.decisions;
+            $('dp-grid').innerHTML = `
+                <div class="dp-card dp-cost"><b>⚠️ 不行動代價</b><br>${dc.cost.join('<br>')}</div>
+                <div class="dp-card dp-decide"><b>🎯 核心決策點</b><br>${dc.decide.join('<br>')}</div>
+                <div class="dp-card dp-min"><b>🚀 最小可行路徑 (MVP)</b><br>${dc.min.join('<br>')}</div>
+            `;
+        }
+    } else if (currentStyle === 'pm') {
+        // 如果切換到 PM 版，你可以在這裡加入顯示 Roadmap 的邏輯
+        console.log("切換至 PM 版渲染邏輯");
     }
 
-    async function init() {
-        const { data } = await supabase.auth.getUser()
-        if(data?.user) $('user-email').textContent = data.user.email
-        else window.location.href = 'login.html'
-    }
+    $('out-wrap').classList.add('show');
+    $('of-ts').textContent = '產出時間：' + now;
+}
     init()
 </script>
 </body>
