@@ -20,281 +20,197 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.65}
+
+/* TOPBAR */
 .topbar{background:var(--navy);height:56px;display:flex;align-items:center;padding:0 32px;gap:16px;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.25)}
 .top-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#fff;display:flex;align-items:center;gap:8px}
 .top-dot{width:7px;height:7px;background:var(--gold);border-radius:50%}
-.top-sub{font-size:11px;color:rgba(255,255,255,.4);font-family:'DM Mono';letter-spacing:.08em;text-transform:uppercase}
 .top-right{margin-left:auto;display:flex;align-items:center;gap:10px}
 .top-email{color:rgba(255,255,255,.75);font-size:12px;font-family:'DM Mono'}
 .top-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;transition:background .15s}
-.top-btn:hover{background:rgba(255,255,255,.2)}
 .top-badge{background:rgba(200,150,30,.18);border:1px solid var(--gold);color:var(--gold);font-size:10px;font-family:'DM Mono';padding:3px 10px;border-radius:4px;letter-spacing:.1em;text-transform:uppercase}
+
+/* LAYOUT */
 .shell{display:grid;grid-template-columns:400px 1fr;min-height:calc(100vh - 56px)}
+
+/* LEFT PANEL */
 .left-panel{background:var(--sur);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow-y:auto}
 .ip-head{padding:24px 24px 16px;border-bottom:1px solid var(--bd)}
 .ip-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px}
-.ip-sub{font-size:12px;color:var(--mu)}
 .ip-body{padding:20px 24px;display:flex;flex-direction:column;gap:16px;flex:1}
 .field{display:flex;flex-direction:column;gap:5px}
-.flbl{font-size:11px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.1em;color:var(--mu);display:flex;align-items:center;gap:5px}
-.req{color:var(--red)}
-.field input,.field textarea,.field select{width:100%;padding:9px 12px;border:1.5px solid var(--bd);border-radius:var(--r);font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--ink);background:var(--sur2);outline:none;transition:border-color .2s}
-.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--navy);background:#fff}
-.field textarea{resize:vertical;min-height:90px;line-height:1.65}
-.field select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2371717a'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.flbl{font-size:11px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.1em;color:var(--mu)}
+.field input, .field textarea, .field select{width:100%;padding:9px 12px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:13px;background:var(--sur2);outline:none}
 .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .trow{display:flex;gap:7px;flex-wrap:wrap}
-.tbtn{padding:6px 13px;border-radius:20px;border:1.5px solid var(--bd);font-size:12px;cursor:pointer;background:var(--sur2);color:var(--ink2);transition:all .15s;font-family:'DM Mono';user-select:none}
+.tbtn{padding:6px 13px;border-radius:20px;border:1.5px solid var(--bd);font-size:12px;cursor:pointer;background:var(--sur2);color:var(--ink2);user-select:none}
 .tbtn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
 .ip-footer{padding:20px 24px;border-top:1px solid var(--bd);display:flex;flex-direction:column;gap:10px}
 .style-row{display:flex;gap:6px}
-.ss{flex:1;padding:8px 6px;border-radius:var(--r);border:1.5px solid var(--bd);font-size:11px;cursor:pointer;background:var(--sur2);color:var(--mu);font-family:'DM Mono';text-align:center;transition:all .15s;line-height:1.4}
+.ss{flex:1;padding:8px 6px;border-radius:var(--r);border:1.5px solid var(--bd);font-size:11px;cursor:pointer;background:var(--sur2);text-align:center}
 .ss.on{border-color:var(--navy);background:var(--navy);color:#fff}
-.ss:hover:not(.on){border-color:var(--navy);color:var(--navy)}
-.btn-gen{padding:13px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;width:100%}
-.btn-gen:hover{background:#003580;transform:translateY(-1px);box-shadow:var(--sh2)}
-.btn-gen:disabled{background:var(--bd);color:var(--mu);cursor:not-allowed;transform:none;box-shadow:none}
-.style-hint{font-size:11px;color:var(--mu);font-family:'DM Mono';text-align:center;min-height:16px}
+.btn-gen{padding:13px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;width:100%}
+
+/* RIGHT PANEL */
 .right-panel{padding:28px 32px;overflow-y:auto;display:flex;flex-direction:column;gap:20px}
-.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;border:2px dashed var(--bd);border-radius:12px;padding:60px 40px;text-align:center;color:var(--mu);min-height:400px}
-.empty-ic{font-size:40px;opacity:.35}
-.empty-t{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--ink2)}
-.empty-s{font-size:13px;line-height:1.7;max-width:360px}
-.loader-wrap{display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:400px}
+.empty-state{text-align:center;padding:60px;color:var(--mu);border:2px dashed var(--bd);border-radius:12px}
+.loader-wrap{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:400px}
 .loader-wrap.show{display:flex}
-.lbar{width:220px;height:3px;background:var(--bd);border-radius:2px;overflow:hidden}
-.lfill{height:100%;width:0%;background:var(--navy);border-radius:2px;transition:width .6s ease}
-.lmsg{font-family:'DM Mono';font-size:12px;color:var(--mu);letter-spacing:.05em}
-.err-wrap{display:none;background:var(--redl);border:1px solid #fca5a5;border-radius:var(--r);padding:14px 18px;color:var(--red);font-size:13px;font-family:'DM Mono';line-height:1.6}
-.err-wrap.show{display:block}
+.lbar{width:200px;height:3px;background:var(--bd);overflow:hidden}
+.lfill{height:100%;width:0%;background:var(--navy);transition:width 0.5s}
+
 .out-wrap{display:none;flex-direction:column;gap:18px}
-.out-wrap.show{display:flex;animation:fu .35s ease}
-@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.style-bar{background:var(--sur);border:1px solid var(--bd);border-radius:var(--r);padding:10px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh)}
-.style-bar-label{font-size:11px;font-family:'DM Mono';color:var(--mu)}
-.style-bar-name{font-size:13px;font-weight:700;color:var(--navy)}
-.style-bar-desc{font-size:11px;color:var(--mu);margin-left:auto}
+.out-wrap.show{display:flex}
+
 .sec{background:var(--sur);border:1px solid var(--bd);border-radius:10px;box-shadow:var(--sh);overflow:hidden}
-.sch{padding:11px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
-.sch-ic{font-size:13px}
-.sch-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-family:'DM Mono';color:var(--mu)}
-.sch-b{margin-left:auto;font-size:9px;font-family:'DM Mono';padding:2px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.07em}
-.bb{background:var(--bluel);color:var(--blue)}.bg2{background:var(--grnl);color:var(--grn)}
-.bo{background:var(--amberl);color:var(--amber)}.bp{background:var(--pul);color:var(--pu)}
-.br{background:var(--redl);color:var(--red)}.bgold{background:var(--goldl);color:#7a5400}
+.sch{padding:12px 18px;border-bottom:1px solid var(--bd);background:var(--sur2);display:flex;align-items:center;gap:8px}
+.sch-t{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--mu);font-family:'DM Mono'}
 .scb{padding:16px 18px}
-.headline{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;line-height:1.3;margin-bottom:8px}
-.body-txt{font-size:13px;color:var(--ink2);line-height:1.85}
+
+.headline{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--navy);margin-bottom:8px}
+.body-txt{font-size:13px;line-height:1.8}
+
 .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-.kpi{padding:12px;border-radius:var(--r);border:1px solid var(--bd);background:var(--sur2);text-align:center}
-.kpi-n{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
-.kpi-l{font-size:10px;font-family:'DM Mono';color:var(--mu);text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
-.kpi-h{font-size:10px;color:var(--mu);margin-top:4px}
-.kn-r{color:var(--red)}.kn-a{color:var(--amber)}.kn-g{color:var(--grn)}
-.alert-box{margin-top:10px;padding:10px 12px;border-radius:6px;border:1px solid}
-.alert-red{background:var(--redl);border-color:#fca5a5}
-.alert-amber{background:var(--amberl);border-color:#fcd34d}
-.alert-lbl{font-size:10px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
-.alert-red .alert-lbl{color:var(--red)}.alert-amber .alert-lbl{color:var(--amber)}
-.alert-txt{font-size:12px;color:var(--ink2);line-height:1.6}
-.obj-list{display:flex;flex-direction:column;gap:8px}
-.obj-item{display:flex;gap:10px;padding:10px 12px;border-radius:var(--r);border:1px solid var(--bd);background:var(--sur2)}
-.obj-n{width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'DM Mono';font-size:11px;flex-shrink:0;margin-top:1px}
-.obj-t{font-size:13px;font-weight:600}
-.obj-d{font-size:12px;color:var(--mu);margin-top:2px;line-height:1.5}
-.brief-box{background:var(--sur2);border:1px solid var(--bd);border-radius:var(--r);padding:18px 20px;white-space:pre-wrap;font-size:13px;color:var(--ink2);line-height:1.8}
-.brief-actions{display:flex;gap:8px;margin-top:10px}
-.btn-brief{padding:7px 14px;border:1px solid var(--bd);border-radius:var(--r);font-size:12px;font-family:'DM Mono';background:var(--sur);cursor:pointer;transition:all .15s;color:var(--ink2)}
-.btn-brief:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
-.ppt-list{display:flex;flex-direction:column;gap:10px}
+.kpi{padding:12px;background:var(--sur2);border-radius:var(--r);text-align:center;border:1px solid var(--bd)}
+.kpi-n{font-size:22px;font-weight:800;font-family:'Syne'}
+.kpi-l{font-size:10px;color:var(--mu);text-transform:uppercase}
+
+/* PPT SLIDE STYLE */
+.ppt-list{display:flex;flex-direction:column;gap:12px}
 .ppt-slide{border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
-.ppt-head{padding:10px 14px;background:var(--navy);display:flex;align-items:center;gap:10px}
-.ppt-num{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--gold)}
-.ppt-title{font-size:13px;font-weight:600;color:#fff}
-.ppt-body{padding:12px 14px;background:var(--sur);display:flex;flex-direction:column;gap:5px}
-.ppt-bullet{font-size:12px;color:var(--ink2);display:flex;gap:7px;line-height:1.55}
-.ppt-dot{flex-shrink:0;margin-top:5px;width:4px;height:4px;border-radius:50%;background:var(--mu)}
-.ppt-note{font-size:11px;color:var(--mu);font-family:'DM Mono';margin-top:6px;padding-top:6px;border-top:1px solid var(--bd)}
+.ppt-head{padding:10px 14px;background:var(--navy);display:flex;gap:10px;color:#fff}
+.ppt-num{color:var(--gold);font-weight:800}
+.ppt-body{padding:14px;background:#fff}
+.ppt-bullet{font-size:13px;display:flex;gap:8px;margin-bottom:6px;line-height:1.5}
+.ppt-dot{width:5px;height:5px;background:var(--mu);border-radius:50%;margin-top:8px}
+
+/* DECISION CARD STYLE */
 .dp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.dp-card{padding:14px;border-radius:var(--r);border:1.5px solid}
+.dp-card{padding:15px;border-radius:var(--r);border:1.5px solid;min-height:140px}
 .dp-cost{background:var(--redl);border-color:#fca5a5}
 .dp-decide{background:var(--amberl);border-color:#fcd34d}
 .dp-min{background:var(--grnl);border-color:#86efac}
-.dp-ic{font-size:20px;margin-bottom:7px}
-.dp-title{font-size:11px;font-weight:700;margin-bottom:6px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.05em}
-.dp-item{font-size:12px;color:var(--ink2);line-height:1.55;display:flex;gap:6px;margin-bottom:5px}
-.dp-dot{flex-shrink:0;margin-top:5px;width:5px;height:5px;border-radius:50%;background:var(--navy)}
-.out-footer{background:var(--sur);border:1px solid var(--bd);border-radius:var(--r);padding:11px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--sh)}
-.of-note{font-size:11px;color:var(--mu);font-family:'DM Mono'}
-.of-tags{display:flex;gap:6px}
-.ft{padding:3px 9px;border-radius:4px;font-size:10px;font-family:'DM Mono';letter-spacing:.07em;text-transform:uppercase;font-weight:600}
-.ftn{background:var(--navy);color:#fff}.ftg{background:var(--gold);color:#fff}
-.of-ts{font-size:11px;color:var(--mu);font-family:'DM Mono'}
-.chart-container{margin-top:20px;background:#fff;border-radius:12px;padding:20px;border:1px solid var(--bd);height:320px;position:relative}
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+.dp-t{font-weight:700;font-size:12px;margin-bottom:8px;display:block}
+.dp-item{font-size:12px;margin-bottom:5px;display:flex;gap:5px}
+
+.out-footer{padding:15px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;font-size:11px;color:var(--mu)}
 </style>
 </head>
 <body>
 
 <div class="topbar">
   <div class="top-logo"><div class="top-dot"></div>Smart Archie</div>
-  <div class="top-sub">Executive Brief Generator</div>
   <div class="top-right">
-    <span class="top-email" id="user-email">載入中…</span>
-    <button class="top-btn" id="btn-history">歷史紀錄</button>
-    <button class="top-btn" id="btn-logout">登出</button>
-    <span class="top-badge">Financial Enterprise v6.0</span>
+    <span class="top-email" id="user-email">Loading...</span>
+    <span class="top-badge">FSC Compliance AI</span>
   </div>
 </div>
 
 <div class="shell">
-<div class="left-panel">
-  <div class="ip-head">
-    <div class="ip-title">將模糊需求轉成策略分析</div>
-    <div class="ip-sub">AI 將根據《金融委外辦法》自動產出專業報告</div>
-  </div>
-
-  <div class="ip-body">
-    <div class="field">
-      <div class="flbl">📋 專案名稱 <span class="req">*</span></div>
-      <input id="f-name" type="text" placeholder="例：壽險核心系統雲端遷移計畫">
+  <div class="left-panel">
+    <div class="ip-head">
+      <div class="ip-title">Executive Brief Generator</div>
+      <div class="ip-sub">針對金融法規與轉型痛點進行深度分析</div>
     </div>
-    <div class="field">
-      <div class="flbl">💬 需求描述 <span class="req">*</span></div>
-      <textarea id="f-desc" placeholder="描述您的需求..."></textarea>
-    </div>
-    <div class="fgrid">
+    <div class="ip-body">
       <div class="field">
-        <div class="flbl">🖥 系統類型</div>
-        <select id="f-systype">
-          <option value="core">核心業務系統</option>
-          <option value="digital">數位通路/APP</option>
-          <option value="data">資料平台/AI</option>
-        </select>
+        <div class="flbl">📋 專案名稱</div>
+        <input id="f-name" type="text" placeholder="例：核心系統雲端遷移計畫">
       </div>
       <div class="field">
-        <div class="flbl">🏢 子公司別</div>
-        <select id="f-entity">
-          <option value="life">壽險</option>
-          <option value="bank">銀行</option>
-          <option value="sec">證券</option>
-        </select>
+        <div class="flbl">💬 需求描述</div>
+        <textarea id="f-desc" placeholder="請描述現狀、痛點與期望目標..."></textarea>
       </div>
-    </div>
-    <div class="field">
-      <div class="flbl">🔐 是否含敏感資料</div>
-      <div class="trow" id="g-sensitive">
-        <div class="tbtn on">個人資料 (PII)</div>
-        <div class="tbtn">金融交易資料</div>
-        <div class="tbtn" id="btn-no-sensitive">無敏感資料</div>
-      </div>
-    </div>
-    <div class="fgrid">
-      <div class="field">
-        <div class="flbl">💰 預算規模</div>
-        <select id="f-budget">
-          <option value="m">500萬–2,000萬</option>
-          <option value="l">2,000萬–5,000萬</option>
-          <option value="xl">5,000萬以上</option>
-        </select>
-      </div>
-      <div class="field">
-        <div class="flbl">⏱ 時程壓力</div>
-        <select id="f-timeline">
-          <option value="urgent">緊急</option>
-          <option value="normal">標準</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <div class="ip-footer">
-    <div class="flbl">📄 輸出風格</div>
-    <div class="style-row">
-      <div class="ss on" id="ss-exec">高層版</div>
-      <div class="ss" id="ss-pm">PM 版</div>
-      <div class="ss" id="ss-arch">架構評估版</div>
-    </div>
-    <div class="style-hint" id="style-hint">顯示摘要、決策重點與簡報架構</div>
-    <button class="btn-gen" id="btn-gen">✦ 生成 Executive Brief</button>
-  </div>
-</div>
-
-<div class="right-panel">
-  <div class="empty-state" id="empty-state">
-    <div class="empty-ic">✦</div>
-    <div class="empty-t">Smart Archie</div>
-    <div class="empty-s">填寫左側表單後生成報告。</div>
-  </div>
-
-  <div class="loader-wrap" id="loader-wrap">
-    <div class="lbar"><div class="lfill" id="lfill"></div></div>
-    <div class="lmsg" id="lmsg">分析中...</div>
-  </div>
-
-  <div class="err-wrap" id="err-wrap"></div>
-
-  <div class="out-wrap" id="out-wrap">
-    <div class="style-bar">
-      <div><div class="style-bar-label">目前輸出風格</div><div class="style-bar-name" id="sb-name">高層版</div></div>
-      <div class="style-bar-desc" id="sb-desc">顯示摘要、決策重點與簡報架構</div>
-    </div>
-
-    <div class="sec" id="sec-summary">
-      <div class="sch"><span class="sch-ic">📌</span><span class="sch-t">需求摘要 / Executive Summary</span></div>
-      <div class="scb">
-        <div class="headline" id="exec-headline"></div>
-        <div class="body-txt" id="exec-text"></div>
-        <div class="chart-container"><canvas id="riskRadar"></canvas></div>
-        <div class="kpi-row">
-          <div class="kpi"><div class="kpi-n kn-r" id="kpi-c"></div><div class="kpi-l">複雜度</div><div class="kpi-h" id="kpi-ch"></div></div>
-          <div class="kpi"><div class="kpi-n kn-a" id="kpi-r"></div><div class="kpi-l">風險指數</div><div class="kpi-h" id="kpi-rh"></div></div>
-          <div class="kpi"><div class="kpi-n kn-g" id="kpi-rd"></div><div class="kpi-l">就緒度</div><div class="kpi-h" id="kpi-rdh"></div></div>
+      <div class="fgrid">
+        <div class="field">
+          <div class="flbl">🏢 子公司別</div>
+          <select id="f-entity">
+            <option value="bank">銀行</option>
+            <option value="life">壽險</option>
+            <option value="sec">證券</option>
+          </select>
         </div>
-        <div class="alert-box alert-red"><div class="alert-lbl">⚠ 代價</div><div class="alert-txt" id="s-cost"></div></div>
-        <div class="alert-box alert-amber"><div class="alert-lbl">🎯 關鍵決策</div><div class="alert-txt" id="s-kd"></div></div>
+        <div class="field">
+          <div class="flbl">⏱ 時程壓力</div>
+          <select id="f-timeline">
+            <option value="urgent">緊急 (3M)</option>
+            <option value="normal">標準 (6M+)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <div class="flbl">🔐 敏感資料</div>
+        <div class="trow">
+          <div class="tbtn on">個人資料 (PII)</div>
+          <div class="tbtn">金融交易資料</div>
+          <div class="tbtn">無敏感資料</div>
+        </div>
       </div>
     </div>
-
-    <div class="sec" id="sec-obj">
-      <div class="sch"><span class="sch-ic">🎯</span><span class="sch-t">策略目標</span></div>
-      <div class="scb"><div class="obj-list" id="obj-list"></div></div>
-    </div>
-
-    <div class="sec" id="sec-brief">
-      <div class="sch"><span class="sch-ic">⚡</span><span class="sch-t">高層摘要</span></div>
-      <div class="scb">
-        <div class="brief-box" id="brief-text"></div>
-        <div class="brief-actions"><button class="btn-brief" id="btn-copy">📋 複製</button></div>
+    <div class="ip-footer">
+      <div class="flbl">📄 輸出風格</div>
+      <div class="style-row">
+        <div class="ss on" id="ss-exec">高層版</div>
+        <div class="ss" id="ss-pm">PM 版</div>
+        <div class="ss" id="ss-arch">架構版</div>
       </div>
-    </div>
-
-    <div class="sec" id="sec-ppt">
-      <div class="sch"><span class="sch-ic">📊</span><span class="sch-t">簡報架構 — 5 Slides</span></div>
-      <div class="scb"><div class="ppt-list" id="ppt-list"></div></div>
-    </div>
-
-    <div class="sec" id="sec-decide">
-      <div class="sch"><span class="sch-ic">🎯</span><span class="sch-t">高層決策建議</span></div>
-      <div class="scb"><div class="dp-grid" id="dp-grid"></div></div>
-    </div>
-
-    <div class="sec" id="sec-pm-detail">
-      <div class="sch"><span class="sch-ic">📅</span><span class="sch-t">里程碑與資源</span></div>
-      <div class="scb">
-        <div class="ms-list" id="ms-list"></div>
-        <div class="res-row" id="res-row"></div>
-      </div>
-    </div>
-
-    <div class="out-footer">
-      <div class="of-note">FSC 金融委外辦法 · DORA · ISO 27017</div>
-      <div class="of-ts" id="of-ts"></div>
+      <button class="btn-gen" id="btn-gen">✦ 生成 Executive Brief</button>
     </div>
   </div>
-</div>
+
+  <div class="right-panel">
+    <div class="empty-state" id="empty-state">
+      <h3>Ready to Analyze</h3>
+      <p>請填寫左側需求，AI 將依據金融委外辦法進行分析。</p>
+    </div>
+
+    <div class="loader-wrap" id="loader-wrap">
+      <div class="lbar"><div class="lfill" id="lfill"></div></div>
+      <p id="lmsg">正在呼叫 AI 引擎...</p>
+    </div>
+
+    <div class="out-wrap" id="out-wrap">
+      <div class="sec" id="sec-summary">
+        <div class="sch"><span class="sch-t">📌 需求摘要 / Summary</span></div>
+        <div class="scb">
+          <div class="headline" id="exec-headline"></div>
+          <p class="body-txt" id="exec-text"></p>
+          <div style="height:280px; margin:20px 0;"><canvas id="riskRadar"></canvas></div>
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-n" id="kpi-r">0</div><div class="kpi-l">法規風險</div></div>
+            <div class="kpi"><div class="kpi-n" id="kpi-c">0</div><div class="kpi-l">遷移難度</div></div>
+            <div class="kpi"><div class="kpi-n" id="kpi-rd">0</div><div class="kpi-l">就緒度</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec" id="sec-obj">
+        <div class="sch"><span class="sch-t">🎯 策略目標 / Objectives</span></div>
+        <div class="scb" id="obj-list"></div>
+      </div>
+
+      <div class="sec" id="sec-brief">
+        <div class="sch"><span class="sch-t">⚡ 高層摘要 / Executive Brief</span></div>
+        <div class="scb"><div class="brief-box" id="brief-text"></div></div>
+      </div>
+
+      <div class="sec" id="sec-ppt">
+        <div class="sch"><span class="sch-t">📊 簡報架構 / PPT Outline (5 Slides)</span></div>
+        <div class="scb" id="ppt-list"></div>
+      </div>
+
+      <div class="sec" id="sec-decide">
+        <div class="sch"><span class="sch-t">🎯 高層決策建議 / Decisions</span></div>
+        <div class="scb" id="dp-grid"></div>
+      </div>
+
+      <div class="out-footer">
+        <span>FSC 金融委外辦法 · DORA · ISO 27017</span>
+        <span id="of-ts"></span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script type="module">
@@ -302,121 +218,146 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const supabase = createClient('https://oxownfzafrveihxhuxay.supabase.co', 'sb_publishable_qu_7OLWgfKpbmKnzDsQOuA_SUhryH67')
 
 const $ = id => document.getElementById(id)
-let currentStyle = 'exec'
 let radarChart = null
+let currentStyle = 'exec'
 
-const STYLES = {
-  exec: { name: '高層版', desc: '摘要、決策重點與簡報架構', show: ['sec-summary','sec-obj','sec-brief','sec-ppt','sec-decide'], hide: ['sec-pm-detail'] },
-  pm: { name: 'PM 版', desc: '強調里程碑與資源', show: ['sec-summary','sec-obj','sec-pm-detail'], hide: ['sec-brief','sec-ppt','sec-decide'] },
-  arch: { name: '架構評估版', desc: '技術深度與細節', show: ['sec-summary','sec-pm-detail'], hide: ['sec-obj','sec-brief','sec-ppt','sec-decide'] }
-}
-
+/* 風格顯示切換 */
 function applyStyle(s) {
   currentStyle = s
-  const cfg = STYLES[s]
-  ;['exec','pm','arch'].forEach(x => $(`ss-${x}`).classList.toggle('on', x === s))
-  cfg.show.forEach(id => { if($(id)) $(id).style.display = 'block' })
-  cfg.hide.forEach(id => { if($(id)) $(id).style.display = 'none' })
-  $('style-hint').textContent = cfg.desc
-  $('sb-name').textContent = cfg.name
-  $('sb-desc').textContent = cfg.desc
+  const isExec = s === 'exec'
+  $('sec-brief').style.display = isExec ? 'block' : 'none'
+  $('sec-ppt').style.display = isExec ? 'block' : 'none'
+  $('sec-decide').style.display = isExec ? 'block' : 'none'
+  
+  ;['ss-exec','ss-pm','ss-arch'].forEach(id => $(id).classList.toggle('on', id === `ss-${s}`))
 }
 
+/* 生成按鈕觸發 */
 async function generate() {
   const name = $('f-name').value.trim()
   const desc = $('f-desc').value.trim()
-  if (!name || !desc) { alert('請填寫必填欄位'); return }
+  if(!name || !desc) { alert('請填寫專案名稱與描述'); return }
 
   $('empty-state').style.display = 'none'
   $('out-wrap').classList.remove('show')
   $('loader-wrap').classList.add('show')
-  $('btn-gen').disabled = true
+  $('lfill').style.width = '30%'
 
   try {
     const res = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ projectName: name, description: desc, style: currentStyle })
+      body: JSON.stringify({ 
+        projectName: name, 
+        description: desc, 
+        style: currentStyle,
+        isFinancial: true // 強制標註金融屬性
+      })
     })
-    const json = await res.json()
-    if (!res.ok) throw new Error('API 異常')
+    
+    const data = await res.json()
+    if(!res.ok) throw new Error('AI 分析失敗')
 
-    render(json.result, name)
+    render(data.result, name)
+    
     $('loader-wrap').classList.remove('show')
-    $('btn-gen').disabled = false
+    $('out-wrap').classList.add('show')
   } catch (err) {
-    $('loader-wrap').classList.remove('show')
-    $('btn-gen').disabled = false
     alert(err.message)
+    $('loader-wrap').classList.remove('show')
   }
 }
 
-function render(d, projName) {
-  $('exec-headline').textContent = projName + '｜' + (d.headline || '評估報告')
-  $('exec-text').textContent = d.execText || ''
-  
-  // KPIs
-  $('kpi-c').textContent = d.kpis?.c?.v || 50
-  $('kpi-r').textContent = d.kpis?.r?.v || 50
-  $('kpi-rd').textContent = d.kpis?.rd?.v || 50
-  
-  $('s-cost').textContent = d.bizCost || '無資料'
-  $('s-kd').textContent = d.keyDecision || '無資料'
-
-  // Radar Chart
+/* 繪製圖表 */
+function drawChart(kpis) {
   const ctx = $('riskRadar').getContext('2d')
-  if (radarChart) radarChart.destroy()
+  if(radarChart) radarChart.destroy()
   radarChart = new Chart(ctx, {
     type: 'radar',
     data: {
-      labels: ['複雜度', '合規風險', '資料敏感', '預算壓力', '時程'],
-      datasets: [{ data: [d.kpis?.c?.v, d.kpis?.r?.v, 80, 60, 70], backgroundColor: 'rgba(0,32,74,0.1)', borderColor: '#00204a' }]
+      labels: ['合規風險', '技術複雜度', '資安就緒度', '預算壓力', '時程壓力'],
+      datasets: [{
+        label: '維度分析',
+        data: [kpis.r.v, kpis.c.v, kpis.rd.v, 60, 70],
+        backgroundColor: 'rgba(200, 150, 30, 0.15)',
+        borderColor: '#c8961e',
+        pointBackgroundColor: '#00204a'
+      }]
     },
     options: { maintainAspectRatio: false }
   })
+}
 
-  // 策略目標
-  $('obj-list').innerHTML = (d.objs || []).map((o,i)=>`<div class="obj-item"><div class="obj-n">${i+1}</div><div><b>${o.t}</b><p>${o.d}</p></div></div>`).join('')
-  
-  // 簡報架構 (重要：修復高層版缺失)
-  $('ppt-list').innerHTML = (d.pptSlides || []).map(s => `
-    <div class="ppt-slide">
-      <div class="ppt-head"><span class="ppt-num">${s.num}</span><span class="ppt-title">${s.title}</span></div>
-      <div class="ppt-body">
-        ${(s.bullets || []).map(b => `<div class="ppt-bullet"><div class="ppt-dot"></div>${b}</div>`).join('')}
-      </div>
+/* 核心：渲染所有內容（包含簡報與決策） */
+function render(d, projName) {
+  // 1. 基本資訊
+  $('exec-headline').textContent = projName + '｜' + (d.headline || '策略評估報告')
+  $('exec-text').textContent = d.execText || ''
+  $('kpi-r').textContent = d.kpis?.r?.v || 0
+  $('kpi-c').textContent = d.kpis?.c?.v || 0
+  $('kpi-rd').textContent = d.kpis?.rd?.v || 0
+  drawChart(d.kpis)
+
+  // 2. 策略目標
+  $('obj-list').innerHTML = (d.objs || []).map((o,i) => `
+    <div style="margin-bottom:10px; padding:12px; background:var(--sur2); border-radius:8px;">
+      <b style="color:var(--navy)">${i+1}. ${o.t}</b>
+      <p style="font-size:12px; color:var(--mu); margin-top:4px">${o.d}</p>
     </div>
   `).join('')
 
-  // 決策建議 (重要：修復高層版缺失)
-  const dc = d.decisions || { cost: [], decide: [], min: [] }
+  // 3. 高層摘要文字
+  $('brief-text').textContent = d.brief || 'AI 未產出文字內容'
+
+  // 4. 簡報架構 (修正點：動態生成 PPT 區塊)
+  const slides = d.pptSlides || []
+  if(slides.length > 0) {
+    $('ppt-list').innerHTML = slides.map(s => `
+      <div class="ppt-slide">
+        <div class="ppt-head"><span class="ppt-num">${s.num}</span><b>${s.title}</b></div>
+        <div class="ppt-body">
+          ${(s.bullets || []).map(b => `<div class="ppt-bullet"><div class="ppt-dot"></div><span>${b}</span></div>`).join('')}
+          ${s.note ? `<div style="margin-top:8px; font-size:11px; color:var(--mu)">📝 主講備註：${s.note}</div>` : ''}
+        </div>
+      </div>
+    `).join('')
+  } else {
+    $('ppt-list').innerHTML = '<p style="padding:20px; color:var(--mu)">AI 未提供簡報架構</p>'
+  }
+
+  // 5. 決策建議 (修正點：三道防線卡片)
+  const dc = d.decisions || { cost:[], decide:[], min:[] }
   $('dp-grid').innerHTML = `
-    <div class="dp-card dp-cost"><div class="dp-ic">⚠️</div><div class="dp-title">不行動代價</div>${dc.cost.map(i=>`<div class="dp-item">${i}</div>`).join('')}</div>
-    <div class="dp-card dp-decide"><div class="dp-ic">🎯</div><div class="dp-title">需決策事項</div>${dc.decide.map(i=>`<div class="dp-item">${i}</div>`).join('')}</div>
-    <div class="dp-card dp-min"><div class="dp-ic">🚀</div><div class="dp-title">MVP 建議</div>${dc.min.map(i=>`<div class="dp-item">${i}</div>`).join('')}</div>
+    <div class="dp-card dp-cost">
+      <span class="dp-t">⚠️ 不行動代價</span>
+      ${dc.cost.map(txt => `<div class="dp-item">● ${txt}</div>`).join('')}
+    </div>
+    <div class="dp-card dp-decide">
+      <span class="dp-t">🎯 核心決策點</span>
+      ${dc.decide.map(txt => `<div class="dp-item">● ${txt}</div>`).join('')}
+    </div>
+    <div class="dp-card dp-min">
+      <span class="dp-t">🚀 最小可行路徑</span>
+      ${dc.min.map(txt => `<div class="dp-item">● ${txt}</div>`).join('')}
+    </div>
   `
 
-  $('brief-text').textContent = d.brief || ''
-  $('out-wrap').classList.add('show')
+  $('of-ts').textContent = 'Generated at: ' + new Date().toLocaleString()
   applyStyle(currentStyle)
 }
 
-// 事件
+/* 初始化 */
 $('btn-gen').onclick = generate
 $('ss-exec').onclick = () => applyStyle('exec')
 $('ss-pm').onclick = () => applyStyle('pm')
 $('ss-arch').onclick = () => applyStyle('arch')
 
-document.querySelectorAll('.tbtn').forEach(btn => {
-  btn.onclick = () => btn.classList.toggle('on')
-})
-
-async function init() {
+async function auth() {
   const { data } = await supabase.auth.getUser()
   if(data?.user) $('user-email').textContent = data.user.email
   else window.location.href = 'login.html'
 }
-init()
+auth()
 </script>
 </body>
 </html>
