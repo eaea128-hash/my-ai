@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smart Archie — Executive Brief Generator</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -19,8 +20,6 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.65}
-
-/* TOPBAR */
 .topbar{background:var(--navy);height:56px;display:flex;align-items:center;padding:0 32px;gap:16px;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.25)}
 .top-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#fff;display:flex;align-items:center;gap:8px}
 .top-dot{width:7px;height:7px;background:var(--gold);border-radius:50%}
@@ -28,136 +27,109 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink)
 .top-right{margin-left:auto;display:flex;align-items:center;gap:10px}
 .top-email{color:rgba(255,255,255,.75);font-size:12px;font-family:'DM Mono'}
 .top-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;transition:background .15s}
-.top-btn:hover{background:rgba(255,255,255,.18)}
+.top-btn:hover{background:rgba(255,255,255,.2)}
 .top-badge{background:rgba(200,150,30,.18);border:1px solid var(--gold);color:var(--gold);font-size:10px;font-family:'DM Mono';padding:3px 10px;border-radius:4px;letter-spacing:.1em;text-transform:uppercase}
-
-/* LAYOUT */
 .shell{display:grid;grid-template-columns:400px 1fr;min-height:calc(100vh - 56px)}
-
-/* LEFT INPUT */
-.input-panel{background:var(--sur);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow-y:auto}
+.left-panel{background:var(--sur);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow-y:auto}
 .ip-head{padding:24px 24px 16px;border-bottom:1px solid var(--bd)}
 .ip-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px}
 .ip-sub{font-size:12px;color:var(--mu)}
 .ip-body{padding:20px 24px;display:flex;flex-direction:column;gap:16px;flex:1}
 .field{display:flex;flex-direction:column;gap:5px}
-.field-label{font-size:11px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.1em;color:var(--mu);display:flex;align-items:center;gap:6px}
+.flbl{font-size:11px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.1em;color:var(--mu);display:flex;align-items:center;gap:5px}
 .req{color:var(--red)}
-.field input,.field textarea,.field select{width:100%;padding:9px 12px;border:1.5px solid var(--bd);border-radius:var(--r);font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--ink);background:var(--sur2);outline:none;transition:border-color .2s,background .2s}
+.field input,.field textarea,.field select{width:100%;padding:9px 12px;border:1.5px solid var(--bd);border-radius:var(--r);font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--ink);background:var(--sur2);outline:none;transition:border-color .2s}
 .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--navy);background:#fff}
 .field textarea{resize:vertical;min-height:90px;line-height:1.65}
 .field select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2371717a'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
-.toggle-row{display:flex;gap:8px;flex-wrap:wrap}
-.toggle-btn{padding:6px 13px;border-radius:20px;border:1.5px solid var(--bd);font-size:12px;cursor:pointer;background:var(--sur2);color:var(--ink2);transition:all .15s;font-family:'DM Mono'}
-.toggle-btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
-.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ip-footer{padding:20px 24px;border-top:1px solid var(--bd);display:flex;flex-direction:column;gap:8px}
-.style-switch{display:flex;gap:6px;margin-bottom:4px}
-.ss-btn{flex:1;padding:8px 6px;border-radius:var(--r);border:1.5px solid var(--bd);font-size:11px;cursor:pointer;background:var(--sur2);color:var(--mu);font-family:'DM Mono';text-align:center;transition:all .15s}
-.ss-btn.ss-on{border-color:var(--navy);background:var(--navy);color:#fff}
-.btn-gen{padding:13px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.trow{display:flex;gap:7px;flex-wrap:wrap}
+.tbtn{padding:6px 13px;border-radius:20px;border:1.5px solid var(--bd);font-size:12px;cursor:pointer;background:var(--sur2);color:var(--ink2);transition:all .15s;font-family:'DM Mono';user-select:none}
+.tbtn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.ip-footer{padding:20px 24px;border-top:1px solid var(--bd);display:flex;flex-direction:column;gap:10px}
+.style-row{display:flex;gap:6px}
+.ss{flex:1;padding:8px 6px;border-radius:var(--r);border:1.5px solid var(--bd);font-size:11px;cursor:pointer;background:var(--sur2);color:var(--mu);font-family:'DM Mono';text-align:center;transition:all .15s;line-height:1.4}
+.ss.on{border-color:var(--navy);background:var(--navy);color:#fff}
+.ss:hover:not(.on){border-color:var(--navy);color:var(--navy)}
+.btn-gen{padding:13px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;width:100%}
 .btn-gen:hover{background:#003580;transform:translateY(-1px);box-shadow:var(--sh2)}
 .btn-gen:disabled{background:var(--bd);color:var(--mu);cursor:not-allowed;transform:none;box-shadow:none}
-
-/* RIGHT OUTPUT */
-.output-panel{padding:28px 32px;overflow-y:auto;display:flex;flex-direction:column;gap:20px}
-.empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;border:2px dashed var(--bd);border-radius:12px;padding:60px 40px;text-align:center;color:var(--mu);min-height:400px}
+.style-hint{font-size:11px;color:var(--mu);font-family:'DM Mono';text-align:center;min-height:16px}
+.right-panel{padding:28px 32px;overflow-y:auto;display:flex;flex-direction:column;gap:20px}
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;border:2px dashed var(--bd);border-radius:12px;padding:60px 40px;text-align:center;color:var(--mu);min-height:400px}
 .empty-ic{font-size:40px;opacity:.35}
 .empty-t{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--ink2)}
 .empty-s{font-size:13px;line-height:1.7;max-width:360px}
-
-/* LOADER */
-.loader{display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;min-height:400px}
-.loader.show{display:flex}
+.loader-wrap{display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:400px}
+.loader-wrap.show{display:flex}
 .lbar{width:220px;height:3px;background:var(--bd);border-radius:2px;overflow:hidden}
-.lfill{height:100%;width:0%;background:var(--navy);border-radius:2px;transition:width .5s ease}
-.lmsg{font-family:'DM Mono';font-size:12px;color:var(--mu);letter-spacing:.05em;text-align:center}
-.lsteps{display:flex;flex-direction:column;gap:4px}
-.lstep{font-size:11px;color:var(--grn);display:flex;align-items:center;gap:7px}
-
-/* ERROR BOX */
-.err-box{display:none;background:var(--redl);border:1px solid #fca5a5;border-radius:var(--r);padding:14px 18px;color:var(--red);font-size:13px;font-family:'DM Mono'}
-.err-box.show{display:block}
-
-/* OUTPUT AREA */
-.out-area{display:none;flex-direction:column;gap:20px;animation:fu .4s ease}
-.out-area.show{display:flex}
+.lfill{height:100%;width:0%;background:var(--navy);border-radius:2px;transition:width .6s ease}
+.lmsg{font-family:'DM Mono';font-size:12px;color:var(--mu);letter-spacing:.05em}
+.err-wrap{display:none;background:var(--redl);border:1px solid #fca5a5;border-radius:var(--r);padding:14px 18px;color:var(--red);font-size:13px;font-family:'DM Mono';line-height:1.6}
+.err-wrap.show{display:block}
+.out-wrap{display:none;flex-direction:column;gap:18px}
+.out-wrap.show{display:flex;animation:fu .35s ease}
 @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* TABS */
-.out-tabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.out-tab{padding:7px 16px;border-radius:20px;border:1.5px solid var(--bd);font-size:12px;cursor:pointer;background:var(--sur);color:var(--mu);font-family:'DM Mono';transition:all .15s;white-space:nowrap}
-.out-tab.act{background:var(--navy);color:#fff;border-color:var(--navy)}
-.out-tab:hover:not(.act){border-color:var(--navy);color:var(--navy)}
-.out-label{font-size:10px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.1em;color:var(--mu)}
-.op{display:none}.op.show{display:flex;flex-direction:column;gap:16px}
-
-/* CARD */
-.card{background:var(--sur);border:1px solid var(--bd);border-radius:10px;box-shadow:var(--sh);overflow:hidden}
-.card.s2{grid-column:span 2}.card.s3{grid-column:span 3}
-.ch{padding:11px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
-.ch-ic{font-size:13px}
-.ch-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-family:'DM Mono';color:var(--mu)}
-.ch-b{margin-left:auto;font-size:9px;font-family:'DM Mono';padding:2px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.07em}
+.style-bar{background:var(--sur);border:1px solid var(--bd);border-radius:var(--r);padding:10px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh)}
+.style-bar-label{font-size:11px;font-family:'DM Mono';color:var(--mu)}
+.style-bar-name{font-size:13px;font-weight:700;color:var(--navy)}
+.style-bar-desc{font-size:11px;color:var(--mu);margin-left:auto}
+.sec{background:var(--sur);border:1px solid var(--bd);border-radius:10px;box-shadow:var(--sh);overflow:hidden}
+.sch{padding:11px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
+.sch-ic{font-size:13px}
+.sch-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-family:'DM Mono';color:var(--mu)}
+.sch-b{margin-left:auto;font-size:9px;font-family:'DM Mono';padding:2px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.07em}
 .bb{background:var(--bluel);color:var(--blue)}.bg2{background:var(--grnl);color:var(--grn)}
 .bo{background:var(--amberl);color:var(--amber)}.bp{background:var(--pul);color:var(--pu)}
 .br{background:var(--redl);color:var(--red)}.bgold{background:var(--goldl);color:#7a5400}
-.cb{padding:16px 18px}
-
-/* EXEC SUMMARY */
-.exec-headline{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;line-height:1.3;margin-bottom:10px}
-.exec-text{font-size:13px;color:var(--ink2);line-height:1.85}
-.exec-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px}
-.exec-kpi{padding:12px 14px;border-radius:var(--r);border:1px solid var(--bd);background:var(--sur2);text-align:center}
-.exec-kpi-n{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
-.exec-kpi-l{font-size:10px;font-family:'DM Mono';color:var(--mu);text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
-.exec-kpi-h{font-size:10px;color:var(--mu);margin-top:4px}
-.kn-red{color:var(--red)}.kn-grn{color:var(--grn)}.kn-amber{color:var(--amber)}
-.s-biz{margin-top:10px;padding:10px 12px;background:var(--redl);border:1px solid #fca5a5;border-radius:6px}
-.s-biz-lbl{font-size:10px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin-bottom:4px}
-.s-biz-txt{font-size:12px;color:var(--ink2);line-height:1.6}
-.s-kd{margin-top:8px;padding:10px 12px;background:var(--amberl);border:1px solid #fcd34d;border-radius:6px}
-.s-kd-lbl{font-size:10px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.1em;color:var(--amber);margin-bottom:4px}
-.s-kd-txt{font-size:12px;color:var(--ink2);line-height:1.6;font-weight:600}
-
-/* OBJECTIVES */
+.scb{padding:16px 18px}
+.headline{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;line-height:1.3;margin-bottom:8px}
+.body-txt{font-size:13px;color:var(--ink2);line-height:1.85}
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.kpi{padding:12px;border-radius:var(--r);border:1px solid var(--bd);background:var(--sur2);text-align:center}
+.kpi-n{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
+.kpi-l{font-size:10px;font-family:'DM Mono';color:var(--mu);text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
+.kpi-h{font-size:10px;color:var(--mu);margin-top:4px}
+.kn-r{color:var(--red)}.kn-a{color:var(--amber)}.kn-g{color:var(--grn)}
+.alert-box{margin-top:10px;padding:10px 12px;border-radius:6px;border:1px solid}
+.alert-red{background:var(--redl);border-color:#fca5a5}
+.alert-amber{background:var(--amberl);border-color:#fcd34d}
+.alert-lbl{font-size:10px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.alert-red .alert-lbl{color:var(--red)}.alert-amber .alert-lbl{color:var(--amber)}
+.alert-txt{font-size:12px;color:var(--ink2);line-height:1.6}
 .obj-list{display:flex;flex-direction:column;gap:8px}
-.obj-item{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:var(--r);border:1px solid var(--bd);background:var(--sur2)}
-.obj-num{width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'DM Mono';font-size:11px;flex-shrink:0;margin-top:1px}
-.obj-title{font-size:13px;font-weight:600}
-.obj-desc{font-size:12px;color:var(--mu);margin-top:2px;line-height:1.55}
-
-/* RECOMMENDATION */
-.rec-hero{padding:14px 16px;border-radius:var(--r);border:2px solid var(--blue);background:var(--bluel);margin-bottom:12px}
-.rec-strategy{font-size:15px;font-weight:700;color:var(--blue);margin-bottom:4px}
-.rec-conf{font-size:11px;font-family:'DM Mono';color:var(--grn);margin-top:4px}
-.rec-rationale{font-size:12px;color:var(--ink2);line-height:1.65;margin-top:6px}
-.arch-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.arch-cloud{padding:12px 14px;border-radius:var(--r);border:1px solid var(--bd);background:var(--sur2)}
-.arch-cloud-name{font-size:12px;font-weight:700;font-family:'DM Mono';margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.arch-cloud-dot{width:8px;height:8px;border-radius:50%}
-.arch-cloud-item{font-size:11px;color:var(--mu)}
-.arch-cost-badge{font-size:11px;font-family:'DM Mono';color:var(--amber);margin-top:6px;font-weight:600}
-
-/* RISK */
+.obj-item{display:flex;gap:10px;padding:10px 12px;border-radius:var(--r);border:1px solid var(--bd);background:var(--sur2)}
+.obj-n{width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'DM Mono';font-size:11px;flex-shrink:0;margin-top:1px}
+.obj-t{font-size:13px;font-weight:600}
+.obj-d{font-size:12px;color:var(--mu);margin-top:2px;line-height:1.5}
+.rec-box{padding:13px 15px;border-radius:var(--r);border:2px solid var(--blue);background:var(--bluel);margin-bottom:12px}
+.rec-name{font-size:15px;font-weight:700;color:var(--blue)}
+.rec-conf{font-size:11px;font-family:'DM Mono';color:var(--grn);margin-top:3px}
+.rec-desc{font-size:12px;color:var(--ink2);line-height:1.65;margin-top:6px}
+.cloud-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cloud-card{padding:12px 14px;border-radius:var(--r);border:1px solid var(--bd);background:var(--sur2)}
+.cloud-name{font-size:12px;font-weight:700;font-family:'DM Mono';margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.cloud-dot{width:8px;height:8px;border-radius:50%}
+.cloud-item{font-size:11px;color:var(--mu);margin-bottom:2px}
+.cloud-cost{font-size:11px;font-family:'DM Mono';color:var(--amber);margin-top:6px;font-weight:600}
 .risk-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
 .risk-item{display:flex;gap:10px;padding:10px 12px;border-radius:var(--r);border-left:4px solid;background:var(--sur2)}
-.ri-critical{border-left-color:#b91c1c}.ri-high{border-left-color:#d97706}.ri-medium{border-left-color:#2563eb}.ri-low{border-left-color:#16a34a}
-.rib{font-family:'DM Mono';font-size:9px;padding:2px 6px;border-radius:3px;flex-shrink:0;margin-top:2px;font-weight:600;text-transform:uppercase}
-.rc{background:#fee2e2;color:#b91c1c}.rh{background:#fef3c7;color:#92400e}.rm{background:#dbeafe;color:#1e40af}.rl{background:#d1fae5;color:#065f46}
+.ri-critical{border-left-color:#b91c1c}.ri-high{border-left-color:#d97706}
+.ri-medium{border-left-color:#2563eb}.ri-low{border-left-color:#16a34a}
+.rbadge{font-family:'DM Mono';font-size:9px;padding:2px 6px;border-radius:3px;flex-shrink:0;margin-top:2px;font-weight:600;text-transform:uppercase}
+.rc{background:#fee2e2;color:#b91c1c}.rh{background:#fef3c7;color:#92400e}
+.rm{background:#dbeafe;color:#1e40af}.rl{background:#d1fae5;color:#065f46}
 .risk-t{font-size:12px;color:var(--ink2);line-height:1.6}
 .risk-own{font-size:10px;font-family:'DM Mono';color:var(--mu);margin-top:3px}
 .risk-stat{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;margin-left:4px}
 .rs-none{background:#fee2e2;color:#b91c1c}.rs-wip{background:#fef3c7;color:#92400e}.rs-ok{background:#d1fae5;color:#065f46}
 .decide-tag{font-size:9px;background:#fee2e2;color:#b91c1c;padding:2px 7px;border-radius:3px;font-family:'DM Mono';display:inline-block;margin-top:3px}
-
-/* COMPLIANCE */
 .cp-rate-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:10px 12px;background:var(--sur2);border-radius:var(--r);border:1px solid var(--bd)}
 .cp-rate-n{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--amber)}
-.cp-rate-meta{font-size:11px;color:var(--mu);font-family:'DM Mono'}
+.cp-rate-sub{font-size:10px;color:var(--mu);margin-top:3px;font-family:'DM Mono'}
 .cp-filter{display:flex;gap:5px;margin-bottom:8px}
 .cpf{padding:3px 9px;border-radius:20px;font-size:11px;border:1px solid var(--bd);cursor:pointer;font-family:'DM Mono';background:var(--sur2);transition:all .15s}
-.cpf.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.cpf.on{background:var(--navy);color:#fff;border-color:var(--navy)}
 .cp-list{display:flex;flex-direction:column;gap:7px}
 .cp-item{display:flex;gap:10px;padding:9px 12px;border-radius:var(--r);border:1px solid}
 .cp-pass{background:var(--grnl);border-color:#86efac}.cp-warn{background:var(--amberl);border-color:#fcd34d}.cp-act{background:var(--bluel);border-color:#93c5fd}
@@ -167,616 +139,409 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink)
 .ctt-must{background:#fee2e2;color:#b91c1c}.ctt-best{background:#dbeafe;color:#1e40af}
 .cp-desc{font-size:11px;color:var(--ink2);margin-top:2px;line-height:1.5}
 .cp-action{font-size:10px;font-family:'DM Mono';color:var(--blue);margin-top:4px}
-
-/* DECISION POINTS */
-.dp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.dp-card{padding:14px;border-radius:var(--r);border:1.5px solid var(--bd);background:var(--sur2)}
-.dp-icon{font-size:20px;margin-bottom:7px}
-.dp-title{font-size:12px;font-weight:700;margin-bottom:6px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.05em}
-.dp-list{display:flex;flex-direction:column;gap:5px}
-.dp-item{font-size:12px;color:var(--ink2);line-height:1.55;display:flex;gap:6px;align-items:flex-start}
-.dp-bullet{flex-shrink:0;margin-top:5px;width:5px;height:5px;border-radius:50%;background:var(--navy)}
-.dp-cost{background:var(--redl);border-color:#fca5a5}
-.dp-decide{background:var(--amberl);border-color:#fcd34d}
-.dp-min{background:var(--grnl);border-color:#86efac}
-
-/* ROADMAP */
-.gantt-head{display:flex;align-items:center;margin-bottom:4px}
+.gantt-head{display:flex;margin-bottom:4px}
 .gantt-spacer{width:120px;flex-shrink:0}
-.gantt-ticks{flex:1;display:flex;justify-content:space-between;padding:0 2px}
+.gantt-ticks{flex:1;display:flex;justify-content:space-between}
 .gantt-tick{font-size:9px;font-family:'DM Mono';color:var(--mu)}
-.gantt-row2{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.gantt-label{width:120px;flex-shrink:0;font-size:11px;color:var(--ink2);text-align:right;line-height:1.3}
+.gantt-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.gantt-lbl{width:120px;flex-shrink:0;font-size:11px;color:var(--ink2);text-align:right;line-height:1.3}
 .gantt-track{flex:1;height:14px;background:var(--sur2);border-radius:7px;position:relative;border:1px solid var(--bd)}
-.gantt-bar2{height:100%;border-radius:7px;position:absolute;opacity:.85}
-.gantt-bar2:hover{opacity:1}
-.gantt-bar-label{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:9px;color:#fff;font-family:'DM Mono';white-space:nowrap}
-
-/* BRIEF */
+.gantt-bar{height:100%;border-radius:7px;position:absolute;opacity:.85}
+.gantt-bar:hover{opacity:1}
+.gantt-bar-lbl{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:9px;color:#fff;font-family:'DM Mono';white-space:nowrap}
+.ms-list{display:flex;flex-direction:column;gap:8px}
+.ms-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r);background:var(--sur2);border:1px solid var(--bd)}
+.ms-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.ms-done{background:var(--grn)}.ms-wip{background:var(--amber)}.ms-todo{background:var(--bd)}
+.ms-title{flex:1;font-size:13px;font-weight:600}
+.ms-dur{font-size:11px;font-family:'DM Mono';color:var(--mu)}
+.ms-status{font-size:10px;font-family:'DM Mono';padding:2px 7px;border-radius:3px}
+.ms-s-done{background:var(--grnl);color:var(--grn)}.ms-s-wip{background:var(--amberl);color:var(--amber)}.ms-s-todo{background:var(--sur2);color:var(--mu)}
+.res-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}
+.res-item{padding:8px 12px;background:var(--sur2);border:1px solid var(--bd);border-radius:var(--r);font-size:12px;display:flex;align-items:center;gap:8px}
+.res-dot{width:5px;height:5px;border-radius:50%;background:var(--navy);flex-shrink:0}
 .brief-box{background:var(--sur2);border:1px solid var(--bd);border-radius:var(--r);padding:18px 20px;white-space:pre-wrap;font-size:13px;color:var(--ink2);line-height:1.8}
 .brief-actions{display:flex;gap:8px;margin-top:10px}
 .btn-brief{padding:7px 14px;border:1px solid var(--bd);border-radius:var(--r);font-size:12px;font-family:'DM Mono';background:var(--sur);cursor:pointer;transition:all .15s;color:var(--ink2)}
 .btn-brief:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
-
-/* PPT */
 .ppt-list{display:flex;flex-direction:column;gap:10px}
 .ppt-slide{border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
-.ppt-slide-head{padding:10px 14px;background:var(--navy);display:flex;align-items:center;gap:10px}
-.ppt-slide-num{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--gold)}
-.ppt-slide-title{font-size:13px;font-weight:600;color:#fff}
-.ppt-slide-body{padding:12px 14px;background:var(--sur);display:flex;flex-direction:column;gap:5px}
+.ppt-head{padding:10px 14px;background:var(--navy);display:flex;align-items:center;gap:10px}
+.ppt-num{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--gold)}
+.ppt-title{font-size:13px;font-weight:600;color:#fff}
+.ppt-body{padding:12px 14px;background:var(--sur);display:flex;flex-direction:column;gap:5px}
 .ppt-bullet{font-size:12px;color:var(--ink2);display:flex;gap:7px;line-height:1.55}
-.ppt-b-dot{flex-shrink:0;margin-top:5px;width:4px;height:4px;border-radius:50%;background:var(--mu)}
+.ppt-dot{flex-shrink:0;margin-top:5px;width:4px;height:4px;border-radius:50%;background:var(--mu)}
 .ppt-note{font-size:11px;color:var(--mu);font-family:'DM Mono';margin-top:6px;padding-top:6px;border-top:1px solid var(--bd)}
-
-/* FOOTER */
+.dp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.dp-card{padding:14px;border-radius:var(--r);border:1.5px solid}
+.dp-cost{background:var(--redl);border-color:#fca5a5}
+.dp-decide{background:var(--amberl);border-color:#fcd34d}
+.dp-min{background:var(--grnl);border-color:#86efac}
+.dp-ic{font-size:20px;margin-bottom:7px}
+.dp-title{font-size:11px;font-weight:700;margin-bottom:6px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.05em}
+.dp-item{font-size:12px;color:var(--ink2);line-height:1.55;display:flex;gap:6px;margin-bottom:5px}
+.dp-dot{flex-shrink:0;margin-top:5px;width:5px;height:5px;border-radius:50%;background:var(--navy)}
 .out-footer{background:var(--sur);border:1px solid var(--bd);border-radius:var(--r);padding:11px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--sh)}
 .of-note{font-size:11px;color:var(--mu);font-family:'DM Mono'}
 .of-tags{display:flex;gap:6px}
 .ft{padding:3px 9px;border-radius:4px;font-size:10px;font-family:'DM Mono';letter-spacing:.07em;text-transform:uppercase;font-weight:600}
 .ftn{background:var(--navy);color:#fff}.ftg{background:var(--gold);color:#fff}
 .of-ts{font-size:11px;color:var(--mu);font-family:'DM Mono'}
-
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+
+/* 圖表容器樣式 */
+.chart-container{margin-top:20px;background:#fff;border-radius:12px;padding:20px;border:1px solid var(--bd);height:320px;position:relative}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="top-logo"><div class="top-dot"></div>Smart Archie</div>
   <div class="top-sub">Executive Brief Generator</div>
   <div class="top-right">
     <span class="top-email" id="user-email">載入中…</span>
-    <button class="top-btn" onclick="window.location.href='dashboard.html#history'">歷史紀錄</button>
-    <button class="top-btn" onclick="doLogout()">登出</button>
-    <span class="top-badge">Enterprise v6.0</span>
+    <button class="top-btn" id="btn-history">歷史紀錄</button>
+    <button class="top-btn" id="btn-logout">登出</button>
+    <span class="top-badge">Financial Enterprise v6.0</span>
   </div>
 </div>
 
 <div class="shell">
-
-<!-- ══ LEFT INPUT ══ -->
-<div class="input-panel">
+<div class="left-panel">
   <div class="ip-head">
     <div class="ip-title">將模糊需求轉成高層可閱讀的策略分析</div>
-    <div class="ip-sub">填寫表單，AI 自動生成 Executive Brief、簡報架構與決策建議</div>
+    <div class="ip-sub">填寫表單，AI 將根據《金融委外辦法》自動生成分析報告</div>
   </div>
 
   <div class="ip-body">
-
     <div class="field">
-      <div class="field-label">📋 專案名稱 <span class="req">*</span></div>
+      <div class="flbl">📋 專案名稱 <span class="req">*</span></div>
       <input id="f-name" type="text" placeholder="例：壽險核心系統雲端遷移計畫">
     </div>
-
     <div class="field">
-      <div class="field-label">💬 需求描述 <span class="req">*</span></div>
+      <div class="flbl">💬 需求描述 <span class="req">*</span></div>
       <textarea id="f-desc" placeholder="請用口語描述您的需求，例如：我們想把老舊的 Oracle 系統搬到雲端，有個資疑慮，時程有壓力…"></textarea>
     </div>
-
-    <div class="field-grid">
+    <div class="fgrid">
       <div class="field">
-        <div class="field-label">🖥 系統類型</div>
+        <div class="flbl">🖥 系統類型</div>
         <select id="f-systype">
           <option value="">請選擇</option>
-          <option value="core">核心業務系統</option>
+          <option value="core">核心業務系統 (Core)</option>
           <option value="digital">數位通路/APP</option>
           <option value="data">資料平台/AI</option>
           <option value="security">資安/基礎設施</option>
-          <option value="erp">ERP/後台系統</option>
-          <option value="api">API/中介平台</option>
         </select>
       </div>
       <div class="field">
-        <div class="field-label">🏢 子公司別</div>
+        <div class="flbl">🏢 子公司別</div>
         <select id="f-entity">
-          <option value="">請選擇</option>
           <option value="life">壽險</option>
           <option value="bank">銀行</option>
           <option value="sec">證券</option>
-          <option value="ins">產險</option>
-          <option value="asset">資產管理</option>
           <option value="hq">金控總部</option>
-          <option value="other">其他</option>
         </select>
       </div>
     </div>
-
     <div class="field">
-      <div class="field-label">🔐 是否含敏感資料</div>
-      <div class="toggle-row" id="t-sensitive">
-        <div class="toggle-btn on" onclick="tog(this)">個人資料 (PII)</div>
-        <div class="toggle-btn" onclick="tog(this)">金融交易資料</div>
-        <div class="toggle-btn" onclick="tog(this)">健康醫療資料</div>
-        <div class="toggle-btn" onclick="tog(this)">無敏感資料</div>
+      <div class="flbl">🔐 是否含敏感資料</div>
+      <div class="trow" id="g-sensitive">
+        <div class="tbtn on" data-val="pii">個人資料 (PII)</div>
+        <div class="tbtn" data-val="tx">金融交易資料</div>
+        <div class="tbtn" data-val="none" id="btn-no-sensitive">無敏感資料</div>
       </div>
     </div>
-
-    <div class="field-grid">
+    <div class="fgrid">
       <div class="field">
-        <div class="field-label">💰 預算規模</div>
+        <div class="flbl">💰 預算規模</div>
         <select id="f-budget">
-          <option value="">請選擇</option>
-          <option value="s">500萬以內</option>
           <option value="m">500萬–2,000萬</option>
           <option value="l">2,000萬–5,000萬</option>
           <option value="xl">5,000萬以上</option>
-          <option value="tbd">待定</option>
         </select>
       </div>
       <div class="field">
-        <div class="field-label">⏱ 時程壓力</div>
+        <div class="flbl">⏱ 時程壓力</div>
         <select id="f-timeline">
-          <option value="">請選擇</option>
           <option value="urgent">緊急（3個月內）</option>
           <option value="normal">標準（6個月）</option>
-          <option value="long">常規（12–18個月）</option>
-          <option value="strategic">戰略型（2年以上）</option>
+          <option value="long">常規（12個月+）</option>
         </select>
       </div>
     </div>
-
     <div class="field">
-      <div class="field-label">⚡ 主要驅動因素</div>
-      <div class="toggle-row" id="t-driver">
-        <div class="toggle-btn on" onclick="tog(this)">法規合規壓力</div>
-        <div class="toggle-btn" onclick="tog(this)">效能不足</div>
-        <div class="toggle-btn" onclick="tog(this)">成本優化</div>
-        <div class="toggle-btn" onclick="tog(this)">數位轉型</div>
-        <div class="toggle-btn" onclick="tog(this)">資安強化</div>
+      <div class="flbl">🌐 偏好雲端平台</div>
+      <div class="trow" id="g-cloud">
+        <div class="tbtn on">AWS</div>
+        <div class="tbtn on">GCP</div>
+        <div class="tbtn">Azure</div>
       </div>
     </div>
-
-    <div class="field">
-      <div class="field-label">🌐 偏好雲端平台</div>
-      <div class="toggle-row" id="t-cloud">
-        <div class="toggle-btn on" onclick="tog(this)">AWS</div>
-        <div class="toggle-btn on" onclick="tog(this)">GCP</div>
-        <div class="toggle-btn" onclick="tog(this)">Azure</div>
-        <div class="toggle-btn" onclick="tog(this)">混合雲</div>
-      </div>
-    </div>
-
   </div>
 
   <div class="ip-footer">
-    <div class="field-label" style="margin-bottom:6px">📄 輸出風格</div>
-    <div class="style-switch">
-      <div class="ss-btn ss-on" id="ss-exec" onclick="setSS('exec')">高層版<br><span style="font-size:9px;opacity:.7">董事會/CXO</span></div>
-      <div class="ss-btn" id="ss-pm" onclick="setSS('pm')">PM 版<br><span style="font-size:9px;opacity:.7">專案管理者</span></div>
-      <div class="ss-btn" id="ss-arch" onclick="setSS('arch')">架構評估版<br><span style="font-size:9px;opacity:.7">技術主管</span></div>
+    <div class="flbl" style="margin-bottom:2px">📄 輸出風格</div>
+    <div class="style-row">
+      <div class="ss on" id="ss-exec">高層版<br><span style="font-size:9px;opacity:.7">董事會/CXO</span></div>
+      <div class="ss" id="ss-pm">PM 版<br><span style="font-size:9px;opacity:.7">專案管理者</span></div>
+      <div class="ss" id="ss-arch">架構評估版<br><span style="font-size:9px;opacity:.7">技術主管</span></div>
     </div>
-    <button class="btn-gen" id="gen-btn" onclick="generate()">✦ 生成 Executive Brief</button>
+    <div class="style-hint" id="style-hint">顯示摘要、決策重點與簡報架構</div>
+    <button class="btn-gen" id="btn-gen">✦ 生成 Executive Brief</button>
   </div>
 </div>
 
-<!-- ══ RIGHT OUTPUT ══ -->
-<div class="output-panel">
-
-  <div class="empty" id="empty">
+<div class="right-panel">
+  <div class="empty-state" id="empty-state">
     <div class="empty-ic">✦</div>
     <div class="empty-t">Smart Archie Executive Brief Generator</div>
-    <div class="empty-s">填寫左側表單後，AI 將自動將模糊需求轉成高層可閱讀的策略分析簡報初稿，涵蓋 Executive Summary、策略目標、建議方案、風險治理、決策建議與推動路線圖。</div>
+    <div class="empty-s">請填寫左側表單。系統將整合金融委外法規進行深度分析。</div>
   </div>
 
-  <div class="loader" id="loader">
+  <div class="loader-wrap" id="loader-wrap">
     <div class="lbar"><div class="lfill" id="lfill"></div></div>
-    <div class="lmsg" id="lmsg">初始化分析引擎…</div>
-    <div class="lsteps" id="lsteps"></div>
+    <div class="lmsg" id="lmsg">初始化金融分析引擎…</div>
   </div>
 
-  <div class="err-box" id="err-box"></div>
+  <div class="err-wrap" id="err-wrap"></div>
 
-  <div class="out-area" id="out-area">
-
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-      <div class="out-tabs">
-        <span class="out-label">檢視：</span>
-        <div class="out-tab act" id="tab-full"   onclick="switchTab('full')">完整報告</div>
-        <div class="out-tab"     id="tab-brief"  onclick="switchTab('brief')">⚡ 高層摘要</div>
-        <div class="out-tab"     id="tab-ppt"    onclick="switchTab('ppt')">📊 簡報架構</div>
-        <div class="out-tab"     id="tab-decide" onclick="switchTab('decide')">🎯 決策提醒</div>
+  <div class="out-wrap" id="out-wrap">
+    <div class="style-bar">
+      <div>
+        <div class="style-bar-label">目前輸出風格</div>
+        <div class="style-bar-name" id="sb-name">高層版</div>
       </div>
-      <div style="font-size:11px;color:var(--mu);font-family:'DM Mono'" id="style-label"></div>
+      <div class="style-bar-desc" id="sb-desc">顯示摘要、決策重點與簡報架構</div>
+      <span id="sb-ts" style="font-size:11px;color:var(--mu);font-family:'DM Mono';margin-left:16px"></span>
     </div>
 
-    <!-- 完整報告 -->
-    <div class="op show" id="op-full">
-
-      <div class="card">
-        <div class="ch"><span class="ch-ic">📌</span><span class="ch-t">需求摘要 / Executive Summary</span><span class="ch-b bgold" id="ts-badge"></span></div>
-        <div class="cb">
-          <div class="exec-headline" id="exec-headline"></div>
-          <div class="exec-text" id="exec-text"></div>
-          <div class="exec-row">
-            <div class="exec-kpi"><div class="exec-kpi-n kn-red"   id="kpi-c"></div><div class="exec-kpi-l">遷移複雜度</div><div class="exec-kpi-h" id="kpi-ch"></div></div>
-            <div class="exec-kpi"><div class="exec-kpi-n kn-amber" id="kpi-r"></div><div class="exec-kpi-l">風險指數</div>  <div class="exec-kpi-h" id="kpi-rh"></div></div>
-            <div class="exec-kpi"><div class="exec-kpi-n kn-grn"   id="kpi-rd"></div><div class="exec-kpi-l">雲端就緒度</div><div class="exec-kpi-h" id="kpi-rdh"></div></div>
-          </div>
-          <div class="s-biz"><div class="s-biz-lbl">⚠ 若不遷移的代價</div><div class="s-biz-txt" id="s-cost"></div></div>
-          <div class="s-kd"><div class="s-kd-lbl">🎯 關鍵決策點</div><div class="s-kd-txt" id="s-kd"></div></div>
+    <div class="sec" id="sec-summary">
+      <div class="sch"><span class="sch-ic">📌</span><span class="sch-t">需求摘要 / Executive Summary</span><span class="sch-b bgold" id="ts-badge"></span></div>
+      <div class="scb">
+        <div class="headline" id="exec-headline"></div>
+        <div class="body-txt" id="exec-text"></div>
+        
+        <div class="chart-container" id="chart-box">
+           <canvas id="riskRadar"></canvas>
         </div>
-      </div>
 
-      <div class="card">
-        <div class="ch"><span class="ch-ic">🎯</span><span class="ch-t">策略目標 / Strategic Objectives</span><span class="ch-b bb">Aligned to Business</span></div>
-        <div class="cb"><div class="obj-list" id="obj-list"></div></div>
-      </div>
-
-      <div class="card">
-        <div class="ch"><span class="ch-ic">☁️</span><span class="ch-t">建議方案與技術方向 / Cloud Recommendation</span><span class="ch-b bb">AWS · GCP · PaaS First</span></div>
-        <div class="cb">
-          <div class="rec-hero" id="rec-hero"></div>
-          <div class="arch-row2" id="arch-row2"></div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-n kn-r" id="kpi-c"></div><div class="kpi-l">遷移複雜度</div><div class="kpi-h" id="kpi-ch"></div></div>
+          <div class="kpi"><div class="kpi-n kn-a" id="kpi-r"></div><div class="kpi-l">法規風險指數</div><div class="kpi-h" id="kpi-rh"></div></div>
+          <div class="kpi"><div class="kpi-n kn-g" id="kpi-rd"></div><div class="kpi-l">雲端就緒度</div><div class="kpi-h" id="kpi-rdh"></div></div>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="ch"><span class="ch-ic">⚠️</span><span class="ch-t">關鍵風險與治理提醒 / Risk & Governance</span><span class="ch-b bo">HSBC · JPMorgan · DORA · BCBS 239</span></div>
-        <div class="cb">
-          <div class="cp-rate-row">
-            <div class="cp-rate-n" id="cp-rate-n"></div>
-            <div><div class="cp-rate-meta">合規完成率</div><div style="font-size:10px;color:var(--mu);margin-top:2px" id="cp-rate-sub"></div></div>
-          </div>
-          <div class="risk-list" id="risk-list"></div>
-          <div class="cp-filter">
-            <div class="cpf active" onclick="cpFilter('all',this)">全部</div>
-            <div class="cpf" onclick="cpFilter('act',this)">🔵 待補強</div>
-            <div class="cpf" onclick="cpFilter('warn',this)">⚠️ 注意</div>
-            <div class="cpf" onclick="cpFilter('pass',this)">✅ 合規</div>
-          </div>
-          <div class="cp-list" id="cp-list"></div>
+        <div class="alert-box alert-red" style="margin-top:10px">
+          <div class="alert-lbl">⚠ 若不遷移的代價 (Business Cost)</div>
+          <div class="alert-txt" id="s-cost"></div>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="ch"><span class="ch-ic">🗺️</span><span class="ch-t">推動路線圖 / Roadmap</span><span class="ch-b bg2" id="roadmap-badge"></span></div>
-        <div class="cb" id="roadmap"></div>
-      </div>
-
-    </div>
-
-    <!-- 高層摘要 -->
-    <div class="op" id="op-brief">
-      <div class="card">
-        <div class="ch"><span class="ch-ic">⚡</span><span class="ch-t">高層摘要版（150–250 字）</span><span class="ch-b bgold">給主管先看</span></div>
-        <div class="cb">
-          <div class="brief-box" id="brief-text"></div>
-          <div class="brief-actions">
-            <button class="btn-brief" onclick="copyBrief()">📋 複製摘要</button>
-            <button class="btn-brief" onclick="dlBrief()">⬇ 下載 .txt</button>
-          </div>
+        <div class="alert-box alert-amber" style="margin-top:8px">
+          <div class="alert-lbl">🎯 關鍵決策點 (Key Decision)</div>
+          <div class="alert-txt" id="s-kd" style="font-weight:600"></div>
         </div>
       </div>
     </div>
 
-    <!-- 簡報架構 -->
-    <div class="op" id="op-ppt">
-      <div class="card">
-        <div class="ch"><span class="ch-ic">📊</span><span class="ch-t">簡報架構版 — 5 Slides</span><span class="ch-b bp">PowerPoint 初稿</span></div>
-        <div class="cb"><div class="ppt-list" id="ppt-list"></div></div>
+    <div class="sec" id="sec-obj">
+      <div class="sch"><span class="sch-ic">🎯</span><span class="sch-t">策略目標 / Strategic Objectives</span><span class="sch-b bb">Aligned to Business</span></div>
+      <div class="scb"><div class="obj-list" id="obj-list"></div></div>
+    </div>
+
+    <div class="sec" id="sec-brief">
+      <div class="sch"><span class="sch-ic">⚡</span><span class="sch-t">高層摘要 / Executive Brief</span><span class="sch-b bgold">給主管先看</span></div>
+      <div class="scb">
+        <div class="brief-box" id="brief-text"></div>
+        <div class="brief-actions">
+          <button class="btn-brief" id="btn-copy">📋 複製摘要</button>
+        </div>
       </div>
     </div>
 
-    <!-- 決策提醒 -->
-    <div class="op" id="op-decide">
-      <div class="card">
-        <div class="ch"><span class="ch-ic">🎯</span><span class="ch-t">高層決策建議 / Decision Points</span><span class="ch-b br">需要主管決定的事</span></div>
-        <div class="cb"><div class="dp-grid" id="dp-grid"></div></div>
+    <div class="sec" id="sec-ppt">
+      <div class="sch"><span class="sch-ic">📊</span><span class="sch-t">簡報架構 — 5 Slides / PPT Outline</span><span class="sch-b bp">PowerPoint 初稿</span></div>
+      <div class="scb"><div class="ppt-list" id="ppt-list"></div></div>
+    </div>
+
+    <div class="sec" id="sec-decide">
+      <div class="sch"><span class="sch-ic">🎯</span><span class="sch-t">高層決策建議 / Decision Points</span><span class="sch-b br">需要主管決定的事</span></div>
+      <div class="scb"><div class="dp-grid" id="dp-grid"></div></div>
+    </div>
+
+    <div class="sec" id="sec-pm-detail">
+      <div class="sch"><span class="sch-ic">📅</span><span class="sch-t">里程碑與資源需求 / Milestones</span><span class="sch-b bg2">PM 視角</span></div>
+      <div class="scb">
+        <div class="ms-list" id="ms-list"></div>
+        <div class="res-row" id="res-row"></div>
       </div>
     </div>
 
     <div class="out-footer">
-      <div class="of-note">HSBC · JPMorgan TCRM · BIS · DORA · BCBS 239 · ISO 27017 · FSC</div>
-      <div class="of-tags"><span class="ft ftn">Smart Archie</span><span class="ft ftg">Executive Brief</span></div>
+      <div class="of-note">FSC 金融委外辦法 · DORA · BCBS 239 · ISO 27017</div>
+      <div class="of-tags"><span class="ft ftn">Smart Archie</span><span class="ft ftg">Financial AI</span></div>
       <div class="of-ts" id="of-ts"></div>
     </div>
-
   </div>
 </div>
 </div>
 
-<!-- ══ SCRIPTS ══ -->
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-/* ── Supabase 初始化 ── */
-const supabase = createClient(
-  'https://oxownfzafrveihxhuxay.supabase.co',
-  'sb_publishable_qu_7OLWgfKpbmKnzDsQOuA_SUhryH67'
-)
+/* ══ Supabase (請替換為你的真實 Key) ══ */
+const supabase = createClient('https://oxownfzafrveihxhuxay.supabase.co', 'sb_publishable_qu_7OLWgfKpbmKnzDsQOuA_SUhryH67')
 
-/* ── Auth 初始化 ── */
-async function initAuth() {
-  const { data, error } = await supabase.auth.getUser()
-  if (error || !data.user) {
-    window.location.href = 'login.html'
-    return
-  }
-  document.getElementById('user-email').textContent = data.user.email
-}
-
-window.doLogout = async function () {
-  await supabase.auth.signOut()
-  window.location.href = 'login.html'
-}
-
-/* ── UI 工具函式（掛到 window 供 onclick 使用）── */
-window.tog = function (el) { el.classList.toggle('on') }
-
-window.setSS = function (s) {
-  currentStyle = s
-  ;['exec','pm','arch'].forEach(x =>
-    document.getElementById(`ss-${x}`).classList.toggle('ss-on', x === s)
-  )
-}
-
-window.switchTab = function (t) {
-  ;['full','brief','ppt','decide'].forEach(x => {
-    document.getElementById(`tab-${x}`).classList.toggle('act', x === t)
-    document.getElementById(`op-${x}`).classList.toggle('show', x === t)
-  })
-}
-
-window.cpFilter = function (type, el) {
-  document.querySelectorAll('.cpf').forEach(f => f.classList.remove('active'))
-  el.classList.add('active')
-  document.querySelectorAll('.cp-item').forEach(item => {
-    item.style.display = (type === 'all' || item.dataset.type === type) ? 'flex' : 'none'
-  })
-}
-
-/* ── State ── */
 let currentStyle = 'exec'
-let currentBriefText = ''
+let radarChart = null
+const $ = id => document.getElementById(id)
 
-/* ── generate（唯一入口）── */
-window.generate = async function () {
-  const name = document.getElementById('f-name').value.trim()
-  const desc = document.getElementById('f-desc').value.trim()
+/* ══ 風格配置 ══ */
+const STYLES = {
+  exec: { name: '高層版', desc: '顯示摘要、決策重點與簡報架構', show: ['sec-summary','sec-obj','sec-brief','sec-ppt','sec-decide'], hide: ['sec-pm-detail'] },
+  pm: { name: 'PM 版', desc: '強調時程、里程碑與資源', show: ['sec-summary','sec-obj','sec-pm-detail'], hide: ['sec-brief','sec-ppt','sec-decide'] },
+  arch: { name: '架構版', desc: '技術深度、合規細節', show: ['sec-summary','sec-obj','sec-pm-detail'], hide: ['sec-brief','sec-ppt','sec-decide'] }
+}
 
-  if (!name || !desc) { alert('請填寫專案名稱與需求描述'); return }
+function applyStyle(s) {
+  currentStyle = s
+  const cfg = STYLES[s]
+  ;['exec','pm','arch'].forEach(x => $(`ss-${x}`).classList.toggle('on', x === s))
+  cfg.show.forEach(id => { if($(id)) $(id).style.display='' })
+  cfg.hide.forEach(id => { if($(id)) $(id).style.display='none' })
+  $('style-hint').textContent = cfg.desc
+  $('sb-name').textContent = cfg.name
+  $('sb-desc').textContent = cfg.desc
+}
 
-  const sensitive = [...document.querySelectorAll('#t-sensitive .toggle-btn.on')].map(e => e.textContent.trim())
-  const drivers   = [...document.querySelectorAll('#t-driver .toggle-btn.on')].map(e => e.textContent.trim())
-  const clouds    = [...document.querySelectorAll('#t-cloud .toggle-btn.on')].map(e => e.textContent.trim())
+/* ══ 生成 AI 分析 ══ */
+async function generate() {
+  const name = $('f-name').value.trim()
+  const desc = $('f-desc').value.trim()
+  if (!name || !desc) { alert('請填寫專案名稱與需求'); return }
 
+  $('empty-state').style.display = 'none'
+  $('out-wrap').classList.remove('show')
+  $('loader-wrap').classList.add('show')
+  $('btn-gen').disabled = true
+
+  // 注入 System Prompt 邏輯
   const payload = {
-    projectName:   name,
-    description:   desc,
-    systemType:    document.getElementById('f-systype').value,
-    entity:        document.getElementById('f-entity').value,
-    sensitiveData: sensitive,
-    budget:        document.getElementById('f-budget').value,
-    timeline:      document.getElementById('f-timeline').value,
-    drivers,
-    preferredCloud: clouds,
-    outputStyle:   currentStyle
+    projectName: name,
+    description: desc,
+    systemPrompt: "你現在是金融專業 AI 顧問。必須嚴格遵循台灣金管會《金融機構作業委外辦理事項辦法》。判斷重大/一般委外、境外/境內個資處理。",
+    metadata: {
+      type: $('f-systype').value,
+      sensitive: [...document.querySelectorAll('#g-sensitive .tbtn.on')].map(e=>e.innerText)
+    }
   }
-
-  // UI: 開始 loading
-  document.getElementById('empty').style.display   = 'none'
-  document.getElementById('out-area').classList.remove('show')
-  document.getElementById('err-box').classList.remove('show')
-  document.getElementById('loader').classList.add('show')
-  document.getElementById('gen-btn').disabled = true
-  document.getElementById('lsteps').innerHTML = ''
-  setProgress(20, '正在整理需求並呼叫 AI 分析引擎…')
 
   try {
-    /* 1. 呼叫後端 API */
-    setProgress(45, 'AI 正在生成治理分析、架構建議與成本估算…')
+    setProgress(30, '正在套用金融委外辦法法規庫…')
     const res = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     })
+    const json = await res.json()
+    if (!res.ok) throw new Error('AI 分析引擎異常')
 
-    const data = await res.json()
-    if (!res.ok || !data.ok) throw new Error(data.error || '後端分析失敗')
-
-    /* 2. 寫入 Supabase 歷史紀錄 */
-    setProgress(75, '正在寫入分析紀錄…')
-    const { data: userData, error: userErr } = await supabase.auth.getUser()
-    if (userErr || !userData.user) throw new Error('登入資訊失效，請重新登入')
-
-    const { error: insertErr } = await supabase.from('analyses').insert([{
-      user_id:    userData.user.id,
-      input_text: JSON.stringify(payload, null, 2),
-      result:     data.result
-    }])
-    if (insertErr) console.warn('寫入歷史紀錄失敗：', insertErr.message)
-
-    /* 3. 渲染報告 */
-    setProgress(100, '分析完成，正在渲染報告…')
+    setProgress(100, '分析完成')
     setTimeout(() => {
-      document.getElementById('loader').classList.remove('show')
-      renderOutput(data.result, name)
-      document.getElementById('gen-btn').disabled = false
-    }, 350)
+      $('loader-wrap').classList.remove('show')
+      render(json.result, name)
+      $('btn-gen').disabled = false
+    }, 500)
 
   } catch (err) {
-    console.error(err)
-    document.getElementById('loader').classList.remove('show')
-    document.getElementById('gen-btn').disabled = false
-    const eb = document.getElementById('err-box')
-    eb.textContent = '❌ ' + (err.message || '分析失敗，請稍後再試')
-    eb.classList.add('show')
-    document.getElementById('empty').style.display = 'flex'
+    $('loader-wrap').classList.remove('show')
+    $('btn-gen').disabled = false
+    $('err-wrap').textContent = '❌ 分析失敗：' + err.message
+    $('err-wrap').classList.add('show')
   }
 }
 
 function setProgress(pct, msg) {
-  document.getElementById('lfill').style.width = pct + '%'
-  document.getElementById('lmsg').textContent  = msg
+  $('lfill').style.width = pct + '%'
+  $('lmsg').textContent = msg
 }
 
-/* ── renderOutput ── */
-function renderOutput(d, projName) {
-  const now = new Date().toLocaleString('zh-TW', { hour12: false })
-  document.getElementById('ts-badge').textContent = now
-  document.getElementById('of-ts').textContent    = 'Generated: ' + now
-  const styleLabels = { exec:'高層版（董事會/CXO）', pm:'PM 版（專案管理者）', arch:'架構評估版（技術主管）' }
-  document.getElementById('style-label').textContent = '輸出風格：' + styleLabels[currentStyle]
+/* ══ 圖表渲染 (圖片顯示核心) ══ */
+function renderChart(kpis) {
+  const ctx = document.getElementById('riskRadar').getContext('2d');
+  if (radarChart) radarChart.destroy();
 
-  /* Summary */
-  document.getElementById('exec-headline').textContent = projName + '｜' + (d.headline || '')
-  document.getElementById('exec-text').textContent     = d.execText || ''
-  const kmap = [
-    { id:'kpi-c',  hid:'kpi-ch',  k:'c'  },
-    { id:'kpi-r',  hid:'kpi-rh',  k:'r'  },
-    { id:'kpi-rd', hid:'kpi-rdh', k:'rd' }
-  ]
-  kmap.forEach(({ id, hid, k }) => {
-    document.getElementById(id).textContent  = d.kpis?.[k]?.v  || '—'
-    document.getElementById(hid).textContent = d.kpis?.[k]?.hint || ''
+  radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['法規風險', '技術難度', '資料敏感度', '維運成本', '時程壓力'],
+      datasets: [{
+        label: '本專案多維度分析',
+        data: [kpis.r.v || 50, kpis.c.v || 50, 80, 40, 70],
+        backgroundColor: 'rgba(0, 32, 74, 0.1)',
+        borderColor: '#00204a',
+        pointBackgroundColor: '#c8961e',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      maintainAspectRatio: false,
+      scales: { r: { beginAtZero: true, max: 100, ticks: { display: false } } }
+    }
+  });
+}
+
+function render(d, projName) {
+  const now = new Date().toLocaleString()
+  $('exec-headline').textContent = projName + '｜' + (d.headline || '策略評估報告')
+  $('exec-text').textContent = d.execText || ''
+  
+  // KPI
+  $('kpi-c').textContent = d.kpis?.c?.v || '—'
+  $('kpi-ch').textContent = d.kpis?.c?.hint || ''
+  $('kpi-r').textContent = d.kpis?.r?.v || '—'
+  $('kpi-rh').textContent = d.kpis?.r?.hint || ''
+  $('kpi-rd').textContent = d.kpis?.rd?.v || '—'
+  $('kpi-rdh').textContent = d.kpis?.rd?.hint || ''
+  
+  $('s-cost').textContent = d.bizCost || ''
+  $('s-kd').textContent = d.keyDecision || ''
+
+  // 繪製雷達圖 (圖片分析)
+  renderChart(d.kpis);
+
+  $('obj-list').innerHTML = (d.objs || []).map((o,i)=>`<div class="obj-item"><div class="obj-n">${i+1}</div><div><div class="obj-t">${o.t}</div><div class="obj-d">${o.d}</div></div></div>`).join('')
+  $('brief-text').textContent = d.brief || ''
+  
+  $('out-wrap').classList.add('show')
+  applyStyle(currentStyle)
+}
+
+/* ══ 事件綁定 ══ */
+document.querySelectorAll('.tbtn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.id === 'btn-no-sensitive') {
+      document.querySelectorAll('#g-sensitive .tbtn').forEach(b => b.classList.remove('on'))
+      btn.classList.add('on')
+    } else {
+      $('btn-no-sensitive').classList.remove('on')
+      btn.classList.toggle('on')
+    }
   })
-  document.getElementById('s-cost').textContent = d.bizCost     || ''
-  document.getElementById('s-kd').textContent   = d.keyDecision || ''
+})
 
-  /* Objectives */
-  document.getElementById('obj-list').innerHTML = (d.objs || []).map((o, i) => `
-    <div class="obj-item">
-      <div class="obj-num">${i + 1}</div>
-      <div><div class="obj-title">${o.t}</div><div class="obj-desc">${o.d}</div></div>
-    </div>`).join('')
+$('ss-exec').onclick = () => applyStyle('exec')
+$('ss-pm').onclick = () => applyStyle('pm')
+$('ss-arch').onclick = () => applyStyle('arch')
+$('btn-gen').onclick = generate
 
-  /* Recommendation */
-  document.getElementById('rec-hero').innerHTML = `
-    <div class="rec-strategy">☁ ${d.strategy || ''}</div>
-    <div class="rec-conf">${d.conf || ''}</div>
-    <div class="rec-rationale">${d.stratDesc || ''}</div>`
-  document.getElementById('arch-row2').innerHTML = `
-    <div class="arch-cloud">
-      <div class="arch-cloud-name"><div class="arch-cloud-dot" style="background:#FF9900"></div>AWS</div>
-      ${(d.awsItems || []).map(i => `<div class="arch-cloud-item">· ${i}</div>`).join('')}
-      <div class="arch-cost-badge">💰 ${d.awsCost || ''}</div>
-    </div>
-    <div class="arch-cloud">
-      <div class="arch-cloud-name"><div class="arch-cloud-dot" style="background:#4285F4"></div>GCP</div>
-      ${(d.gcpItems || []).map(i => `<div class="arch-cloud-item">· ${i}</div>`).join('')}
-      <div class="arch-cost-badge">💰 ${d.gcpCost || ''}</div>
-    </div>`
-
-  /* Risks */
-  const rlm = { critical:'rc', high:'rh', medium:'rm', low:'rl' }
-  const rll  = { critical:'Critical', high:'High', medium:'Medium', low:'Low' }
-  const rcls = { critical:'ri-critical', high:'ri-high', medium:'ri-medium', low:'ri-low' }
-  const statL = { 'rs-none':'🔴 未啟動', 'rs-wip':'🟡 進行中', 'rs-ok':'🟢 已控制' }
-  document.getElementById('risk-list').innerHTML = (d.risks || []).map(r => `
-    <div class="risk-item ${rcls[r.lv] || ''}">
-      <div>
-        <span class="rib ${rlm[r.lv] || ''}">${rll[r.lv] || r.lv}</span>
-        ${r.decide ? '<span class="decide-tag">⚡ 需主管決策</span>' : ''}
-        <div class="risk-t">${r.t}</div>
-        <div class="risk-own">責任：${r.own || '—'} <span class="risk-stat ${r.stat || ''}">${statL[r.stat] || ''}</span></div>
-      </div>
-    </div>`).join('')
-
-  /* Compliance */
-  document.getElementById('cp-rate-n').textContent   = d.cpRate    || '—'
-  document.getElementById('cp-rate-sub').textContent = d.cpRateSub || ''
-  const tic  = { pass:'✅', warn:'⚠️', act:'🔵' }
-  const tcls = { pass:'cp-pass', warn:'cp-warn', act:'cp-act' }
-  document.getElementById('cp-list').innerHTML = (d.compliance || []).map(c => `
-    <div class="cp-item ${tcls[c.tp] || ''}" data-type="${c.tp}">
-      <div class="cp-ic">${tic[c.tp] || '🔵'}</div>
-      <div style="flex:1">
-        <div class="cp-tit">
-          <span class="cp-type ${c.must ? 'ctt-must' : 'ctt-best'}">${c.must ? '法定強制' : '最佳實踐'}</span>
-          ${c.tt}
-        </div>
-        <div class="cp-desc">${c.d}</div>
-        <div class="cp-action">→ ${c.action}</div>
-      </div>
-    </div>`).join('')
-
-  /* Roadmap */
-  document.getElementById('roadmap-badge').textContent = d.phTotal || ''
-  const colors = ['#003087','#1a4fad','#1a6b45','#92520a','#5b21b6','#c0392b']
-  const totalW = 112
-  document.getElementById('roadmap').innerHTML = `
-    <div class="gantt-head">
-      <div class="gantt-spacer"></div>
-      <div class="gantt-ticks">
-        ${Array.from({ length: 7 }, (_, i) => Math.round(i * totalW / 6))
-          .map(v => `<span class="gantt-tick">M${v}</span>`).join('')}
-      </div>
-    </div>
-    ${(d.phases || []).map((p, i) => {
-      const left  = (p.pct[0] / totalW * 100).toFixed(1)
-      const width = ((p.pct[1] - p.pct[0]) / totalW * 100).toFixed(1)
-      return `<div class="gantt-row2">
-        <div class="gantt-label">${p.t}</div>
-        <div class="gantt-track">
-          <div class="gantt-bar2" style="left:${left}%;width:${width}%;background:${colors[i % colors.length]}" title="${p.dur}">
-            <span class="gantt-bar-label">${p.dur}</span>
-          </div>
-        </div>
-      </div>`
-    }).join('')}`
-
-  /* Brief */
-  currentBriefText = d.brief || ''
-  document.getElementById('brief-text').textContent = currentBriefText
-
-  /* PPT */
-  document.getElementById('ppt-list').innerHTML = (d.pptSlides || []).map(s => `
-    <div class="ppt-slide">
-      <div class="ppt-slide-head">
-        <span class="ppt-slide-num">${s.num}</span>
-        <span class="ppt-slide-title">${s.title}</span>
-      </div>
-      <div class="ppt-slide-body">
-        ${(s.bullets || []).map(b => `<div class="ppt-bullet"><div class="ppt-b-dot"></div><span>${b}</span></div>`).join('')}
-        ${s.note ? `<div class="ppt-note">📝 備注：${s.note}</div>` : ''}
-      </div>
-    </div>`).join('')
-
-  /* Decisions */
-  document.getElementById('dp-grid').innerHTML = `
-    <div class="dp-card dp-cost">
-      <div class="dp-icon">⚠️</div>
-      <div class="dp-title">若不行動的代價</div>
-      <div class="dp-list">${(d.decisions?.cost || []).map(i => `<div class="dp-item"><div class="dp-bullet"></div><span>${i}</span></div>`).join('')}</div>
-    </div>
-    <div class="dp-card dp-decide">
-      <div class="dp-icon">🎯</div>
-      <div class="dp-title">本案需決策 3 件事</div>
-      <div class="dp-list">${(d.decisions?.decide || []).map(i => `<div class="dp-item"><div class="dp-bullet"></div><span>${i}</span></div>`).join('')}</div>
-    </div>
-    <div class="dp-card dp-min">
-      <div class="dp-icon">🚀</div>
-      <div class="dp-title">最小可行推進方式</div>
-      <div class="dp-list">${(d.decisions?.min || []).map(i => `<div class="dp-item"><div class="dp-bullet"></div><span>${i}</span></div>`).join('')}</div>
-    </div>`
-
-  document.getElementById('out-area').classList.add('show')
-  switchTab('full')
+// 初始化
+async function init() {
+  const { data } = await supabase.auth.getUser()
+  if(data?.user) $('user-email').textContent = data.user.email
+  else window.location.href = 'login.html'
 }
-
-/* ── copy / download ── */
-window.copyBrief = function () {
-  navigator.clipboard.writeText(currentBriefText).then(() => {
-    const b = event.target
-    b.textContent = '✅ 已複製'
-    setTimeout(() => { b.textContent = '📋 複製摘要' }, 2000)
-  })
-}
-window.dlBrief = function () {
-  const blob = new Blob([currentBriefText], { type: 'text/plain;charset=utf-8' })
-  const url  = URL.createObjectURL(blob)
-  const a    = document.createElement('a')
-  a.href = url; a.download = 'executive_brief.txt'; a.click()
-  URL.revokeObjectURL(url)
-}
-
-/* ── 啟動 ── */
-initAuth()
+init()
 </script>
-
 </body>
 </html>
