@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>Smart Archie — 國泰專屬合規決策引擎</title>
+    <title>Smart Archie — 合規決策引擎</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <style>
@@ -59,16 +59,16 @@
 <div class="shell">
     <div class="left-panel">
         <div class="field">
-            <label class="flbl">📋 專案名稱</label>
+            <label class="flbl">專案名稱</label>
             <input id="f-name" type="text" placeholder="例如：精算系統搬遷 AWS Landing Zone">
         </div>
         <div class="field">
-            <label class="flbl">💬 業務需求與痛點</label>
+            <label class="flbl">業務需求與痛點</label>
             <textarea id="f-desc" rows="4" placeholder="請描述業務目標，AI 將自動對齊金管會合規框架..."></textarea>
         </div>
         
         <div class="field">
-            <label class="flbl">📐 國泰上雲策略 (6R)</label>
+            <label class="flbl">國泰上雲策略 (6R)</label>
             <select id="f-6r">
                 <option value="Rehost">Rehost (直接搬遷 - 速度最快)</option>
                 <option value="Replatform">Replatform (平台修整 - 兼顧成本與性能)</option>
@@ -81,7 +81,7 @@
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
             <div class="field">
-                <label class="flbl">💰 預算範圍</label>
+                <label class="flbl">預算範圍</label>
                 <select id="f-budget">
                     <option value="m">500萬-2000萬</option>
                     <option value="l">2000萬-5000萬</option>
@@ -106,12 +106,12 @@
     </div>
 
     <div class="right-panel">
-        <div id="loader">🚀 正在對齊金管會 112 年修訂辦法與國泰 Landing Zone 規範...</div>
+        <div id="loader">Landing Zone ...</div>
         
         <div id="out-wrap" style="display:none">
             <div class="sec">
                 <div class="sch">
-                    <span>📌 EXECUTIVE SUMMARY</span>
+                    <span>EXECUTIVE SUMMARY</span>
                     <div style="display:flex; gap:8px">
                         <span class="compliance-badge">國泰合規強化版</span>
                         <span id="badge-style" style="font-size:11px; opacity:0.6">高層版</span>
@@ -214,9 +214,9 @@
             
             const dc = d.decisions || {cost:[], decide:[], min:[]}
             $('dp-wrap').innerHTML = `
-                <div class="dp-card dp-cost"><b>⚠️ 維持現狀代價</b><br>${dc.cost.join('<br>')}</div>
-                <div class="dp-card dp-decide"><b>🎯 關鍵決策點</b><br>${dc.decide.join('<br>')}</div>
-                <div class="dp-card dp-min"><b>🚀 MVP 路徑 (Phase 1)</b><br>${dc.min.join('<br>')}</div>`
+                <div class="dp-card dp-cost"><b>維持現狀代價</b><br>${dc.cost.join('<br>')}</div>
+                <div class="dp-card dp-decide"><b>關鍵決策點</b><br>${dc.decide.join('<br>')}</div>
+                <div class="dp-card dp-min"><b>MVP 路徑 (Phase 1)</b><br>${dc.min.join('<br>')}</div>`
         } else {
             $('exec-zone').style.display = 'none'
         }
