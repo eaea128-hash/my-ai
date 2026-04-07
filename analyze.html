@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f4f3ef;--sur:#ffffff;--sur2:#f9f8f5;--sur3:#f0ede6;
+  --bg:#f4f3ef;--sur:#fff;--sur2:#f9f8f5;
   --ink:#18181b;--ink2:#3f3f46;--mu:#71717a;--bd:#e4e0d8;
   --navy:#00204a;--gold:#c8961e;--goldl:#fdf6e3;
   --red:#c0392b;--redl:#fdf0ef;
@@ -15,31 +15,34 @@
   --blue:#1a4fad;--bluel:#eef3fc;
   --amber:#92520a;--amberl:#fdf4e3;
   --pu:#5b21b6;--pul:#f3f0fe;
-  --r:8px;--sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
-  --sh2:0 4px 16px rgba(0,0,0,.09);
+  --r:8px;--sh:0 1px 3px rgba(0,0,0,.06);--sh2:0 4px 16px rgba(0,0,0,.09);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.65}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.65}
 
-/* ── TOP BAR ── */
+/* TOPBAR */
 .topbar{background:var(--navy);height:56px;display:flex;align-items:center;padding:0 32px;gap:16px;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.25)}
 .top-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#fff;display:flex;align-items:center;gap:8px}
 .top-dot{width:7px;height:7px;background:var(--gold);border-radius:50%}
 .top-sub{font-size:11px;color:rgba(255,255,255,.4);font-family:'DM Mono';letter-spacing:.08em;text-transform:uppercase}
-.top-badge{margin-left:auto;background:rgba(200,150,30,.18);border:1px solid var(--gold);color:var(--gold);font-size:10px;font-family:'DM Mono';padding:3px 10px;border-radius:4px;letter-spacing:.1em;text-transform:uppercase}
+.top-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.top-email{color:rgba(255,255,255,.75);font-size:12px;font-family:'DM Mono'}
+.top-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;transition:background .15s}
+.top-btn:hover{background:rgba(255,255,255,.18)}
+.top-badge{background:rgba(200,150,30,.18);border:1px solid var(--gold);color:var(--gold);font-size:10px;font-family:'DM Mono';padding:3px 10px;border-radius:4px;letter-spacing:.1em;text-transform:uppercase}
 
-/* ── LAYOUT ── */
+/* LAYOUT */
 .shell{display:grid;grid-template-columns:400px 1fr;min-height:calc(100vh - 56px)}
 
-/* ── LEFT: INPUT PANEL ── */
+/* LEFT INPUT */
 .input-panel{background:var(--sur);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow-y:auto}
 .ip-head{padding:24px 24px 16px;border-bottom:1px solid var(--bd)}
-.ip-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.ip-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px}
 .ip-sub{font-size:12px;color:var(--mu)}
 .ip-body{padding:20px 24px;display:flex;flex-direction:column;gap:16px;flex:1}
 .field{display:flex;flex-direction:column;gap:5px}
 .field-label{font-size:11px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.1em;color:var(--mu);display:flex;align-items:center;gap:6px}
-.req{color:var(--red);font-size:12px}
+.req{color:var(--red)}
 .field input,.field textarea,.field select{width:100%;padding:9px 12px;border:1.5px solid var(--bd);border-radius:var(--r);font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--ink);background:var(--sur2);outline:none;transition:border-color .2s,background .2s}
 .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--navy);background:#fff}
 .field textarea{resize:vertical;min-height:90px;line-height:1.65}
@@ -49,22 +52,15 @@ body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:
 .toggle-btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
 .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .ip-footer{padding:20px 24px;border-top:1px solid var(--bd);display:flex;flex-direction:column;gap:8px}
-
-/* STYLE SWITCH */
 .style-switch{display:flex;gap:6px;margin-bottom:4px}
-.ss-btn{flex:1;padding:8px 6px;border-radius:var(--r);border:1.5px solid var(--bd);font-size:11px;cursor:pointer;background:var(--sur2);color:var(--mu);font-family:'DM Mono';text-align:center;transition:all .15s;font-weight:500}
+.ss-btn{flex:1;padding:8px 6px;border-radius:var(--r);border:1.5px solid var(--bd);font-size:11px;cursor:pointer;background:var(--sur2);color:var(--mu);font-family:'DM Mono';text-align:center;transition:all .15s}
 .ss-btn.ss-on{border-color:var(--navy);background:var(--navy);color:#fff}
-.ss-btn:hover:not(.ss-on){border-color:var(--navy);color:var(--navy)}
-
-/* GENERATE BTN */
 .btn-gen{padding:13px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
 .btn-gen:hover{background:#003580;transform:translateY(-1px);box-shadow:var(--sh2)}
 .btn-gen:disabled{background:var(--bd);color:var(--mu);cursor:not-allowed;transform:none;box-shadow:none}
 
-/* ── RIGHT: OUTPUT PANEL ── */
+/* RIGHT OUTPUT */
 .output-panel{padding:28px 32px;overflow-y:auto;display:flex;flex-direction:column;gap:20px}
-
-/* EMPTY */
 .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;border:2px dashed var(--bd);border-radius:12px;padding:60px 40px;text-align:center;color:var(--mu);min-height:400px}
 .empty-ic{font-size:40px;opacity:.35}
 .empty-t{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--ink2)}
@@ -75,74 +71,81 @@ body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:
 .loader.show{display:flex}
 .lbar{width:220px;height:3px;background:var(--bd);border-radius:2px;overflow:hidden}
 .lfill{height:100%;width:0%;background:var(--navy);border-radius:2px;transition:width .5s ease}
-.lmsg{font-family:'DM Mono';font-size:12px;color:var(--mu);letter-spacing:.05em}
+.lmsg{font-family:'DM Mono';font-size:12px;color:var(--mu);letter-spacing:.05em;text-align:center}
 .lsteps{display:flex;flex-direction:column;gap:4px}
-.lstep{font-size:11px;color:var(--mu);display:flex;align-items:center;gap:7px}
-.lstep.done{color:var(--grn)}
+.lstep{font-size:11px;color:var(--grn);display:flex;align-items:center;gap:7px}
+
+/* ERROR BOX */
+.err-box{display:none;background:var(--redl);border:1px solid #fca5a5;border-radius:var(--r);padding:14px 18px;color:var(--red);font-size:13px;font-family:'DM Mono'}
+.err-box.show{display:block}
 
 /* OUTPUT AREA */
 .out-area{display:none;flex-direction:column;gap:20px;animation:fu .4s ease}
 .out-area.show{display:flex}
 @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* OUTPUT TAB BAR */
+/* TABS */
 .out-tabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .out-tab{padding:7px 16px;border-radius:20px;border:1.5px solid var(--bd);font-size:12px;cursor:pointer;background:var(--sur);color:var(--mu);font-family:'DM Mono';transition:all .15s;white-space:nowrap}
 .out-tab.act{background:var(--navy);color:#fff;border-color:var(--navy)}
 .out-tab:hover:not(.act){border-color:var(--navy);color:var(--navy)}
-.out-tab-sep{color:var(--bd);font-size:18px}
 .out-label{font-size:10px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.1em;color:var(--mu)}
-
-/* OUT PANELS */
 .op{display:none}.op.show{display:flex;flex-direction:column;gap:16px}
 
 /* CARD */
 .card{background:var(--sur);border:1px solid var(--bd);border-radius:10px;box-shadow:var(--sh);overflow:hidden}
-.card-head{padding:11px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
-.card-head-ic{font-size:13px}
-.card-head-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-family:'DM Mono';color:var(--mu)}
-.card-head-b{margin-left:auto;font-size:9px;font-family:'DM Mono';padding:2px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.07em}
+.card.s2{grid-column:span 2}.card.s3{grid-column:span 3}
+.ch{padding:11px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
+.ch-ic{font-size:13px}
+.ch-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-family:'DM Mono';color:var(--mu)}
+.ch-b{margin-left:auto;font-size:9px;font-family:'DM Mono';padding:2px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.07em}
 .bb{background:var(--bluel);color:var(--blue)}.bg2{background:var(--grnl);color:var(--grn)}
 .bo{background:var(--amberl);color:var(--amber)}.bp{background:var(--pul);color:var(--pu)}
 .br{background:var(--redl);color:var(--red)}.bgold{background:var(--goldl);color:#7a5400}
-.card-body{padding:16px 18px}
+.cb{padding:16px 18px}
 
 /* EXEC SUMMARY */
-.exec-headline{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--ink);line-height:1.3;margin-bottom:10px}
+.exec-headline{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;line-height:1.3;margin-bottom:10px}
 .exec-text{font-size:13px;color:var(--ink2);line-height:1.85}
 .exec-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px}
 .exec-kpi{padding:12px 14px;border-radius:var(--r);border:1px solid var(--bd);background:var(--sur2);text-align:center}
 .exec-kpi-n{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
 .exec-kpi-l{font-size:10px;font-family:'DM Mono';color:var(--mu);text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
+.exec-kpi-h{font-size:10px;color:var(--mu);margin-top:4px}
 .kn-red{color:var(--red)}.kn-grn{color:var(--grn)}.kn-amber{color:var(--amber)}
+.s-biz{margin-top:10px;padding:10px 12px;background:var(--redl);border:1px solid #fca5a5;border-radius:6px}
+.s-biz-lbl{font-size:10px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin-bottom:4px}
+.s-biz-txt{font-size:12px;color:var(--ink2);line-height:1.6}
+.s-kd{margin-top:8px;padding:10px 12px;background:var(--amberl);border:1px solid #fcd34d;border-radius:6px}
+.s-kd-lbl{font-size:10px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.1em;color:var(--amber);margin-bottom:4px}
+.s-kd-txt{font-size:12px;color:var(--ink2);line-height:1.6;font-weight:600}
 
-/* STRATEGY OBJECTIVES */
+/* OBJECTIVES */
 .obj-list{display:flex;flex-direction:column;gap:8px}
 .obj-item{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:var(--r);border:1px solid var(--bd);background:var(--sur2)}
 .obj-num{width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'DM Mono';font-size:11px;flex-shrink:0;margin-top:1px}
-.obj-title{font-size:13px;font-weight:600;color:var(--ink)}
+.obj-title{font-size:13px;font-weight:600}
 .obj-desc{font-size:12px;color:var(--mu);margin-top:2px;line-height:1.55}
 
 /* RECOMMENDATION */
 .rec-hero{padding:14px 16px;border-radius:var(--r);border:2px solid var(--blue);background:var(--bluel);margin-bottom:12px}
-.rec-strategy{font-size:15px;font-weight:700;color:var(--blue);margin-bottom:5px}
-.rec-rationale{font-size:12px;color:var(--ink2);line-height:1.65}
-.rec-conf{font-size:11px;font-family:'DM Mono';color:var(--grn);margin-top:5px}
-.arch-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.rec-strategy{font-size:15px;font-weight:700;color:var(--blue);margin-bottom:4px}
+.rec-conf{font-size:11px;font-family:'DM Mono';color:var(--grn);margin-top:4px}
+.rec-rationale{font-size:12px;color:var(--ink2);line-height:1.65;margin-top:6px}
+.arch-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .arch-cloud{padding:12px 14px;border-radius:var(--r);border:1px solid var(--bd);background:var(--sur2)}
-.arch-cloud-name{font-size:12px;font-weight:700;font-family:'DM Mono';color:var(--ink2);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.arch-cloud-name{font-size:12px;font-weight:700;font-family:'DM Mono';margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .arch-cloud-dot{width:8px;height:8px;border-radius:50%}
-.arch-cloud-items{display:flex;flex-direction:column;gap:3px}
 .arch-cloud-item{font-size:11px;color:var(--mu)}
 .arch-cost-badge{font-size:11px;font-family:'DM Mono';color:var(--amber);margin-top:6px;font-weight:600}
 
 /* RISK */
-.risk-list{display:flex;flex-direction:column;gap:8px}
-.risk-item{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:var(--r);border-left:4px solid;background:var(--sur2)}
+.risk-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.risk-item{display:flex;gap:10px;padding:10px 12px;border-radius:var(--r);border-left:4px solid;background:var(--sur2)}
 .ri-critical{border-left-color:#b91c1c}.ri-high{border-left-color:#d97706}.ri-medium{border-left-color:#2563eb}.ri-low{border-left-color:#16a34a}
 .rib{font-family:'DM Mono';font-size:9px;padding:2px 6px;border-radius:3px;flex-shrink:0;margin-top:2px;font-weight:600;text-transform:uppercase}
 .rc{background:#fee2e2;color:#b91c1c}.rh{background:#fef3c7;color:#92400e}.rm{background:#dbeafe;color:#1e40af}.rl{background:#d1fae5;color:#065f46}
-.risk-t{font-size:12px;color:var(--ink2);line-height:1.6;flex:1}
+.risk-t{font-size:12px;color:var(--ink2);line-height:1.6}
 .risk-own{font-size:10px;font-family:'DM Mono';color:var(--mu);margin-top:3px}
 .risk-stat{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;margin-left:4px}
 .rs-none{background:#fee2e2;color:#b91c1c}.rs-wip{background:#fef3c7;color:#92400e}.rs-ok{background:#d1fae5;color:#065f46}
@@ -167,38 +170,35 @@ body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:
 
 /* DECISION POINTS */
 .dp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.dp-card{padding:14px;border-radius:var(--r);border:1px solid var(--bd);background:var(--sur2)}
+.dp-card{padding:14px;border-radius:var(--r);border:1.5px solid var(--bd);background:var(--sur2)}
 .dp-icon{font-size:20px;margin-bottom:7px}
-.dp-title{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:6px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.05em}
+.dp-title{font-size:12px;font-weight:700;margin-bottom:6px;font-family:'DM Mono';text-transform:uppercase;letter-spacing:.05em}
 .dp-list{display:flex;flex-direction:column;gap:5px}
 .dp-item{font-size:12px;color:var(--ink2);line-height:1.55;display:flex;gap:6px;align-items:flex-start}
-.dp-bullet{flex-shrink:0;margin-top:3px;width:5px;height:5px;border-radius:50%;background:var(--navy);display:inline-block}
-.dp-cost{background:var(--redl);border-color:#fca5a5;border-width:1.5px}
-.dp-decide{background:var(--amberl);border-color:#fcd34d;border-width:1.5px}
-.dp-min{background:var(--grnl);border-color:#86efac;border-width:1.5px}
+.dp-bullet{flex-shrink:0;margin-top:5px;width:5px;height:5px;border-radius:50%;background:var(--navy)}
+.dp-cost{background:var(--redl);border-color:#fca5a5}
+.dp-decide{background:var(--amberl);border-color:#fcd34d}
+.dp-min{background:var(--grnl);border-color:#86efac}
 
-/* ROADMAP (Gantt) */
-.roadmap-wrap{display:flex;flex-direction:column;gap:8px}
-.gantt-head{display:flex;align-items:center;margin-bottom:2px}
+/* ROADMAP */
+.gantt-head{display:flex;align-items:center;margin-bottom:4px}
 .gantt-spacer{width:120px;flex-shrink:0}
 .gantt-ticks{flex:1;display:flex;justify-content:space-between;padding:0 2px}
 .gantt-tick{font-size:9px;font-family:'DM Mono';color:var(--mu)}
-.gantt-row2{display:flex;align-items:center;gap:8px}
+.gantt-row2{display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .gantt-label{width:120px;flex-shrink:0;font-size:11px;color:var(--ink2);text-align:right;line-height:1.3}
-.gantt-track{flex:1;height:12px;background:var(--sur2);border-radius:6px;overflow:visible;position:relative;border:1px solid var(--bd)}
-.gantt-bar2{height:100%;border-radius:6px;position:absolute;opacity:.85;transition:opacity .2s}
+.gantt-track{flex:1;height:14px;background:var(--sur2);border-radius:7px;position:relative;border:1px solid var(--bd)}
+.gantt-bar2{height:100%;border-radius:7px;position:absolute;opacity:.85}
 .gantt-bar2:hover{opacity:1}
-.gantt-ms{position:absolute;top:50%;transform:translateY(-50%);width:8px;height:8px;border-radius:50%;background:#fff;border:2px solid var(--navy);z-index:2}
-.gantt-bar-label{position:absolute;right:5px;top:50%;transform:translateY(-50%);font-size:9px;color:#fff;font-family:'DM Mono';white-space:nowrap}
-.phase-color{background:var(--navy)}
+.gantt-bar-label{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:9px;color:#fff;font-family:'DM Mono';white-space:nowrap}
 
-/* EXEC BRIEF (高層摘要版) */
-.brief-box{background:var(--sur2);border:1px solid var(--bd);border-radius:var(--r);padding:18px 20px;white-space:pre-wrap;font-size:13px;color:var(--ink2);line-height:1.8;font-family:'Noto Sans TC'}
+/* BRIEF */
+.brief-box{background:var(--sur2);border:1px solid var(--bd);border-radius:var(--r);padding:18px 20px;white-space:pre-wrap;font-size:13px;color:var(--ink2);line-height:1.8}
 .brief-actions{display:flex;gap:8px;margin-top:10px}
 .btn-brief{padding:7px 14px;border:1px solid var(--bd);border-radius:var(--r);font-size:12px;font-family:'DM Mono';background:var(--sur);cursor:pointer;transition:all .15s;color:var(--ink2)}
 .btn-brief:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
 
-/* PPT OUTLINE */
+/* PPT */
 .ppt-list{display:flex;flex-direction:column;gap:10px}
 .ppt-slide{border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
 .ppt-slide-head{padding:10px 14px;background:var(--navy);display:flex;align-items:center;gap:10px}
@@ -206,7 +206,7 @@ body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:
 .ppt-slide-title{font-size:13px;font-weight:600;color:#fff}
 .ppt-slide-body{padding:12px 14px;background:var(--sur);display:flex;flex-direction:column;gap:5px}
 .ppt-bullet{font-size:12px;color:var(--ink2);display:flex;gap:7px;line-height:1.55}
-.ppt-b-dot{flex-shrink:0;margin-top:4px;width:4px;height:4px;border-radius:50%;background:var(--mu)}
+.ppt-b-dot{flex-shrink:0;margin-top:5px;width:4px;height:4px;border-radius:50%;background:var(--mu)}
 .ppt-note{font-size:11px;color:var(--mu);font-family:'DM Mono';margin-top:6px;padding-top:6px;border-top:1px solid var(--bd)}
 
 /* FOOTER */
@@ -214,7 +214,7 @@ body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:
 .of-note{font-size:11px;color:var(--mu);font-family:'DM Mono'}
 .of-tags{display:flex;gap:6px}
 .ft{padding:3px 9px;border-radius:4px;font-size:10px;font-family:'DM Mono';letter-spacing:.07em;text-transform:uppercase;font-weight:600}
-.ftn{background:var(--navy);color:#fff}.ftg{background:var(--gold);color:#fff}.ftd{background:#92400e;color:#fff}
+.ftn{background:var(--navy);color:#fff}.ftg{background:var(--gold);color:#fff}
 .of-ts{font-size:11px;color:var(--mu);font-family:'DM Mono'}
 
 ::-webkit-scrollbar{width:5px;height:5px}
@@ -224,46 +224,25 @@ body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:
 </head>
 <body>
 
+<!-- TOPBAR -->
 <div class="topbar">
   <div class="top-logo"><div class="top-dot"></div>Smart Archie</div>
   <div class="top-sub">Executive Brief Generator</div>
-
-  <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
-   <div id="user-email" style="color:rgba(255,255,255,.75);font-size:12px;font-family:'DM Mono'">
-     登入中...
-    </div>
-
-    <button onclick="window.location.href='dashboard.html#history'" style="
-      background:transparent;
-      border:1px solid rgba(255,255,255,.25);
-      color:#fff;
-      padding:6px 12px;
-      border-radius:6px;
-      font-size:12px;
-      cursor:pointer;
-    ">歷史紀錄</button>
-
-    <button onclick="logout()" style="
-      background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.25);
-      color:#fff;
-      padding:6px 12px;
-      border-radius:6px;
-      font-size:12px;
-      cursor:pointer;
-    ">登出</button>
-
-    <div class="top-badge">Enterprise v6.0</div>
+  <div class="top-right">
+    <span class="top-email" id="user-email">載入中…</span>
+    <button class="top-btn" onclick="window.location.href='dashboard.html#history'">歷史紀錄</button>
+    <button class="top-btn" onclick="doLogout()">登出</button>
+    <span class="top-badge">Enterprise v6.0</span>
   </div>
 </div>
 
 <div class="shell">
 
-<!-- ══ LEFT: INPUT PANEL ══ -->
+<!-- ══ LEFT INPUT ══ -->
 <div class="input-panel">
   <div class="ip-head">
     <div class="ip-title">將模糊需求轉成高層可閱讀的策略分析</div>
-    <div class="ip-sub">填寫左側表單，AI 自動生成 Executive Brief、簡報架構與決策建議</div>
+    <div class="ip-sub">填寫表單，AI 自動生成 Executive Brief、簡報架構與決策建議</div>
   </div>
 
   <div class="ip-body">
@@ -309,10 +288,10 @@ body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:
     <div class="field">
       <div class="field-label">🔐 是否含敏感資料</div>
       <div class="toggle-row" id="t-sensitive">
-        <div class="toggle-btn on" onclick="tog(this,'t-sensitive')">個人資料 (PII)</div>
-        <div class="toggle-btn" onclick="tog(this,'t-sensitive')">金融交易資料</div>
-        <div class="toggle-btn" onclick="tog(this,'t-sensitive')">健康醫療資料</div>
-        <div class="toggle-btn" onclick="tog(this,'t-sensitive')">無敏感資料</div>
+        <div class="toggle-btn on" onclick="tog(this)">個人資料 (PII)</div>
+        <div class="toggle-btn" onclick="tog(this)">金融交易資料</div>
+        <div class="toggle-btn" onclick="tog(this)">健康醫療資料</div>
+        <div class="toggle-btn" onclick="tog(this)">無敏感資料</div>
       </div>
     </div>
 
@@ -343,25 +322,25 @@ body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:
     <div class="field">
       <div class="field-label">⚡ 主要驅動因素</div>
       <div class="toggle-row" id="t-driver">
-        <div class="toggle-btn on" onclick="tog(this,'t-driver')">法規合規壓力</div>
-        <div class="toggle-btn" onclick="tog(this,'t-driver')">效能不足</div>
-        <div class="toggle-btn" onclick="tog(this,'t-driver')">成本優化</div>
-        <div class="toggle-btn" onclick="tog(this,'t-driver')">數位轉型</div>
-        <div class="toggle-btn" onclick="tog(this,'t-driver')">資安強化</div>
+        <div class="toggle-btn on" onclick="tog(this)">法規合規壓力</div>
+        <div class="toggle-btn" onclick="tog(this)">效能不足</div>
+        <div class="toggle-btn" onclick="tog(this)">成本優化</div>
+        <div class="toggle-btn" onclick="tog(this)">數位轉型</div>
+        <div class="toggle-btn" onclick="tog(this)">資安強化</div>
       </div>
     </div>
 
     <div class="field">
       <div class="field-label">🌐 偏好雲端平台</div>
       <div class="toggle-row" id="t-cloud">
-        <div class="toggle-btn on" onclick="tog(this,'t-cloud')">AWS</div>
-        <div class="toggle-btn on" onclick="tog(this,'t-cloud')">GCP</div>
-        <div class="toggle-btn" onclick="tog(this,'t-cloud')">Azure</div>
-        <div class="toggle-btn" onclick="tog(this,'t-cloud')">混合雲</div>
+        <div class="toggle-btn on" onclick="tog(this)">AWS</div>
+        <div class="toggle-btn on" onclick="tog(this)">GCP</div>
+        <div class="toggle-btn" onclick="tog(this)">Azure</div>
+        <div class="toggle-btn" onclick="tog(this)">混合雲</div>
       </div>
     </div>
 
-  </div><!-- end ip-body -->
+  </div>
 
   <div class="ip-footer">
     <div class="field-label" style="margin-bottom:6px">📄 輸出風格</div>
@@ -370,13 +349,11 @@ body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:
       <div class="ss-btn" id="ss-pm" onclick="setSS('pm')">PM 版<br><span style="font-size:9px;opacity:.7">專案管理者</span></div>
       <div class="ss-btn" id="ss-arch" onclick="setSS('arch')">架構評估版<br><span style="font-size:9px;opacity:.7">技術主管</span></div>
     </div>
-    <button class="btn-gen" id="gen-btn" onclick="generate()">
-      ✦ 生成 Executive Brief
-    </button>
+    <button class="btn-gen" id="gen-btn" onclick="generate()">✦ 生成 Executive Brief</button>
   </div>
-</div><!-- end input-panel -->
+</div>
 
-<!-- ══ RIGHT: OUTPUT PANEL ══ -->
+<!-- ══ RIGHT OUTPUT ══ -->
 <div class="output-panel">
 
   <div class="empty" id="empty">
@@ -391,66 +368,62 @@ body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:
     <div class="lsteps" id="lsteps"></div>
   </div>
 
+  <div class="err-box" id="err-box"></div>
+
   <div class="out-area" id="out-area">
 
-    <!-- TAB BAR -->
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
       <div class="out-tabs">
         <span class="out-label">檢視：</span>
-        <div class="out-tab act" id="tab-full" onclick="switchTab('full')">完整報告</div>
-        <div class="out-tab" id="tab-brief" onclick="switchTab('brief')">⚡ 高層摘要</div>
-        <div class="out-tab" id="tab-ppt" onclick="switchTab('ppt')">📊 簡報架構</div>
-        <div class="out-tab" id="tab-decide" onclick="switchTab('decide')">🎯 決策提醒</div>
+        <div class="out-tab act" id="tab-full"   onclick="switchTab('full')">完整報告</div>
+        <div class="out-tab"     id="tab-brief"  onclick="switchTab('brief')">⚡ 高層摘要</div>
+        <div class="out-tab"     id="tab-ppt"    onclick="switchTab('ppt')">📊 簡報架構</div>
+        <div class="out-tab"     id="tab-decide" onclick="switchTab('decide')">🎯 決策提醒</div>
       </div>
       <div style="font-size:11px;color:var(--mu);font-family:'DM Mono'" id="style-label"></div>
     </div>
 
-    <!-- FULL REPORT -->
+    <!-- 完整報告 -->
     <div class="op show" id="op-full">
 
-      <!-- Executive Summary -->
       <div class="card">
-        <div class="card-head"><span class="card-head-ic">📌</span><span class="card-head-t">需求摘要 / Executive Summary</span><span class="card-head-b bgold" id="ts-badge"></span></div>
-        <div class="card-body">
+        <div class="ch"><span class="ch-ic">📌</span><span class="ch-t">需求摘要 / Executive Summary</span><span class="ch-b bgold" id="ts-badge"></span></div>
+        <div class="cb">
           <div class="exec-headline" id="exec-headline"></div>
           <div class="exec-text" id="exec-text"></div>
           <div class="exec-row">
-            <div class="exec-kpi"><div class="exec-kpi-n kn-red" id="kpi-complexity"></div><div class="exec-kpi-l">遷移複雜度</div><div style="font-size:10px;color:var(--mu);margin-top:3px" id="kpi-c-hint"></div></div>
-            <div class="exec-kpi"><div class="exec-kpi-n kn-amber" id="kpi-risk"></div><div class="exec-kpi-l">風險指數</div><div style="font-size:10px;color:var(--mu);margin-top:3px" id="kpi-r-hint"></div></div>
-            <div class="exec-kpi"><div class="exec-kpi-n kn-grn" id="kpi-ready"></div><div class="exec-kpi-l">雲端就緒度</div><div style="font-size:10px;color:var(--mu);margin-top:3px" id="kpi-rd-hint"></div></div>
+            <div class="exec-kpi"><div class="exec-kpi-n kn-red"   id="kpi-c"></div><div class="exec-kpi-l">遷移複雜度</div><div class="exec-kpi-h" id="kpi-ch"></div></div>
+            <div class="exec-kpi"><div class="exec-kpi-n kn-amber" id="kpi-r"></div><div class="exec-kpi-l">風險指數</div>  <div class="exec-kpi-h" id="kpi-rh"></div></div>
+            <div class="exec-kpi"><div class="exec-kpi-n kn-grn"   id="kpi-rd"></div><div class="exec-kpi-l">雲端就緒度</div><div class="exec-kpi-h" id="kpi-rdh"></div></div>
           </div>
+          <div class="s-biz"><div class="s-biz-lbl">⚠ 若不遷移的代價</div><div class="s-biz-txt" id="s-cost"></div></div>
+          <div class="s-kd"><div class="s-kd-lbl">🎯 關鍵決策點</div><div class="s-kd-txt" id="s-kd"></div></div>
         </div>
       </div>
 
-      <!-- Strategic Objectives -->
       <div class="card">
-        <div class="card-head"><span class="card-head-ic">🎯</span><span class="card-head-t">策略目標 / Strategic Objectives</span><span class="card-head-b bb">Aligned to Business</span></div>
-        <div class="card-body"><div class="obj-list" id="obj-list"></div></div>
+        <div class="ch"><span class="ch-ic">🎯</span><span class="ch-t">策略目標 / Strategic Objectives</span><span class="ch-b bb">Aligned to Business</span></div>
+        <div class="cb"><div class="obj-list" id="obj-list"></div></div>
       </div>
 
-      <!-- Recommendation -->
       <div class="card">
-        <div class="card-head"><span class="card-head-ic">☁️</span><span class="card-head-t">建議方案與技術方向 / Cloud Recommendation</span><span class="card-head-b bb">AWS · GCP · PaaS First</span></div>
-        <div class="card-body">
+        <div class="ch"><span class="ch-ic">☁️</span><span class="ch-t">建議方案與技術方向 / Cloud Recommendation</span><span class="ch-b bb">AWS · GCP · PaaS First</span></div>
+        <div class="cb">
           <div class="rec-hero" id="rec-hero"></div>
           <div class="arch-row2" id="arch-row2"></div>
         </div>
       </div>
 
-      <!-- Risk & Governance -->
       <div class="card">
-        <div class="card-head"><span class="card-head-ic">⚠️</span><span class="card-head-t">關鍵風險與治理提醒 / Risk & Governance</span><span class="card-head-b bo">HSBC · JPMorgan · DORA · BCBS 239</span></div>
-        <div class="card-body">
+        <div class="ch"><span class="ch-ic">⚠️</span><span class="ch-t">關鍵風險與治理提醒 / Risk & Governance</span><span class="ch-b bo">HSBC · JPMorgan · DORA · BCBS 239</span></div>
+        <div class="cb">
           <div class="cp-rate-row">
             <div class="cp-rate-n" id="cp-rate-n"></div>
-            <div>
-              <div class="cp-rate-meta">合規完成率</div>
-              <div style="font-size:10px;color:var(--mu);margin-top:2px" id="cp-rate-sub"></div>
-            </div>
+            <div><div class="cp-rate-meta">合規完成率</div><div style="font-size:10px;color:var(--mu);margin-top:2px" id="cp-rate-sub"></div></div>
           </div>
-          <div style="margin-bottom:12px"><div class="risk-list" id="risk-list"></div></div>
+          <div class="risk-list" id="risk-list"></div>
           <div class="cp-filter">
-            <div class="cpf active" onclick="cpFilter('all',this)">全部合規</div>
+            <div class="cpf active" onclick="cpFilter('all',this)">全部</div>
             <div class="cpf" onclick="cpFilter('act',this)">🔵 待補強</div>
             <div class="cpf" onclick="cpFilter('warn',this)">⚠️ 注意</div>
             <div class="cpf" onclick="cpFilter('pass',this)">✅ 合規</div>
@@ -459,21 +432,18 @@ body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:
         </div>
       </div>
 
-      <!-- Roadmap -->
       <div class="card">
-        <div class="card-head"><span class="card-head-ic">🗺️</span><span class="card-head-t">推動路線圖 / Roadmap</span><span class="card-head-b bg2" id="roadmap-badge"></span></div>
-        <div class="card-body">
-          <div class="roadmap-wrap" id="roadmap"></div>
-        </div>
+        <div class="ch"><span class="ch-ic">🗺️</span><span class="ch-t">推動路線圖 / Roadmap</span><span class="ch-b bg2" id="roadmap-badge"></span></div>
+        <div class="cb" id="roadmap"></div>
       </div>
 
-    </div><!-- end op-full -->
+    </div>
 
-    <!-- EXEC BRIEF -->
+    <!-- 高層摘要 -->
     <div class="op" id="op-brief">
       <div class="card">
-        <div class="card-head"><span class="card-head-ic">⚡</span><span class="card-head-t">高層摘要版（150–250 字）</span><span class="card-head-b bgold">給主管先看</span></div>
-        <div class="card-body">
+        <div class="ch"><span class="ch-ic">⚡</span><span class="ch-t">高層摘要版（150–250 字）</span><span class="ch-b bgold">給主管先看</span></div>
+        <div class="cb">
           <div class="brief-box" id="brief-text"></div>
           <div class="brief-actions">
             <button class="btn-brief" onclick="copyBrief()">📋 複製摘要</button>
@@ -483,380 +453,122 @@ body{font-family:'Noto Sans TC','DM Mono',sans-serif;background:var(--bg);color:
       </div>
     </div>
 
-    <!-- PPT OUTLINE -->
+    <!-- 簡報架構 -->
     <div class="op" id="op-ppt">
       <div class="card">
-        <div class="card-head"><span class="card-head-ic">📊</span><span class="card-head-t">簡報架構版 — 5 Slides</span><span class="card-head-b bp">PowerPoint 初稿</span></div>
-        <div class="card-body"><div class="ppt-list" id="ppt-list"></div></div>
+        <div class="ch"><span class="ch-ic">📊</span><span class="ch-t">簡報架構版 — 5 Slides</span><span class="ch-b bp">PowerPoint 初稿</span></div>
+        <div class="cb"><div class="ppt-list" id="ppt-list"></div></div>
       </div>
     </div>
 
-    <!-- DECISION POINTS -->
+    <!-- 決策提醒 -->
     <div class="op" id="op-decide">
       <div class="card">
-        <div class="card-head"><span class="card-head-ic">🎯</span><span class="card-head-t">高層決策建議 / Decision Points</span><span class="card-head-b br">需要主管決定的事</span></div>
-        <div class="card-body"><div class="dp-grid" id="dp-grid"></div></div>
+        <div class="ch"><span class="ch-ic">🎯</span><span class="ch-t">高層決策建議 / Decision Points</span><span class="ch-b br">需要主管決定的事</span></div>
+        <div class="cb"><div class="dp-grid" id="dp-grid"></div></div>
       </div>
     </div>
 
-    <!-- FOOTER -->
     <div class="out-footer">
-      <div class="of-note">HSBC Cloud Policy · JPMorgan TCRM · BIS · DORA · BCBS 239 · ISO 27017 · FSC</div>
-      <div class="of-tags">
-        <span class="ft ftn">Smart Archie</span>
-        <span class="ft ftg">Executive Brief</span>
-        <span class="ft ftd">Demo Mode</span>
-      </div>
+      <div class="of-note">HSBC · JPMorgan TCRM · BIS · DORA · BCBS 239 · ISO 27017 · FSC</div>
+      <div class="of-tags"><span class="ft ftn">Smart Archie</span><span class="ft ftg">Executive Brief</span></div>
       <div class="of-ts" id="of-ts"></div>
     </div>
 
-  </div><!-- end out-area -->
-</div><!-- end output-panel -->
-</div><!-- end shell -->
+  </div>
+</div>
+</div>
 
-<script>
-/* ══════════════════════════════════════════
-  DEMO DATA — keyword-matched responses
-  4 scenarios: core / digital / data / security
-══════════════════════════════════════════ */
-const SCENARIOS = {
-  core: {
-    headline:'核心業務系統混合雲遷移 — 金融級韌性升級',
-    execText:'本專案將現有核心業務系統從地端基礎設施遷移至混合雲環境，系統涉及大量客戶個人資料（PII）及高頻業務存取，對系統可用性與資安合規的要求極為嚴格。對標 HSBC Cloud Adoption Framework 三線防禦模型，依 BIS 作業韌性原則設定容忍中斷邊界（TDT），並依 DORA Article 11 建立 ICT 業務持續管理機制，確保 2025 年強制合規截止日前完成部署。',
-    kpis:{c:{v:'8/10',hint:'需跨部門協同，Oracle 授權與法規雙重障礙'},r:{v:'7/10',hint:'PII + 24/7 核心服務，高於集團平均'},rd:{v:'4/10',hint:'技術債務高，需提前投入準備工作'}},
-    bizCost:'持續維運老舊系統每年授權與硬體成本超過 NT$1,200 萬，且無法符合 2025 年 DORA 強制要求，面臨最高年營收 1% 的監管裁罰。',
-    keyDecision:'是否接受 18 個月遷移窗口？若縮短至 12 個月需追加人力約 NT$800 萬，建議 Q1 前召開董事會決策。',
-    objs:[
-      {t:'提升系統作業韌性',d:'依 BIS 作業韌性原則設定 RTO ≤ 4hr、RPO ≤ 1hr，建立多可用區主動-主動架構'},
-      {t:'滿足 DORA 2025 合規',d:'確保 ICT 業務持續管理、重大事件 4hr 通報機制於 2025/01 截止日前完成部署'},
-      {t:'降低長期維運成本',d:'從地端授權模式轉為雲端 PaaS，預估 3 年 TCO 降低 35–45%'},
-      {t:'建立可複製的上雲框架',d:'本次遷移成為集團標準化上雲模板，加速後續子公司系統遷移效率'},
-    ],
-    strategy:'Re-platform（重新平台化）',conf:'AI 建議信心度 89%',
-    stratDesc:'Oracle 核心系統容器化後部署至 AWS ECS Fargate / GCP Cloud Run（全 Serverless PaaS），資料庫升級為 AWS Aurora PostgreSQL / GCP AlloyDB，保留核心業務邏輯同時獲得雲端彈性。符合集團 PaaS/SaaS 優先原則。',
-    awsItems:['ECS Fargate（Serverless）','Aurora PostgreSQL Multi-AZ','CloudHSM 金鑰管理','WAF + Shield Advanced','Security Hub（DORA 對標）'],
-    awsCost:'月費估計 NT$280,000–360,000',
-    gcpItems:['Cloud Run（全 Serverless）','AlloyDB（4x 效能）','Cloud HSM','Cloud Armor + IDS','Security Command Center'],
-    gcpCost:'月費估計 NT$250,000–320,000',
-    risks:[
-      {lv:'critical',t:'DORA 2025/01 截止日：VPN 架構不符合持續驗證要求，需在截止日前完成 ZT 基礎架構，否則面臨歐盟行政裁罰。',own:'CISO / 法遵',stat:'rs-none',decide:true},
-      {lv:'critical',t:'PII 資料遷移曝險：全程 AES-256 加密傳輸，AWS Macie / GCP DLP 自動偵測，依個資法 §27 完成 DPIA 風險評估。',own:'資安部門',stat:'rs-wip'},
-      {lv:'high',t:'BIS TDT 容忍邊界：量化並測試核心服務容忍中斷時間，確保 RTO ≤ 4hr、RPO ≤ 1hr，每年情境演練驗證。',own:'IT 部門',stat:'rs-wip',decide:true},
-      {lv:'medium',t:'BCBS 239 資料品質：遷移期間維持資料精確率 ≥99.9%，建立資料血緣追蹤，確保監理報告不受影響。',own:'資料治理',stat:'rs-ok'},
-    ],
-    cpRate:'48%',cpRateSub:'尚有 3 項關鍵法規缺口待補強',
-    compliance:[
-      {tp:'act',tt:'DORA Art.11 — ICT 業務持續管理',d:'制定符合 DORA 標準的 BCM，建立三大情境壓測，每年全規模演練。',action:'截止：2025/01/17',must:true},
-      {tp:'act',tt:'金管會 — 重大系統變更申報',d:'系統上雲屬重大變更，需施作 60 日前完成申報，提交雲端服務風險評估報告。',action:'施作前 60 日',must:true},
-      {tp:'warn',tt:'BIS 作業韌性 — TDT 情境測試',d:'完成 TDT 量化測試，向董事會風險委員會提交韌性報告。',action:'建議 Q3 完成',must:false},
-      {tp:'pass',tt:'ISO 27017 / CSA CCM v4',d:'AWS / GCP 均已取得 STAR Level 2 認證，客戶責任部分需確認。',action:'已達標',must:false},
-    ],
-    phases:[
-      {t:'韌性評估與藍圖',dur:'Month 1–3',pct:[0,17]},
-      {t:'著陸區與安全建置',dur:'Month 4–6',pct:[19,35]},
-      {t:'資料遷移與驗證',dur:'Month 7–12',pct:[40,71]},
-      {t:'韌性測試與切換',dur:'Month 13–16',pct:[78,94]},
-      {t:'穩定化與治理移交',dur:'Month 17–18',pct:[100,112]},
-    ],
-    phTotal:'18 個月',
-    brief:`【核心系統上雲策略摘要】
+<!-- ══ SCRIPTS ══ -->
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-本計畫將運行逾 15 年的核心業務系統遷移至混合雲環境，核心目標有三：一、滿足 DORA 2025 年 1 月強制合規截止日，避免監管裁罰風險；二、建立符合 BIS 作業韌性原則的高可用架構（RTO ≤ 4hr）；三、降低 3 年 TCO 達 35–45%。
+/* ── Supabase 初始化 ── */
+const supabase = createClient(
+  'https://oxownfzafrveihxhuxay.supabase.co',
+  'sb_publishable_qu_7OLWgfKpbmKnzDsQOuA_SUhryH67'
+)
 
-建議採用「Re-platform 重新平台化」策略，部署至 AWS / GCP 全 Serverless PaaS 架構，保留核心業務邏輯同時獲得雲端彈性。本案已識別 3 項關鍵合規缺口（DORA、金管會申報、BIS TDT 測試），需於 Q1 前啟動補強行動。
-
-關鍵決策：本案需董事會於本季確認：（1）遷移時程（12 vs 18 個月）、（2）雲端供應商選擇（AWS vs GCP）、（3）DORA 合規預算授權。`,
-    pptSlides:[
-      {num:'Slide 01',title:'背景與問題',bullets:['核心系統運行逾 15 年，技術債務持續累積','2025/01 DORA 強制生效，現況架構不合規','每年授權與硬體成本超過 NT$1,200 萬','大促期間服務中斷風險持續存在'],note:'建議搭配系統年齡圖與成本趨勢圖'},
-      {num:'Slide 02',title:'策略目標',bullets:['目標一：滿足 DORA 2025 強制合規截止日','目標二：建立 RTO ≤ 4hr 高可用架構（BIS TDT）','目標三：3 年 TCO 降低 35–45%','目標四：建立可複製集團上雲標準框架'],note:'以 OKR 格式呈現，建議標示各目標負責人'},
-      {num:'Slide 03',title:'建議方案',bullets:['策略：Re-platform（重新平台化），AI 信心度 89%','部署至 AWS ECS Fargate / GCP Cloud Run（PaaS）','資料庫升級：Aurora PostgreSQL / AlloyDB','月費估計 NT$25–36 萬，3 年 ROI 正轉'],note:'可加入架構示意圖，強調 PaaS 優先原則'},
-      {num:'Slide 04',title:'風險與治理',bullets:['Critical：DORA 截止日 2025/01，需主管授權加速','Critical：PII 資料遷移曝險，DPIA 進行中','High：BIS TDT 情境測試尚未執行','合規完成率目前 48%，3 項缺口待補強'],note:'建議附合規缺口追蹤熱力表'},
-      {num:'Slide 05',title:'Roadmap 與決策',bullets:['18 個月遷移路線圖（M1–M3 評估 → M18 移交）','本案需 Q1 決策：時程、供應商、預算授權','若不行動代價：DORA 裁罰最高 5,000 萬','最小可行方案：先完成 DORA 合規，再推完整遷移'],note:'附甘特圖與三個決策選項比較表'},
-    ],
-    decisions:{
-      cost:['持續維運老舊系統每年額外成本超過 NT$1,200 萬','DORA 2025 違規最高罰款超過 NT$5,000 萬','技術債務每拖延一年，遷移成本預估增加 15%'],
-      decide:['Q1 前確認：18 個月 vs 12 個月時程，後者追加 NT$800 萬','Q1 前確認：AWS vs GCP 供應商選型，影響 3 年 TCO','Q2 前授權：DORA 合規預算，最低 NT$200 萬啟動'],
-      min:['最小可行推進：先完成 DORA Art.9/11 合規基礎（預估 6 個月，NT$600 萬）','第一里程碑：完成金管會申報 + BIS TDT 基準評估','漸進策略：先遷移非核心模組驗證，再推核心系統'],
-    }
-  },
-
-  digital: {
-    headline:'數位通路 APP 雲端高可用架構遷移 — JPMorgan Tier-1 標準',
-    execText:'數位通路 APP 後端因地端機房容量不足，於業務高峰期頻繁服務中斷，面臨 FSC 服務可用性裁罰風險。本專案依 JPMorgan TCRM Tier-1 標準，確認本服務屬集團關鍵數位服務，須達成 99.95% SLA 目標，並在 6 個月內完成雲端遷移，建立彈性自動擴展架構。',
-    kpis:{c:{v:'6/10',hint:'容器化標準流程，複雜度適中'},r:{v:'6/10',hint:'JPMorgan Tier-1 RTO 嚴格，DORA 4hr 通報壓力'},rd:{v:'7/10',hint:'Spring Boot 容器化成熟，團隊雲端能力具備'}},
-    bizCost:'每次大促服務中斷預估損失 NT$120–380 萬（含客戶流失與品牌損害），每次中斷均需向 FSC 提交說明報告，累積合規成本持續上升。',
-    keyDecision:'ECS Fargate（全 Serverless）vs EKS（自管 K8s）？前者降低 40% 維運負擔，建議 1 週內確認技術選型。',
-    objs:[
-      {t:'消除大促服務中斷',d:'建立 HPA 自動擴展機制，達成 99.95% SLA，支援 10 倍流量尖峰'},
-      {t:'符合 JPMorgan Tier-1 韌性標準',d:'RTO ≤ 2hr，RPO ≤ 15min，建立多可用區主動-主動架構'},
-      {t:'DORA Art.17 重大事件通報就緒',d:'建立 4hr 初報機制，確保 2025/01 前完成通報流程部署'},
-      {t:'提升開發部署效率',d:'導入 GitOps CI/CD，縮短發版週期 50%，提升團隊雲端能力'},
-    ],
-    strategy:'Re-platform（重新平台化）',conf:'AI 建議信心度 93%',
-    stratDesc:'Spring Boot 容器化後部署至 AWS ECS Fargate / GCP Cloud Run（全 Serverless PaaS），資料庫遷移至 AWS RDS Multi-AZ / GCP Cloud SQL Enterprise Plus（PaaS），引入 AWS API Gateway / GCP Apigee（SaaS）實現流量控制，完全符合 JPMorgan Tier-1 高可用要求。',
-    awsItems:['ECS Fargate（全 Serverless，推薦）','RDS MySQL Multi-AZ','ElastiCache Serverless Redis（2024）','API Gateway v2（限流/路由）','CloudFront CDN + WAF'],
-    awsCost:'月費估計 NT$95,000–130,000',
-    gcpItems:['Cloud Run（全 Serverless）','Cloud SQL Enterprise Plus','Memorystore for Redis','Apigee API Management（SaaS）','Cloud Armor + CDN'],
-    gcpCost:'月費估計 NT$85,000–115,000',
-    risks:[
-      {lv:'critical',t:'JPMorgan Tier-1 RTO 違規：RTO 超過 2hr 觸發監管通報義務，需建立自動化故障切換並定期演練驗證。',own:'IT 部門',stat:'rs-none',decide:true},
-      {lv:'high',t:'DORA Art.17 — 重大事件 4hr 通報：服務中斷需 4hr 初報、72hr 詳報，需預建事件分類標準與通報流程。',own:'法遵部門',stat:'rs-wip',decide:true},
-      {lv:'high',t:'PCI DSS v4.0 — CDE 隔離：金融交易資料需在獨立 VPC 子網路處理，WAF + IDS 強制部署。',own:'資安部門',stat:'rs-wip'},
-      {lv:'medium',t:'Session 狀態管理：容器化後需將 Session 外部化至 Redis（ElastiCache Serverless / Memorystore），避免交易不一致。',own:'IT 部門',stat:'rs-ok'},
-    ],
-    cpRate:'42%',cpRateSub:'尚有 2 項關鍵法規缺口（DORA + FSC 申報）',
-    compliance:[
-      {tp:'act',tt:'DORA Art.11 — 數位通路 ICT 業務持續',d:'制定符合 DORA 的數位通路 BCM，建立 FSC 快速通報通道。',action:'截止：2025/01',must:true},
-      {tp:'act',tt:'FSC — 銀行系統重大變更申報',d:'網銀後台屬重大資訊系統，需施作 30 日前完成申報。',action:'施作前 30 日',must:true},
-      {tp:'warn',tt:'BIS 作業韌性 — TDT 情境測試',d:'量化 TDT，識別恢復時序計畫臨界點，向董事會提交報告。',action:'建議 Q2 完成',must:false},
-      {tp:'pass',tt:'PCI DSS v4.0 — WAF / 稽核日誌',d:'AWS WAF / Cloud Armor 符合 PCI DSS Req 6.4，已達標。',action:'已達標',must:false},
-    ],
-    phases:[
-      {t:'韌性基準與技術選型',dur:'Month 1',pct:[0,8]},
-      {t:'容器化與 CI/CD',dur:'Month 1–2',pct:[4,18]},
-      {t:'資料庫遷移',dur:'Month 2–3',pct:[16,28]},
-      {t:'流量與安全強化',dur:'Month 3–4',pct:[24,36]},
-      {t:'DORA 壓測與上線',dur:'Month 5–6',pct:[36,48]},
-    ],
-    phTotal:'6 個月',
-    brief:`【數位通路 APP 上雲策略摘要】
-
-本計畫將數位通路 APP 後端遷移至雲端，解決大促服務中斷問題，並符合 JPMorgan Tier-1 韌性標準（RTO ≤ 2hr）與 DORA 2025 合規要求。技術方案採 AWS ECS Fargate / GCP Cloud Run 全 Serverless 架構，支援 10 倍流量彈性擴展，月費估計 NT$8.5–13 萬，6 個月內完成遷移。
-
-本案已識別 2 項 Critical 風險：Tier-1 RTO 目標與 DORA 4hr 通報機制，均需 Q1 前啟動建置。
-
-關鍵決策：技術選型（ECS vs EKS）需 1 週內確認；FSC 申報需施作 30 日前提交。`,
-    pptSlides:[
-      {num:'Slide 01',title:'背景與問題',bullets:['大促期間服務中斷，每次損失 NT$120–380 萬','FSC 可用性要求 99.95%，現況達不到','地端機房無法彈性擴展，大促需提前鎖定容量','DORA 2025/01 重大事件通報義務尚未就緒'],note:'建議附事件損失統計圖與系統可用性趨勢'},
-      {num:'Slide 02',title:'策略目標',bullets:['目標一：消除大促服務中斷，達成 99.95% SLA','目標二：符合 JPMorgan Tier-1 韌性（RTO ≤ 2hr）','目標三：DORA Art.17 通報機制 2025/01 就緒','目標四：CI/CD 現代化，發版週期縮短 50%'],note:''},
-      {num:'Slide 03',title:'建議方案',bullets:['策略：Re-platform，AI 信心度 93%','AWS ECS Fargate / GCP Cloud Run（全 Serverless）','API Gateway + HPA 彈性擴展，支援 10x 流量','月費 NT$8.5–13 萬，6 個月完成'],note:'可加入架構示意圖'},
-      {num:'Slide 04',title:'風險與治理',bullets:['Critical：Tier-1 RTO 目標未達成，需主管授權','Critical：DORA 4hr 通報機制尚未建立','High：PCI DSS CDE 隔離驗證進行中','合規完成率 42%，2 項法規缺口待補強'],note:''},
-      {num:'Slide 05',title:'Roadmap 與決策',bullets:['6 個月遷移路線圖（M1 技術選型 → M6 上線）','技術選型（ECS vs EKS）1 週內確認','FSC 申報施作前 30 日提交','最小可行：先完成 DORA 通報機制，再推遷移'],note:''},
-    ],
-    decisions:{
-      cost:['每次大促中斷損失 NT$120–380 萬','FSC 裁罰風險：可用性不達標將面臨警告或罰款','拖延每月額外損失估計 NT$30–60 萬'],
-      decide:['1 週內：ECS Fargate vs EKS 技術選型','施作前 30 日：FSC 重大系統變更申報提交','Q1 前：DORA Art.17 通報流程授權建置'],
-      min:['最小可行推進：先完成 DORA 通報機制（預估 2 個月，NT$150 萬）','第一里程碑：容器化完成並部署至雲端測試環境','漸進策略：先切換非交易流量，驗證穩定後切換核心交易'],
-    }
-  },
-
-  data: {
-    headline:'跨子公司資料湖與 AI 分析平台建置 — BCBS 239 Compliant',
-    execText:'整合金控旗下七家子公司異質資料，建立集團統一資料湖，支援 BI 報表、監理申報自動化及 AI 模型訓練。依 BCBS 239 風險資料整合原則確保資料精確性、完整性與及時性。採 Data Mesh 架構滿足子公司資料自治需求，並依 SR 11-7 建立 AI 模型風險管理框架，確保 2025/08 EU AI Act 強制適用前完成合規部署。',
-    kpis:{c:{v:'8/10',hint:'跨 7 家子公司異質系統整合，治理複雜度高'},r:{v:'5/10',hint:'BCBS 239 + SR 11-7 雙重監管，但無 24/7 核心壓力'},rd:{v:'6/10',hint:'資料工程能力具備，AI 模型治理框架尚待建立'}},
-    bizCost:'各子公司各自維護系統，重複建置成本每年 NT$2,400 萬，手動整理監理報表消耗 1,200 人時，且無法支援集團 AI 轉型目標。',
-    keyDecision:'資料湖落地區域（AWS ap-northeast-1 東京 vs GCP asia-east1 台灣）？後者符合資料主權但成熟度略低，需 2 週內確認。',
-    objs:[
-      {t:'滿足 BCBS 239 風險資料整合',d:'建立符合 13 項 BCBS 239 原則的資料品質管控機制，精確率 ≥99.9%'},
-      {t:'消除監理報表手動作業',d:'自動化集團監理申報，每年節省 1,200 人時，降低人為錯誤風險'},
-      {t:'建立 SR 11-7 AI 模型治理框架',d:'在 EU AI Act 2025/08 生效前，完成高風險 AI 模型庫存與驗證機制'},
-      {t:'降低跨子公司資料成本',d:'消除重複建置，預估每年節省 NT$1,200–1,800 萬'},
-    ],
-    strategy:'Re-platform — Data Mesh 架構',conf:'AI 建議信心度 85%',
-    stratDesc:'各子公司維持資料自治（Data Domain），AWS Lake Formation / GCP Dataplex（PaaS）統一 Governance Layer。優先採用全 PaaS 架構（S3 + Glue 4.0 / BigQuery + Dataflow），確保 BCBS 239 資料血緣可追蹤，並整合 AWS DataZone / GCP Analytics Hub 建立集團資料市集。',
-    awsItems:['S3 Data Lake（Raw/Curated/Gold）','AWS Glue 4.0 ETL（PaaS）','Redshift Serverless','AWS DataZone（資料市集，2024新）','Lake Formation + Macie v2'],
-    awsCost:'月費估計 NT$180,000–250,000',
-    gcpItems:['BigQuery（全 Serverless，推薦）','Dataflow（Streaming ETL）','GCP Dataplex（資料治理）','Analytics Hub（跨組織共享）','Looker + Vertex AI'],
-    gcpCost:'月費估計 NT$160,000–220,000',
-    risks:[
-      {lv:'high',t:'EU AI Act 2025/08 高風險 AI：信用評分、核保等 AI 屬高風險類別，需建立人工監督機制，向主管機關登記。',own:'法遵部門',stat:'rs-none',decide:true},
-      {lv:'high',t:'SR 11-7 AI 模型驗證：高風險 AI 模型需完成獨立模型驗證（IMV），確保可解釋性與偏差測試符合監管預期。',own:'模型風險管理',stat:'rs-none',decide:true},
-      {lv:'high',t:'BCBS 239 資料精確性：遷移期間維持資料完整率 ≥99.9%，建立資料品質儀表板，向 CRO 提交月度報告。',own:'資料治理團隊',stat:'rs-wip'},
-      {lv:'medium',t:'個資法去識別化：AI 訓練資料需完成 k-匿名化（k≥5）或差分隱私，建議聘外部個資稽核機構驗證。',own:'法遵部門',stat:'rs-wip'},
-    ],
-    cpRate:'38%',cpRateSub:'尚有 3 項關鍵缺口（EU AI Act、SR 11-7、BCBS 239）',
-    compliance:[
-      {tp:'act',tt:'EU AI Act — 高風險 AI 系統合規',d:'2025/08 適用，信用評分類 AI 需建立技術文件、人工監督機制並登記。',action:'截止：2025/08',must:true},
-      {tp:'act',tt:'BCBS 239 — 風險資料整合合規計畫',d:'制定合規路線圖，優先達成 Principle 3（精確性）與 Principle 4（完整性）。',action:'建議 Q1 啟動',must:true},
-      {tp:'act',tt:'SR 11-7 — AI 模型風險管理框架',d:'建立集團 AI 模型庫存，所有模型需完成開發文件、獨立驗證、績效監控。',action:'建議 Q2 前建立',must:true},
-      {tp:'pass',tt:'ISO 27018 — 雲端個人資料保護',d:'AWS / GCP 均持有 ISO 27018 認證，需建立集團 ROPA 文件。',action:'已達標',must:false},
-    ],
-    phases:[
-      {t:'BCBS 239 基準評估',dur:'Month 1–2',pct:[0,20]},
-      {t:'平台建置與治理',dur:'Month 2–4',pct:[17,40]},
-      {t:'資料接入與去識別',dur:'Month 3–6',pct:[30,60]},
-      {t:'BI 與分析層',dur:'Month 5–7',pct:[50,70]},
-      {t:'AI/ML（SR 11-7）',dur:'Month 6–9',pct:[60,90]},
-      {t:'監理申報自動化',dur:'Month 8–10',pct:[80,100]},
-    ],
-    phTotal:'10 個月',
-    brief:`【跨子公司資料湖策略摘要】
-
-本計畫整合集團七家子公司異質資料，建立符合 BCBS 239 標準的統一資料湖，消除每年 NT$2,400 萬重複建置成本，並支援監理申報自動化（每年節省 1,200 人時）。採 Data Mesh 架構確保子公司資料自治，AWS Lake Formation / GCP Dataplex 統一治理層。
-
-本案需在 EU AI Act 2025/08 強制適用前完成 AI 模型治理框架（SR 11-7），並依 BCBS 239 建立資料品質管控機制（精確率 ≥99.9%）。已識別 3 項關鍵合規缺口需 Q1–Q2 啟動補強。
-
-關鍵決策：資料落地區域（東京 vs 台灣）需 2 週內確認，影響資料主權合規與 3 年 TCO。`,
-    pptSlides:[
-      {num:'Slide 01',title:'背景與問題',bullets:['七家子公司資料孤島，重複建置每年 NT$2,400 萬','監理報表手動整合，每年消耗 1,200 人時','EU AI Act 2025/08 強制，AI 合規時程緊迫','BCBS 239 風險資料整合原則尚未完全達標'],note:''},
-      {num:'Slide 02',title:'策略目標',bullets:['目標一：滿足 BCBS 239 13 項資料整合原則','目標二：監理申報全自動化，節省 1,200 人時','目標三：EU AI Act 高風險 AI 合規就緒','目標四：消除重複建置，每年節省 NT$1,200 萬'],note:''},
-      {num:'Slide 03',title:'建議方案',bullets:['策略：Re-platform — Data Mesh，AI 信心度 85%','AWS Lake Formation / GCP Dataplex 統一治理','BigQuery / Redshift Serverless 分析層（PaaS）','月費 NT$16–25 萬，10 個月完成'],note:''},
-      {num:'Slide 04',title:'風險與治理',bullets:['High：EU AI Act 2025/08 截止，需主管授權啟動','High：SR 11-7 AI 模型驗證尚未建立機制','High：BCBS 239 資料品質管控進行中','合規完成率 38%，3 項缺口待補強'],note:''},
-      {num:'Slide 05',title:'Roadmap 與決策',bullets:['10 個月路線圖（M1–M2 評估 → M10 申報自動化）','資料落地區域 2 週內確認','EU AI Act 合規預算 Q1 授權','最小可行：先完成 BCBS 239 + 監理報表自動化'],note:''},
-    ],
-    decisions:{
-      cost:['各子公司重複建置每年 NT$2,400 萬','手動監理報表每年 1,200 人時（約 NT$600 萬）','拖延 EU AI Act 合規，最高罰款 3% 年全球營收'],
-      decide:['2 週內：資料落地區域（東京 vs 台灣）','Q1 前：EU AI Act 合規預算授權','Q2 前：SR 11-7 AI 模型驗證機制建立'],
-      min:['最小可行：先完成 BCBS 239 資料品質管控 + 監理報表自動化（6 個月，NT$800 萬）','第一里程碑：兩家子公司試點接入並驗證品質','漸進策略：先做 BI 分析層，AI 模型訓練第二階段'],
-    }
-  },
-
-  security: {
-    headline:'集團 Zero Trust 零信任安全架構 — DORA 2025 強制合規',
-    execText:'集團現行 VPN 架構無法符合 DORA Art.9 ICT 安全強制要求（2025/01 生效）。依 NIST SP 800-207 ZT 七大原則，結合 HSBC Cyber Security Framework 三線防禦，分三年導入雲原生零信任架構，覆蓋集團 5,000 位使用者，確保 DORA、NIST CSF 2.0、SWIFT CSCF v2024 合規。',
-    kpis:{c:{v:'8/10',hint:'多帳號聯邦身份 + 端點信任同步推進，組織變革難度高'},r:{v:'6/10',hint:'DORA 2025 強制截止日造成時程壓力，使用者阻力為主要風險'},rd:{v:'5/10',hint:'IAM 基礎成熟，但 ZT 思維與工具鏈尚待導入'}},
-    bizCost:'現行 VPN 維運成本每年約 NT$450 萬，DORA 2025/01 違規最高罰款超過 NT$5,000 萬，加上資安事件平均損失，不行動的代價遠高於導入成本。',
-    keyDecision:'AWS Verified Access + CrowdStrike vs GCP BeyondCorp + SentinelOne？前者 AWS 原生整合度高，後者跨平台能力強，建議 PoC 比較後 1 個月內決定。',
-    objs:[
-      {t:'DORA Art.9 ICT 安全強制合規',d:'在 2025/01 截止日前完成 ZT 基礎架構部署，滿足存取控制、加密、日誌、業務持續四大支柱'},
-      {t:'消除側向移動（Lateral Movement）風險',d:'依 NIST SP 800-207 七大原則，以持續驗證取代 VPN 隱式信任，減少攻擊面'},
-      {t:'建立 DORA Art.17 通報就緒能力',d:'建立符合 DORA 的 SIEM 與 SOAR Playbook，確保重大事件 4hr 初報能力'},
-      {t:'FFIEC CAT 成熟度提升至 Evolved',d:'完成 FFIEC Cybersecurity Assessment Tool 評估，達成最高成熟度等級'},
-    ],
-    strategy:'Re-platform — Zero Trust 雲原生安全',conf:'AI 建議信心度 91%',
-    stratDesc:'以 AWS IAM Identity Center + Okta / GCP BeyondCorp Enterprise 建立統一身份管理（SaaS/PaaS），AWS Verified Access / GCP Identity-Aware Proxy 取代傳統 VPN，CrowdStrike / SentinelOne EDR + AWS Security Hub / Google Chronicle 建立符合 DORA Art.9 的 SIEM。',
-    awsItems:['AWS Verified Access（無 VPN ZTA）','IAM Identity Center + MFA FIDO2','Security Hub（DORA 對標）','GuardDuty + Security Lake（2024）','CrowdStrike Falcon（SaaS）'],
-    awsCost:'月費估計 NT$220,000–300,000（含 CrowdStrike）',
-    gcpItems:['BeyondCorp Enterprise（ZTA，推薦）','Cloud Identity + Context-Aware Access','Chronicle SIEM（AI 威脅分析）','Security Command Center Enterprise（2024）','SentinelOne（SaaS）'],
-    gcpCost:'月費估計 NT$200,000–270,000（含 SentinelOne）',
-    risks:[
-      {lv:'critical',t:'DORA Art.9 截止日 2025/01：VPN 不符持續驗證要求，需截止日前完成 ZT 基礎架構，否則面臨歐盟行政裁罰。',own:'CISO',stat:'rs-wip',decide:true},
-      {lv:'critical',t:'DORA Art.17 — 重大事件通報：需建立事件分類標準，4hr 初報、72hr 詳報，預建自動化通報流程。',own:'法遵部門',stat:'rs-none',decide:true},
-      {lv:'high',t:'HSBC Red Team 滲透測試：ZT 上線前需完成 Red Team 演練，驗證側向移動防禦能力，向 CISO 提交報告。',own:'資安部門',stat:'rs-none'},
-      {lv:'medium',t:'使用者體驗衝擊：MFA 強制啟用與存取政策收緊可能造成業務阻斷，需例外申請流程與高階主管培訓。',own:'IT 部門',stat:'rs-wip'},
-    ],
-    cpRate:'44%',cpRateSub:'尚有 2 項 Critical 缺口（DORA Art.9 + Art.17）',
-    compliance:[
-      {tp:'act',tt:'DORA Art.9 — ICT 安全強制四大支柱',d:'存取控制（MFA 強制）、加密（AES-256）、日誌（5年保留）、業務持續，2025/01 前全部到位。',action:'截止：2025/01',must:true},
-      {tp:'act',tt:'FFIEC CAT — 網路安全成熟度評估',d:'完成 FFIEC CAT 評估，目標達成 Evolved 最高等級，向董事會提交年度報告。',action:'建議年度執行',must:true},
-      {tp:'warn',tt:'SWIFT CSCF v2024 — 支付環境安全',d:'ZT 架構需確保 SWIFT 16 項強制控制全部符合，完成 SWIFT 年度自評。',action:'建議 Q3 完成',must:false},
-      {tp:'pass',tt:'NIST CSF 2.0 — 六大功能對標',d:'Security Hub / Chronicle（DETECT）、SOAR（RESPOND）、Control Tower（GOVERN）完整對應。',action:'已達標',must:false},
-    ],
-    phases:[
-      {t:'ZT 基準評估',dur:'Month 1–2',pct:[0,11]},
-      {t:'身份層建置',dur:'Month 1–4',pct:[5,22]},
-      {t:'網路微分段',dur:'Month 3–8',pct:[17,44]},
-      {t:'端點信任評估',dur:'Month 5–10',pct:[28,56]},
-      {t:'SIEM 集中化',dur:'Month 8–14',pct:[44,78]},
-      {t:'ZT 應用擴展',dur:'Month 12–18',pct:[67,100]},
-    ],
-    phTotal:'18 個月',
-    brief:`【Zero Trust 安全架構策略摘要】
-
-本計畫依 DORA Art.9 強制要求（2025/01 生效）導入集團零信任安全架構，取代現行 VPN，覆蓋 5,000 位使用者。技術方案採 AWS Verified Access / GCP BeyondCorp Enterprise 建立無 VPN 存取閘道，整合 CrowdStrike / SentinelOne EDR 與 SIEM，建立符合 DORA 的重大事件 4hr 通報能力。
-
-本案有兩項 Critical 風險需主管授權加速：DORA Art.9 截止日（2025/01）與 Art.17 通報機制。現行 VPN 維運成本每年 NT$450 萬，DORA 違規罰款最高超過 NT$5,000 萬，不行動代價遠高於導入成本。
-
-關鍵決策：AWS vs GCP 技術選型需 1 個月 PoC 比較後確認，同時須立即授權 DORA Art.9 合規預算啟動。`,
-    pptSlides:[
-      {num:'Slide 01',title:'背景與問題',bullets:['現行 VPN 架構不符 DORA Art.9 持續驗證要求','2025/01 強制截止日，違規最高罰款 NT$5,000 萬','VPN 無法防禦側向移動，APT 攻擊面過大','現行維運成本每年 NT$450 萬，且風險持續累積'],note:''},
-      {num:'Slide 02',title:'策略目標',bullets:['目標一：DORA Art.9 2025/01 前完成合規','目標二：消除 VPN 隱式信任，實施 NIST ZT 七大原則','目標三：建立 DORA Art.17 4hr 通報就緒能力','目標四：FFIEC CAT 成熟度提升至 Evolved'],note:''},
-      {num:'Slide 03',title:'建議方案',bullets:['策略：Re-platform — ZT 雲原生安全，AI 信心度 91%','AWS Verified Access / GCP BeyondCorp（無 VPN）','CrowdStrike / SentinelOne EDR（全集團部署）','月費估計 NT$20–30 萬（含 EDR）'],note:''},
-      {num:'Slide 04',title:'風險與治理',bullets:['Critical：DORA 2025/01 截止，需立即授權加速','Critical：DORA Art.17 通報機制尚未建立','High：Red Team 演練尚未排程','合規完成率 44%，2 項 Critical 缺口待補強'],note:''},
-      {num:'Slide 05',title:'Roadmap 與決策',bullets:['18 個月 ZT 路線圖（M1–M2 評估 → M18 VPN 退場）','技術選型 PoC 1 個月內完成並確認','DORA 合規預算需立即授權啟動','最小可行：先完成 DORA Art.9 四大支柱基礎'],note:''},
-    ],
-    decisions:{
-      cost:['現行 VPN 維運每年 NT$450 萬','DORA 違規最高罰款超過 NT$5,000 萬','資安事件平均損失超過 NT$2,000 萬（含聲譽損失）'],
-      decide:['立即：授權 DORA Art.9 合規預算啟動（不可延遲）','1 個月內：AWS vs GCP PoC 比較後確認技術選型','Q1 前：DORA Art.17 通報流程負責人與預算確認'],
-      min:['最小可行：先完成 DORA Art.9 四大支柱基礎（預估 6 個月，NT$800 萬）','第一里程碑：MFA 強制啟用 + 身份層建置','漸進策略：先保護高權限帳號（PAM），再擴展至全員'],
-    }
+/* ── Auth 初始化 ── */
+async function initAuth() {
+  const { data, error } = await supabase.auth.getUser()
+  if (error || !data.user) {
+    window.location.href = 'login.html'
+    return
   }
-};
+  document.getElementById('user-email').textContent = data.user.email
+}
+
+window.doLogout = async function () {
+  await supabase.auth.signOut()
+  window.location.href = 'login.html'
+}
+
+/* ── UI 工具函式（掛到 window 供 onclick 使用）── */
+window.tog = function (el) { el.classList.toggle('on') }
+
+window.setSS = function (s) {
+  currentStyle = s
+  ;['exec','pm','arch'].forEach(x =>
+    document.getElementById(`ss-${x}`).classList.toggle('ss-on', x === s)
+  )
+}
+
+window.switchTab = function (t) {
+  ;['full','brief','ppt','decide'].forEach(x => {
+    document.getElementById(`tab-${x}`).classList.toggle('act', x === t)
+    document.getElementById(`op-${x}`).classList.toggle('show', x === t)
+  })
+}
+
+window.cpFilter = function (type, el) {
+  document.querySelectorAll('.cpf').forEach(f => f.classList.remove('active'))
+  el.classList.add('active')
+  document.querySelectorAll('.cp-item').forEach(item => {
+    item.style.display = (type === 'all' || item.dataset.type === type) ? 'flex' : 'none'
+  })
+}
 
 /* ── State ── */
-let currentStyle='exec';
-let currentData=null;
-let currentBriefText='';
+let currentStyle = 'exec'
+let currentBriefText = ''
 
-/* ── Toggle buttons ── */
-function tog(el,groupId){
-  el.classList.toggle('on');
-}
-
-/* ── Style switch ── */
-function setSS(s){
-  currentStyle=s;
-  ['exec','pm','arch'].forEach(x=>{
-    document.getElementById(`ss-${x}`).classList.toggle('ss-on',x===s);
-  });
-}
-
-/* ── Tab switch ── */
-function switchTab(t){
-  ['full','brief','ppt','decide'].forEach(x=>{
-    document.getElementById(`tab-${x}`).classList.toggle('act',x===t);
-    document.getElementById(`op-${x}`).classList.toggle('show',x===t);
-  });
-}
-
-/* ── Compliance filter ── */
-function cpFilter(type,el){
-  document.querySelectorAll('.cpf').forEach(f=>f.classList.remove('active'));
-  el.classList.add('active');
-  document.querySelectorAll('.cp-item').forEach(item=>{
-    item.style.display=(type==='all'||item.dataset.type===type)?'flex':'none';
-  });
-}
-
-/* ── Detect scenario ── */
-function detectScenario(){
-  const desc=(document.getElementById('f-desc').value||'').toLowerCase();
-  const stype=document.getElementById('f-systype').value;
-  if(stype==='security'||desc.includes('zero trust')||desc.includes('siem')||desc.includes('zero trust')||desc.includes('iam'))return'security';
-  if(stype==='data'||desc.includes('資料湖')||desc.includes('ai')||desc.includes('資料平台'))return'data';
-  if(stype==='digital'||desc.includes('app')||desc.includes('spring boot')||desc.includes('網銀'))return'digital';
-  return'core';
-}
-
-/* ── Loader ── */
-const LSTEPS_EXEC=[
-  {m:'問題定義：解析需求結構與關鍵詞…',p:15},
-  {m:'語意治理：比對 HSBC / JPMorgan 分級標準…',p:32},
-  {m:'語意治理：對標 Cathay 6R 遷移框架…',p:50},
-  {m:'語意治理：計算 DORA / BCBS 239 合規缺口…',p:68},
-  {m:'高層決策建議：生成 Executive Brief…',p:85},
-  {m:'高層決策建議：產出簡報架構與決策提醒…',p:97},
-];
-
-function generate(){
-  async function generate() {
+/* ── generate（唯一入口）── */
+window.generate = async function () {
   const name = document.getElementById('f-name').value.trim()
   const desc = document.getElementById('f-desc').value.trim()
 
-  if (!name || !desc) {
-    alert('請填寫專案名稱與需求描述')
-    return
+  if (!name || !desc) { alert('請填寫專案名稱與需求描述'); return }
+
+  const sensitive = [...document.querySelectorAll('#t-sensitive .toggle-btn.on')].map(e => e.textContent.trim())
+  const drivers   = [...document.querySelectorAll('#t-driver .toggle-btn.on')].map(e => e.textContent.trim())
+  const clouds    = [...document.querySelectorAll('#t-cloud .toggle-btn.on')].map(e => e.textContent.trim())
+
+  const payload = {
+    projectName:   name,
+    description:   desc,
+    systemType:    document.getElementById('f-systype').value,
+    entity:        document.getElementById('f-entity').value,
+    sensitiveData: sensitive,
+    budget:        document.getElementById('f-budget').value,
+    timeline:      document.getElementById('f-timeline').value,
+    drivers,
+    preferredCloud: clouds,
+    outputStyle:   currentStyle
   }
 
-  document.getElementById('empty').style.display = 'none'
+  // UI: 開始 loading
+  document.getElementById('empty').style.display   = 'none'
   document.getElementById('out-area').classList.remove('show')
+  document.getElementById('err-box').classList.remove('show')
   document.getElementById('loader').classList.add('show')
   document.getElementById('gen-btn').disabled = true
   document.getElementById('lsteps').innerHTML = ''
-  document.getElementById('lfill').style.width = '20%'
-  document.getElementById('lmsg').textContent = '正在整理需求並呼叫 AI 分析引擎…'
+  setProgress(20, '正在整理需求並呼叫 AI 分析引擎…')
 
   try {
-    const sensitiveData = [...document.querySelectorAll('#t-sensitive .toggle-btn.on')].map(el => el.textContent.trim())
-    const drivers = [...document.querySelectorAll('#t-driver .toggle-btn.on')].map(el => el.textContent.trim())
-    const preferredCloud = [...document.querySelectorAll('#t-cloud .toggle-btn.on')].map(el => el.textContent.trim())
-
-    const payload = {
-      projectName: name,
-      description: desc,
-      systemType: document.getElementById('f-systype').value,
-      entity: document.getElementById('f-entity').value,
-      sensitiveData,
-      budget: document.getElementById('f-budget').value,
-      timeline: document.getElementById('f-timeline').value,
-      drivers,
-      preferredCloud,
-      outputStyle: currentStyle
-    }
-
-    document.getElementById('lfill').style.width = '45%'
-    document.getElementById('lmsg').textContent = 'AI 正在生成治理分析、架構建議與成本估算…'
-
+    /* 1. 呼叫後端 API */
+    setProgress(45, 'AI 正在生成治理分析、架構建議與成本估算…')
     const res = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -864,243 +576,207 @@ function generate(){
     })
 
     const data = await res.json()
-    if (!res.ok || !data.ok) {
-      throw new Error(data.error || '分析失敗')
-    }
+    if (!res.ok || !data.ok) throw new Error(data.error || '後端分析失敗')
 
-    document.getElementById('lfill').style.width = '75%'
-    document.getElementById('lmsg').textContent = '正在寫入分析紀錄…'
-
+    /* 2. 寫入 Supabase 歷史紀錄 */
+    setProgress(75, '正在寫入分析紀錄…')
     const { data: userData, error: userErr } = await supabase.auth.getUser()
-    if (userErr || !userData.user) {
-      throw new Error('使用者登入資訊失效，請重新登入')
-    }
+    if (userErr || !userData.user) throw new Error('登入資訊失效，請重新登入')
 
-    const insertPayload = {
-      user_id: userData.user.id,
+    const { error: insertErr } = await supabase.from('analyses').insert([{
+      user_id:    userData.user.id,
       input_text: JSON.stringify(payload, null, 2),
-      result: data.result
-    }
+      result:     data.result
+    }])
+    if (insertErr) console.warn('寫入歷史紀錄失敗：', insertErr.message)
 
-    const { error: insertError } = await supabase
-      .from('analyses')
-      .insert([insertPayload])
-
-    if (insertError) {
-      console.error('Supabase insert error:', insertError)
-      throw new Error('分析成功，但寫入歷史紀錄失敗')
-    }
-
-    document.getElementById('lfill').style.width = '100%'
-    document.getElementById('lmsg').textContent = '分析完成，正在渲染報告…'
-
+    /* 3. 渲染報告 */
+    setProgress(100, '分析完成，正在渲染報告…')
     setTimeout(() => {
       document.getElementById('loader').classList.remove('show')
       renderOutput(data.result, name)
-      document.getElementById('out-area').classList.add('show')
       document.getElementById('gen-btn').disabled = false
-    }, 300)
+    }, 350)
 
   } catch (err) {
     console.error(err)
     document.getElementById('loader').classList.remove('show')
     document.getElementById('gen-btn').disabled = false
-    alert(err.message || '分析失敗，請稍後再試')
+    const eb = document.getElementById('err-box')
+    eb.textContent = '❌ ' + (err.message || '分析失敗，請稍後再試')
+    eb.classList.add('show')
+    document.getElementById('empty').style.display = 'flex'
   }
 }
 
-/* ── Render ── */
-function renderOutput(d,projName){
-  const now=new Date().toLocaleString('zh-TW',{hour12:false});
-  document.getElementById('ts-badge').textContent=now;
-  document.getElementById('of-ts').textContent='Generated: '+now;
-  const styleLabels={exec:'高層版（董事會/CXO）',pm:'PM 版（專案管理者）',arch:'架構評估版（技術主管）'};
-  document.getElementById('style-label').textContent='輸出風格：'+styleLabels[currentStyle];
+function setProgress(pct, msg) {
+  document.getElementById('lfill').style.width = pct + '%'
+  document.getElementById('lmsg').textContent  = msg
+}
 
-  // Summary
-  document.getElementById('exec-headline').textContent=projName+'｜'+d.headline;
-  document.getElementById('exec-text').textContent=d.execText;
-  const kmap=[{id:'kpi-complexity',hid:'kpi-c-hint',k:'c'},{id:'kpi-risk',hid:'kpi-r-hint',k:'r'},{id:'kpi-ready',hid:'kpi-rd-hint',k:'rd'}];
-  kmap.forEach(({id,hid,k})=>{
-    document.getElementById(id).textContent=d.kpis[k].v;
-    document.getElementById(hid).textContent=d.kpis[k].hint;
-  });
+/* ── renderOutput ── */
+function renderOutput(d, projName) {
+  const now = new Date().toLocaleString('zh-TW', { hour12: false })
+  document.getElementById('ts-badge').textContent = now
+  document.getElementById('of-ts').textContent    = 'Generated: ' + now
+  const styleLabels = { exec:'高層版（董事會/CXO）', pm:'PM 版（專案管理者）', arch:'架構評估版（技術主管）' }
+  document.getElementById('style-label').textContent = '輸出風格：' + styleLabels[currentStyle]
 
-  // Objectives
-  document.getElementById('obj-list').innerHTML=d.objs.map((o,i)=>`
+  /* Summary */
+  document.getElementById('exec-headline').textContent = projName + '｜' + (d.headline || '')
+  document.getElementById('exec-text').textContent     = d.execText || ''
+  const kmap = [
+    { id:'kpi-c',  hid:'kpi-ch',  k:'c'  },
+    { id:'kpi-r',  hid:'kpi-rh',  k:'r'  },
+    { id:'kpi-rd', hid:'kpi-rdh', k:'rd' }
+  ]
+  kmap.forEach(({ id, hid, k }) => {
+    document.getElementById(id).textContent  = d.kpis?.[k]?.v  || '—'
+    document.getElementById(hid).textContent = d.kpis?.[k]?.hint || ''
+  })
+  document.getElementById('s-cost').textContent = d.bizCost     || ''
+  document.getElementById('s-kd').textContent   = d.keyDecision || ''
+
+  /* Objectives */
+  document.getElementById('obj-list').innerHTML = (d.objs || []).map((o, i) => `
     <div class="obj-item">
-      <div class="obj-num">${i+1}</div>
+      <div class="obj-num">${i + 1}</div>
       <div><div class="obj-title">${o.t}</div><div class="obj-desc">${o.d}</div></div>
-    </div>`).join('');
+    </div>`).join('')
 
-  // Recommendation
-  document.getElementById('rec-hero').innerHTML=`
-    <div class="rec-strategy">☁ ${d.strategy}</div>
-    <div class="rec-conf">${d.conf}</div>
-    <div class="rec-rationale" style="margin-top:6px">${d.stratDesc}</div>`;
-  document.getElementById('arch-row2').innerHTML=`
+  /* Recommendation */
+  document.getElementById('rec-hero').innerHTML = `
+    <div class="rec-strategy">☁ ${d.strategy || ''}</div>
+    <div class="rec-conf">${d.conf || ''}</div>
+    <div class="rec-rationale">${d.stratDesc || ''}</div>`
+  document.getElementById('arch-row2').innerHTML = `
     <div class="arch-cloud">
       <div class="arch-cloud-name"><div class="arch-cloud-dot" style="background:#FF9900"></div>AWS</div>
-      <div class="arch-cloud-items">${d.awsItems.map(i=>`<div class="arch-cloud-item">· ${i}</div>`).join('')}</div>
-      <div class="arch-cost-badge">💰 ${d.awsCost}</div>
+      ${(d.awsItems || []).map(i => `<div class="arch-cloud-item">· ${i}</div>`).join('')}
+      <div class="arch-cost-badge">💰 ${d.awsCost || ''}</div>
     </div>
     <div class="arch-cloud">
       <div class="arch-cloud-name"><div class="arch-cloud-dot" style="background:#4285F4"></div>GCP</div>
-      <div class="arch-cloud-items">${d.gcpItems.map(i=>`<div class="arch-cloud-item">· ${i}</div>`).join('')}</div>
-      <div class="arch-cost-badge">💰 ${d.gcpCost}</div>
-    </div>`;
+      ${(d.gcpItems || []).map(i => `<div class="arch-cloud-item">· ${i}</div>`).join('')}
+      <div class="arch-cost-badge">💰 ${d.gcpCost || ''}</div>
+    </div>`
 
-  // Risks + Compliance
-  const rlm={critical:'rc',high:'rh',medium:'rm',low:'rl'};
-  const rll={critical:'Critical',high:'High',medium:'Medium',low:'Low'};
-  const rcls={critical:'ri-critical',high:'ri-high',medium:'ri-medium',low:'ri-low'};
-  const statL={'rs-none':'🔴 未啟動','rs-wip':'🟡 進行中','rs-ok':'🟢 已控制'};
-  document.getElementById('risk-list').innerHTML=d.risks.map(r=>`
-    <div class="risk-item ${rcls[r.lv]}">
+  /* Risks */
+  const rlm = { critical:'rc', high:'rh', medium:'rm', low:'rl' }
+  const rll  = { critical:'Critical', high:'High', medium:'Medium', low:'Low' }
+  const rcls = { critical:'ri-critical', high:'ri-high', medium:'ri-medium', low:'ri-low' }
+  const statL = { 'rs-none':'🔴 未啟動', 'rs-wip':'🟡 進行中', 'rs-ok':'🟢 已控制' }
+  document.getElementById('risk-list').innerHTML = (d.risks || []).map(r => `
+    <div class="risk-item ${rcls[r.lv] || ''}">
       <div>
-        <span class="rib ${rlm[r.lv]}">${rll[r.lv]}</span>
-        ${r.decide?'<span class="decide-tag">⚡ 需主管決策</span>':''}
+        <span class="rib ${rlm[r.lv] || ''}">${rll[r.lv] || r.lv}</span>
+        ${r.decide ? '<span class="decide-tag">⚡ 需主管決策</span>' : ''}
         <div class="risk-t">${r.t}</div>
-        <div class="risk-own">責任：${r.own} <span class="risk-stat ${r.stat}">${statL[r.stat]}</span></div>
+        <div class="risk-own">責任：${r.own || '—'} <span class="risk-stat ${r.stat || ''}">${statL[r.stat] || ''}</span></div>
       </div>
-    </div>`).join('');
+    </div>`).join('')
 
-  document.getElementById('cp-rate-n').textContent=d.cpRate;
-  document.getElementById('cp-rate-sub').textContent=d.cpRateSub;
-  const tic={pass:'✅',warn:'⚠️',act:'🔵'};
-  const tcls={pass:'cp-pass',warn:'cp-warn',act:'cp-act'};
-  document.getElementById('cp-list').innerHTML=d.compliance.map(c=>`
-    <div class="cp-item ${tcls[c.tp]}" data-type="${c.tp}">
-      <div class="cp-ic">${tic[c.tp]}</div>
+  /* Compliance */
+  document.getElementById('cp-rate-n').textContent   = d.cpRate    || '—'
+  document.getElementById('cp-rate-sub').textContent = d.cpRateSub || ''
+  const tic  = { pass:'✅', warn:'⚠️', act:'🔵' }
+  const tcls = { pass:'cp-pass', warn:'cp-warn', act:'cp-act' }
+  document.getElementById('cp-list').innerHTML = (d.compliance || []).map(c => `
+    <div class="cp-item ${tcls[c.tp] || ''}" data-type="${c.tp}">
+      <div class="cp-ic">${tic[c.tp] || '🔵'}</div>
       <div style="flex:1">
         <div class="cp-tit">
-          <span class="cp-type ${c.must?'ctt-must':'ctt-best'}">${c.must?'法定強制':'最佳實踐'}</span>
+          <span class="cp-type ${c.must ? 'ctt-must' : 'ctt-best'}">${c.must ? '法定強制' : '最佳實踐'}</span>
           ${c.tt}
         </div>
         <div class="cp-desc">${c.d}</div>
         <div class="cp-action">→ ${c.action}</div>
       </div>
-    </div>`).join('');
+    </div>`).join('')
 
-  // Roadmap
-  document.getElementById('roadmap-badge').textContent=d.phTotal;
-  const totalW=112;
-  const colors=['#003087','#1a4fad','#1a6b45','#92520a','#5b21b6','#c0392b'];
-  const rmEl=document.getElementById('roadmap');
-  rmEl.innerHTML=`
+  /* Roadmap */
+  document.getElementById('roadmap-badge').textContent = d.phTotal || ''
+  const colors = ['#003087','#1a4fad','#1a6b45','#92520a','#5b21b6','#c0392b']
+  const totalW = 112
+  document.getElementById('roadmap').innerHTML = `
     <div class="gantt-head">
       <div class="gantt-spacer"></div>
-      <div class="gantt-ticks">${Array.from({length:7},(_,i)=>Math.round(i*totalW/6)).map(v=>`<span class="gantt-tick">M${v}</span>`).join('')}</div>
+      <div class="gantt-ticks">
+        ${Array.from({ length: 7 }, (_, i) => Math.round(i * totalW / 6))
+          .map(v => `<span class="gantt-tick">M${v}</span>`).join('')}
+      </div>
     </div>
-    ${d.phases.map((p,i)=>{
-      const left=(p.pct[0]/totalW*100).toFixed(1);
-      const width=((p.pct[1]-p.pct[0])/totalW*100).toFixed(1);
-      return`<div class="gantt-row2">
+    ${(d.phases || []).map((p, i) => {
+      const left  = (p.pct[0] / totalW * 100).toFixed(1)
+      const width = ((p.pct[1] - p.pct[0]) / totalW * 100).toFixed(1)
+      return `<div class="gantt-row2">
         <div class="gantt-label">${p.t}</div>
         <div class="gantt-track">
-          <div class="gantt-bar2 phase-color" style="left:${left}%;width:${width}%;background:${colors[i%colors.length]}" title="${p.dur}">
+          <div class="gantt-bar2" style="left:${left}%;width:${width}%;background:${colors[i % colors.length]}" title="${p.dur}">
             <span class="gantt-bar-label">${p.dur}</span>
           </div>
         </div>
-      </div>`;
-    }).join('')}`;
+      </div>`
+    }).join('')}`
 
-  // Exec brief
-  currentBriefText=d.brief;
-  document.getElementById('brief-text').textContent=d.brief;
+  /* Brief */
+  currentBriefText = d.brief || ''
+  document.getElementById('brief-text').textContent = currentBriefText
 
-  // PPT
-  document.getElementById('ppt-list').innerHTML=d.pptSlides.map(s=>`
+  /* PPT */
+  document.getElementById('ppt-list').innerHTML = (d.pptSlides || []).map(s => `
     <div class="ppt-slide">
       <div class="ppt-slide-head">
         <span class="ppt-slide-num">${s.num}</span>
         <span class="ppt-slide-title">${s.title}</span>
       </div>
       <div class="ppt-slide-body">
-        ${s.bullets.map(b=>`<div class="ppt-bullet"><div class="ppt-b-dot"></div><span>${b}</span></div>`).join('')}
-        ${s.note?`<div class="ppt-note">📝 備注：${s.note}</div>`:''}
+        ${(s.bullets || []).map(b => `<div class="ppt-bullet"><div class="ppt-b-dot"></div><span>${b}</span></div>`).join('')}
+        ${s.note ? `<div class="ppt-note">📝 備注：${s.note}</div>` : ''}
       </div>
-    </div>`).join('');
+    </div>`).join('')
 
-  // Decision Points
-  document.getElementById('dp-grid').innerHTML=`
+  /* Decisions */
+  document.getElementById('dp-grid').innerHTML = `
     <div class="dp-card dp-cost">
       <div class="dp-icon">⚠️</div>
       <div class="dp-title">若不行動的代價</div>
-      <div class="dp-list">${d.decisions.cost.map(i=>`<div class="dp-item"><div class="dp-bullet"></div><span>${i}</span></div>`).join('')}</div>
+      <div class="dp-list">${(d.decisions?.cost || []).map(i => `<div class="dp-item"><div class="dp-bullet"></div><span>${i}</span></div>`).join('')}</div>
     </div>
     <div class="dp-card dp-decide">
       <div class="dp-icon">🎯</div>
       <div class="dp-title">本案需決策 3 件事</div>
-      <div class="dp-list">${d.decisions.decide.map(i=>`<div class="dp-item"><div class="dp-bullet"></div><span>${i}</span></div>`).join('')}</div>
+      <div class="dp-list">${(d.decisions?.decide || []).map(i => `<div class="dp-item"><div class="dp-bullet"></div><span>${i}</span></div>`).join('')}</div>
     </div>
     <div class="dp-card dp-min">
       <div class="dp-icon">🚀</div>
       <div class="dp-title">最小可行推進方式</div>
-      <div class="dp-list">${d.decisions.min.map(i=>`<div class="dp-item"><div class="dp-bullet"></div><span>${i}</span></div>`).join('')}</div>
-    </div>`;
+      <div class="dp-list">${(d.decisions?.min || []).map(i => `<div class="dp-item"><div class="dp-bullet"></div><span>${i}</span></div>`).join('')}</div>
+    </div>`
 
-  currentData=d;
-  document.getElementById('out-area').classList.add('show');
-  // Reset to full tab
-  switchTab('full');
+  document.getElementById('out-area').classList.add('show')
+  switchTab('full')
 }
 
-function copyBrief(){
-  navigator.clipboard.writeText(currentBriefText).then(()=>{
-    const b=event.target;b.textContent='✅ 已複製';setTimeout(()=>{b.textContent='📋 複製摘要';},2000);
-  });
-}
-function dlBrief(){
-  const blob=new Blob([currentBriefText],{type:'text/plain;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='executive_brief.txt';a.click();
-  URL.revokeObjectURL(url);
-}
-<script type="module">
-window.generate = async function () {
-
-  const desc = document.querySelector('#desc').value
-
-  const res = await fetch('/api/analyze', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ input: desc })
+/* ── copy / download ── */
+window.copyBrief = function () {
+  navigator.clipboard.writeText(currentBriefText).then(() => {
+    const b = event.target
+    b.textContent = '✅ 已複製'
+    setTimeout(() => { b.textContent = '📋 複製摘要' }, 2000)
   })
-
-  const data = await res.json()
-
-  console.log(data)
-
-  alert("分析完成")
 }
-import { supabase } from './supabase.js'
-
-async function initAuth() {
-  const { data, error } = await supabase.auth.getUser()
-
-  if (error || !data.user) {
-    window.location.href = 'login.html'
-    return
-  }
-
-  document.getElementById('user-email').textContent = data.user.email
+window.dlBrief = function () {
+  const blob = new Blob([currentBriefText], { type: 'text/plain;charset=utf-8' })
+  const url  = URL.createObjectURL(blob)
+  const a    = document.createElement('a')
+  a.href = url; a.download = 'executive_brief.txt'; a.click()
+  URL.revokeObjectURL(url)
 }
 
-async function logout() {
-  await supabase.auth.signOut()
-  window.location.href = 'login.html'
-}
-
-window.logout = logout
-
+/* ── 啟動 ── */
 initAuth()
-
-// ↓ 下面保持你原本 Claude 的程式
-function generate() {
-
-}
-
 </script>
+
 </body>
 </html>
