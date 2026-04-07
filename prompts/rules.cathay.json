@@ -1,0 +1,63 @@
+{
+  "organization_context": {
+    "name": "Cathay",
+    "strategy_keywords": [
+      "Cloud First",
+      "Governance by Design",
+      "AI-Assisted Delivery",
+      "Platform Engineering",
+      "Landing Zone",
+      "Hybrid Cloud",
+      "Guardrails"
+    ]
+  },
+  "decision_dimensions": [
+    {
+      "key": "compliance",
+      "label": "治理適配",
+      "description": "是否適合高治理金融場景、是否需更嚴格審查與控管"
+    },
+    {
+      "key": "lz",
+      "label": "平台成熟度",
+      "description": "是否適合納入統一平台、Landing Zone、標準化部署與維運"
+    },
+    {
+      "key": "tech",
+      "label": "技術債改善",
+      "description": "是否有助於降低維運負擔、提升架構可維護性"
+    },
+    {
+      "key": "roi",
+      "label": "投資效益",
+      "description": "是否有明確業務效益、效率提升或長期成本優化"
+    },
+    {
+      "key": "timeline",
+      "label": "時程可行性",
+      "description": "是否可在合理時程內推動，且具階段性落地可能"
+    }
+  ],
+  "six_r_guidance": {
+    "Rehost": "適用於時程壓力高、先上雲再優化的場景",
+    "Replatform": "適用於希望兼顧穩定性、維運效率與成本的主流場景",
+    "Refactor": "適用於新產品、API 化、彈性擴展與快速迭代場景",
+    "Rearchitect": "適用於跨系統整併、中台化、重大流程改造",
+    "Retain": "適用於法規、成本或相依限制高，暫不適合上雲的場景",
+    "Retire": "適用於重複系統、低效益系統、技術債高且無延續價值的場景"
+  },
+  "cloud_vendor_guidance": {
+    "AWS": {
+      "strengths": ["生態成熟", "平台化能力強", "大型企業案例多", "治理與自動化工具完整"],
+      "watchouts": ["若治理不足，服務選擇過多可能導致複雜度提高"]
+    },
+    "Azure": {
+      "strengths": ["企業整合度高", "與既有微軟體系整合方便", "混合雲敘事清楚"],
+      "watchouts": ["若企業架構歷史包袱重，可能只是把複雜度搬到雲上"]
+    },
+    "GCP": {
+      "strengths": ["數據分析與 AI 能力強", "雲原生體驗佳", "新平台與數據產品適合"],
+      "watchouts": ["若組織現況偏傳統，導入與治理模式需補更多內部能力"]
+    }
+  }
+}
