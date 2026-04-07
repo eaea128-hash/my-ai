@@ -2,116 +2,180 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>Smart Archie — Executive Brief</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Archie — Financial Executive Brief</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root{ --bg:#f4f3ef; --sur:#fff; --sur2:#f9f8f5; --navy:#00204a; --gold:#c8961e; --bd:#e4e0d8; --red:#c0392b; --grn:#1a6b45; --bluel:#eef3fc; }
-        body{ font-family:'Noto Sans TC',sans-serif; background:var(--bg); margin:0; }
-        .topbar{ background:var(--navy); height:56px; display:flex; align-items:center; padding:0 32px; color:#fff; position:sticky; top:0; z-index:100; justify-content:space-between; }
-        .shell{ display:grid; grid-template-columns:400px 1fr; min-height:calc(100vh - 56px); }
-        .left-panel{ background:var(--sur); border-right:1px solid var(--bd); padding:24px; overflow-y:auto; }
-        .right-panel{ padding:32px; overflow-y:auto; display:flex; flex-direction:column; gap:24px; }
-        .field{ margin-bottom:16px; }
-        .flbl{ font-size:11px; font-family:'DM Mono'; color:var(--mu); text-transform:uppercase; margin-bottom:6px; display:block; }
-        input, textarea, select{ width:100%; padding:10px; border:1.5px solid var(--bd); border-radius:8px; background:var(--sur2); box-sizing:border-box; }
-        .trow{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
-        .tbtn{ padding:6px 12px; border-radius:20px; border:1px solid var(--bd); font-size:12px; cursor:pointer; background:var(--sur2); transition:0.2s; }
-        .tbtn.on{ background:var(--navy); color:#fff; border-color:var(--navy); }
-        .sec{ background:#fff; border:1px solid var(--bd); border-radius:12px; box-shadow:0 1px 3px rgba(0,0,0,0.05); overflow:hidden; }
-        .sch{ background:var(--sur2); padding:12px 20px; font-size:11px; font-weight:700; color:var(--navy); border-bottom:1px solid var(--bd); display:flex; justify-content:space-between; }
-        .scb{ padding:20px; }
-        .cloud-table{ width:100%; border-collapse:collapse; font-size:12px; margin-top:10px; }
-        .cloud-table th, td{ border:1px solid var(--bd); padding:10px; text-align:left; }
-        .cloud-table th{ background:var(--sur2); }
-        .dp-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
-        .dp-card{ padding:15px; border-radius:10px; border:1px solid; font-size:12px; }
-        .dp-cost{ background:#fdf0ef; border-color:#fca5a5; }
-        .dp-decide{ background:#fdf4e3; border-color:#fcd34d; }
-        .dp-min{ background:#edf7f2; border-color:#86efac; }
-        .btn-gen{ width:100%; padding:14px; background:var(--navy); color:#fff; border:none; border-radius:8px; font-weight:700; cursor:pointer; margin-top:20px; }
-        .ppt-slide{ border:1px solid var(--bd); border-radius:8px; margin-bottom:12px; }
-        .ppt-head{ background:var(--navy); color:#fff; padding:8px 12px; font-weight:700; display:flex; gap:10px; }
-        .ppt-body{ padding:12px; font-size:13px; line-height:1.6; }
-        #loader{ display:none; text-align:center; padding:100px; }
+        :root{
+            --bg:#f4f3ef;--sur:#fff;--sur2:#f9f8f5;
+            --ink:#18181b;--ink2:#3f3f46;--mu:#71717a;--bd:#e4e0d8;
+            --navy:#00204a;--gold:#c8961e;--goldl:#fdf6e3;
+            --red:#c0392b;--redl:#fdf0ef;--grn:#1a6b45;--grnl:#edf7f2;
+            --r:8px;--sh:0 1px 3px rgba(0,0,0,0.06);
+        }
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.65}
+        
+        /* TOPBAR */
+        .topbar{background:var(--navy);height:56px;display:flex;align-items:center;padding:0 32px;gap:16px;position:sticky;top:0;z-index:200;color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+        .top-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;display:flex;align-items:center;gap:8px}
+        .top-dot{width:7px;height:7px;background:var(--gold);border-radius:50%}
+
+        .shell{display:grid;grid-template-columns:400px 1fr;min-height:calc(100vh - 56px)}
+
+        /* LEFT PANEL */
+        .left-panel{background:var(--sur);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow-y:auto}
+        .ip-head{padding:24px;border-bottom:1px solid var(--bd)}
+        .ip-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--navy)}
+        .ip-body{padding:20px 24px;display:flex;flex-direction:column;gap:16px;flex:1}
+        .field{display:flex;flex-direction:column;gap:5px}
+        .flbl{font-size:11px;font-family:'DM Mono';text-transform:uppercase;color:var(--mu);font-weight:500}
+        input, textarea, select{width:100%;padding:10px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:13px;background:var(--sur2);outline:none}
+        .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .trow{display:flex;gap:7px;flex-wrap:wrap}
+        .tbtn{padding:6px 13px;border-radius:20px;border:1.5px solid var(--bd);font-size:12px;cursor:pointer;background:var(--sur2);transition:all .2s}
+        .tbtn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+        .ip-footer{padding:20px 24px;border-top:1px solid var(--bd);display:flex;flex-direction:column;gap:12px}
+        .btn-gen{padding:14px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:all 0.3s}
+        .btn-gen:hover{background:#003580;transform:translateY(-1px)}
+
+        /* RIGHT PANEL */
+        .right-panel{padding:28px 32px;overflow-y:auto;display:flex;flex-direction:column;gap:20px}
+        .sec{background:var(--sur);border:1px solid var(--bd);border-radius:12px;box-shadow:var(--sh);overflow:hidden}
+        .sch{padding:12px 20px;border-bottom:1px solid var(--bd);background:var(--sur2);font-weight:700;font-size:11px;color:var(--mu);display:flex;justify-content:space-between;font-family:'DM Mono'}
+        .scb{padding:20px}
+
+        .headline{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--navy);margin-bottom:10px}
+        .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}
+        .kpi{padding:12px;background:var(--sur2);border-radius:var(--r);text-align:center;border:1px solid var(--bd)}
+        .kpi-n{font-size:24px;font-weight:800;font-family:'Syne';color:var(--navy)}
+        
+        /* PPT SLIDE STYLE */
+        .ppt-slide{border:1px solid var(--bd);border-radius:8px;margin-bottom:12px;overflow:hidden}
+        .ppt-head{background:var(--navy);color:#fff;padding:10px 15px;font-weight:700;display:flex;justify-content:space-between}
+        .ppt-body{padding:15px;font-size:13px;line-height:1.7}
+        .ppt-bullet{display:flex;gap:8px;margin-bottom:6px}
+        .ppt-dot{width:5px;height:5px;background:var(--gold);border-radius:50%;margin-top:8px;flex-shrink:0}
+
+        /* DECISION CARDS */
+        .dp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+        .dp-card{padding:15px;border-radius:10px;border:1.5px solid;font-size:12px}
+        .dp-cost{background:var(--redl);border-color:#fca5a5}.dp-decide{background:var(--amberl);border-color:#fcd34d}.dp-min{background:var(--grnl);border-color:#86efac}
+        
+        /* CLOUD TABLE */
+        .cloud-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:12px}
+        .cloud-table th, .cloud-table td{border:1px solid var(--bd);padding:10px;text-align:left}
+        .cloud-table th{background:var(--sur2)}
+
+        .loader-wrap{display:none;flex-direction:column;align-items:center;padding:100px}
+        .loader-wrap.show{display:flex}
+        .lbar{width:200px;height:4px;background:var(--bd);border-radius:2px;overflow:hidden}
+        .lfill{height:100%;width:0%;background:var(--navy);transition:width 0.5s}
     </style>
 </head>
 <body>
 
 <div class="topbar">
-    <div style="font-weight:800">Smart Archie</div>
-    <div id="user-email" style="font-size:12px">Loading...</div>
+  <div class="top-logo"><div class="top-dot"></div>Smart Archie</div>
+  <div style="margin-left:auto; font-size:12px; font-family:'DM Mono'" id="user-email">Loading...</div>
 </div>
 
 <div class="shell">
-    <div class="left-panel">
+  <div class="left-panel">
+    <div class="ip-head"><div class="ip-title">Executive Brief Generator</div></div>
+    <div class="ip-body">
+      <div class="field">
+        <label class="flbl">📋 專案名稱</label>
+        <input id="f-name" type="text" placeholder="例：國泰精算系統搬遷雲端">
+      </div>
+      <div class="field">
+        <label class="flbl">💬 需求描述</label>
+        <textarea id="f-desc" rows="4" placeholder="請描述現狀痛點與目標..."></textarea>
+      </div>
+      <div class="fgrid">
         <div class="field">
-            <label class="flbl">📋 專案名稱</label>
-            <input id="f-name" type="text" placeholder="例：精算系統搬遷 AWS">
+          <label class="flbl">💰 預算規模</label>
+          <select id="f-budget">
+            <option value="m">500萬-2000萬</option>
+            <option value="l">2000萬-5000萬</option>
+            <option value="xl">5000萬以上</option>
+          </select>
         </div>
         <div class="field">
-            <label class="flbl">💬 需求描述</label>
-            <textarea id="f-desc" rows="4"></textarea>
+          <label class="flbl">⏱ 預期時程</label>
+          <select id="f-timeline">
+            <option value="urgent">緊急 (3M)</option>
+            <option value="normal">標準 (6-9M)</option>
+          </select>
         </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
-            <div class="field">
-                <label class="flbl">💰 預算規模</label>
-                <select id="f-budget">
-                    <option value="m">500萬-2000萬</option>
-                    <option value="l">2000萬-5000萬</option>
-                </select>
-            </div>
-            <div class="field">
-                <label class="flbl">⏱ 預期時程</label>
-                <select id="f-timeline">
-                    <option value="normal">6-9個月</option>
-                    <option value="urgent">3個月(緊急)</option>
-                </select>
-            </div>
-        </div>
+      </div>
+      <div class="field">
         <label class="flbl">🔐 敏感資料類型</label>
         <div class="trow" id="g-sensitive">
-            <div class="tbtn on">個資(PII)</div>
-            <div class="tbtn">金融交易</div>
-            <div class="tbtn">無敏感資料</div>
+          <div class="tbtn on">個資 (PII)</div>
+          <div class="tbtn">交易資料</div>
+          <div class="tbtn">無敏感資料</div>
         </div>
-        <label class="flbl">📄 輸出風格</label>
-        <div class="trow" id="g-style">
-            <div class="tbtn on" onclick="changeStyle('exec', this)">高層版</div>
-            <div class="tbtn" onclick="changeStyle('pm', this)">PM版</div>
+      </div>
+      <div class="field">
+        <label class="flbl">☁️ 傾向雲端</label>
+        <div class="trow" id="g-cloud">
+          <div class="tbtn on">AWS</div>
+          <div class="tbtn on">GCP</div>
+          <div class="tbtn">Azure</div>
         </div>
-        <button class="btn-gen" id="btn-gen">✦ 生成 Executive Brief</button>
+      </div>
+    </div>
+    <div class="ip-footer">
+      <label class="flbl">📄 輸出風格</label>
+      <div class="trow">
+        <div class="tbtn on" id="ss-exec" onclick="changeStyle('exec', this)">高層版</div>
+        <div class="tbtn" id="ss-pm" onclick="changeStyle('pm', this)">PM 版</div>
+      </div>
+      <button class="btn-gen" id="btn-gen">✦ 生成分析報告</button>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div id="loader" class="loader-wrap">
+      <div class="lbar"><div class="lfill" id="lfill"></div></div>
+      <p style="margin-top:15px; font-size:12px; color:var(--mu)">正在執行國泰合規情境分析...</p>
     </div>
 
-    <div class="right-panel">
-        <div id="loader">分析法規中...</div>
-        <div id="out-wrap" style="display:none">
-            <div class="sec">
-                <div class="sch"><span>📌 EXECUTIVE SUMMARY</span><span id="badge-style">高層版</span></div>
-                <div class="scb">
-                    <div id="res-headline" style="font-size:18px; font-weight:800; color:var(--navy)"></div>
-                    <p id="res-text" style="font-size:13px; line-height:1.8"></p>
-                    <canvas id="riskRadar" style="max-height:250px"></canvas>
-                </div>
-            </div>
-
-            <div class="sec">
-                <div class="sch"><span>☁️ CLOUD COMPARISON</span></div>
-                <div class="scb" id="cloud-table-wrap"></div>
-            </div>
-
-            <div id="exec-zone">
-                <div class="sec">
-                    <div class="sch"><span>📊 PPT OUTLINE (5 SLIDES)</span></div>
-                    <div class="scb" id="ppt-wrap"></div>
-                </div>
-                <div class="sec">
-                    <div class="sch"><span>🎯 DECISION POINTS</span></div>
-                    <div class="scb"><div class="dp-grid" id="dp-wrap"></div></div>
-                </div>
-            </div>
+    <div id="out-wrap" style="display:none; flex-direction:column; gap:20px">
+      <div class="sec">
+        <div class="sch"><span>📌 EXECUTIVE SUMMARY</span><span id="badge-style">高層版</span></div>
+        <div class="scb">
+          <div class="headline" id="res-headline"></div>
+          <p id="res-exec-text" style="font-size:13px; line-height:1.8"></p>
+          <div style="height:250px; margin:20px 0;"><canvas id="riskRadar"></canvas></div>
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-n" id="kpi-r">0</div><div class="kpi-l">法規風險</div></div>
+            <div class="kpi"><div class="kpi-n" id="kpi-c">0</div><div class="kpi-l">遷移難度</div></div>
+            <div class="kpi"><div class="kpi-n" id="kpi-rd">0</div><div class="kpi-l">就緒度</div></div>
+          </div>
         </div>
+      </div>
+
+      <div class="sec">
+        <div class="sch"><span>☁️ CLOUD PROVIDER COMPARISON</span><span>多雲廠商評估</span></div>
+        <div class="scb" id="cloud-table-wrap"></div>
+      </div>
+
+      <div id="exec-zone">
+        <div class="sec">
+          <div class="sch"><span>📊 PPT OUTLINE (5 SLIDES)</span></div>
+          <div class="scb" id="ppt-wrap"></div>
+        </div>
+        <div class="sec">
+          <div class="sch"><span>🎯 DECISION POINTS</span></div>
+          <div class="scb"><div class="dp-grid" id="dp-wrap"></div></div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <script type="module">
@@ -120,87 +184,123 @@
 
     const $ = id => document.getElementById(id)
     let currentStyle = 'exec'
-    let chartInstance = null
+    let radarChart = null
 
-    window.changeStyle = (s, el) => {
+    /* 風格切換 */
+    window.changeStyle = (s, btn) => {
         currentStyle = s
-        document.querySelectorAll('#g-style .tbtn').forEach(b => b.classList.remove('on'))
-        el.classList.add('on')
-        $('badge-style').textContent = el.textContent
+        document.querySelectorAll('.ip-footer .tbtn').forEach(b => b.classList.remove('on'))
+        btn.classList.add('on')
+        $('badge-style').textContent = btn.textContent
     }
 
+    /* 敏感標籤多選 */
+    document.querySelectorAll('.trow .tbtn').forEach(b => {
+        if(!b.onclick) b.onclick = () => b.classList.toggle('on')
+    })
+
+    /* 生成分析 */
     $('btn-gen').onclick = async () => {
-        $('loader').style.display = 'block'
+        const name = $('f-name').value
+        const desc = $('f-desc').value
+        if(!name || !desc) return alert('請填寫專案名稱與描述')
+
+        $('loader').classList.add('show')
         $('out-wrap').style.display = 'none'
-        
+        $('lfill').style.width = '45%'
+
         try {
             const res = await fetch('/api/analyze', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    name: $('f-name').value,
-                    desc: $('f-desc').value,
+                    projectName: name,
+                    description: desc,
                     style: currentStyle,
-                    budget: $('f-budget').value
+                    budget: $('f-budget').value,
+                    timeline: $('f-timeline').value,
+                    sensitiveData: [...document.querySelectorAll('#g-sensitive .tbtn.on')].map(e=>e.innerText)
                 })
             })
             const data = await res.json()
-            render(data.result)
-        } catch (e) { alert('分析失敗，請檢查後端服務') }
-        finally { $('loader').style.display = 'none' }
+            if(!res.ok) throw new Error(data.error)
+            render(data.result, name)
+        } catch (e) {
+            alert('分析失敗: ' + e.message)
+        } finally {
+            $('loader').classList.remove('show')
+        }
     }
 
-  function render(d, projName) {
-    const now = new Date().toLocaleString('zh-TW');
-    $('res-headline').textContent = projName + ' ｜ ' + (d.headline || '策略評估報告');
-    $('res-exec-text').textContent = d.execText || '';
-    
-    // 1. 繪製圖表 (這是同事最在意的視覺化分析)
-    renderChart(d.kpis);
-
-    // 2. 渲染雲端廠商比較表 (針對不同廠商估價與優缺)
-    if (d.cloudComparison) {
-        renderCloudTable(d.cloudComparison);
-    }
-
-    // 3. 根據「風格」切換顯示內容 (高層版 vs PM版 vs 架構版)
-    // 先隱藏所有風格專屬區塊
-    $('exec-only-zone').style.display = 'none';
-    // 如果你有 PM 區塊，也在這裡先隱藏
-
-    if (currentStyle === 'exec') {
-        $('exec-only-zone').style.display = 'block';
+    /* 核心渲染函數 */
+    function render(d, projName) {
+        $('out-wrap').style.display = 'flex'
+        $('res-headline').textContent = projName + ' ｜ ' + (d.headline || '策略評估報告')
+        $('res-exec-text').textContent = d.execText || ''
         
-        // 渲染 5 Slide 簡報架構
-        if (d.pptSlides) {
-            $('ppt-list').innerHTML = d.pptSlides.map(s => `
+        $('kpi-r').textContent = d.kpis.r.v
+        $('kpi-c').textContent = d.kpis.c.v
+        $('kpi-rd').textContent = d.kpis.rd.v
+
+        // 1. 繪製雷達圖
+        if(radarChart) radarChart.destroy()
+        radarChart = new Chart($('riskRadar').getContext('2d'), {
+            type: 'radar',
+            data: {
+                labels: ['合規風險', '遷移難度', '就緒度', '資料安全性', '預算壓力'],
+                datasets: [{
+                    label: '專案評估維度',
+                    data: [d.kpis.r.v, d.kpis.c.v, d.kpis.rd.v, 80, 60],
+                    backgroundColor: 'rgba(0, 32, 74, 0.1)',
+                    borderColor: '#00204a',
+                    borderWidth: 2
+                }]
+            },
+            options: { maintainAspectRatio: false }
+        })
+
+        // 2. 多雲比較表
+        $('cloud-table-wrap').innerHTML = `
+            <table class="cloud-table">
+                <tr><th>廠商</th><th>成本評估</th><th>核心優點 (國泰情境)</th><th>法規挑戰</th><th>建議</th></tr>
+                ${(d.cloudComparison || []).map(c => `
+                    <tr>
+                        <td><b>${c.name}</b></td>
+                        <td>${c.cost}</td>
+                        <td style="color:var(--grn)">${c.pros}</td>
+                        <td style="color:var(--red)">${c.cons}</td>
+                        <td>${c.status}</td>
+                    </tr>
+                `).join('')}
+            </table>`
+
+        // 3. 高層版內容 (PPT & 決策)
+        if (currentStyle === 'exec') {
+            $('exec-zone').style.display = 'block'
+            $('ppt-wrap').innerHTML = (d.pptSlides || []).map(s => `
                 <div class="ppt-slide">
                     <div class="ppt-head"><span>Slide ${s.num}</span><span>${s.title}</span></div>
                     <div class="ppt-body">
                         ${s.bullets.map(b => `<div class="ppt-bullet"><div class="ppt-dot"></div>${b}</div>`).join('')}
-                        ${s.note ? `<div style="font-size:11px; color:var(--mu); margin-top:8px">📝 備註：${s.note}</div>` : ''}
                     </div>
-                </div>`).join('');
-        }
-
-        // 渲染 決策建議 (國泰三道防線邏輯)
-        if (d.decisions) {
-            const dc = d.decisions;
-            $('dp-grid').innerHTML = `
+                </div>`).join('')
+            
+            const dc = d.decisions || {cost:[], decide:[], min:[]}
+            $('dp-wrap').innerHTML = `
                 <div class="dp-card dp-cost"><b>⚠️ 不行動代價</b><br>${dc.cost.join('<br>')}</div>
                 <div class="dp-card dp-decide"><b>🎯 核心決策點</b><br>${dc.decide.join('<br>')}</div>
-                <div class="dp-card dp-min"><b>🚀 最小可行路徑 (MVP)</b><br>${dc.min.join('<br>')}</div>
-            `;
+                <div class="dp-card dp-min"><b>🚀 MVP 建議</b><br>${dc.min.join('<br>')}</div>`
+        } else {
+            $('exec-zone').style.display = 'none'
         }
-    } else if (currentStyle === 'pm') {
-        // 如果切換到 PM 版，你可以在這裡加入顯示 Roadmap 的邏輯
-        console.log("切換至 PM 版渲染邏輯");
     }
 
-    $('out-wrap').classList.add('show');
-    $('of-ts').textContent = '產出時間：' + now;
-}
-    init()
+    async function auth() {
+        const { data } = await supabase.auth.getUser()
+        if(data?.user) $('user-email').textContent = data.user.email
+        else window.location.href = 'login.html'
+    }
+    auth()
 </script>
 </body>
 </html>
