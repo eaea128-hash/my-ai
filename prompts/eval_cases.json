@@ -1,0 +1,26 @@
+[
+  {
+    "name": "核心理賠系統 modernization",
+    "desc": "現有理賠系統使用多年，與多個內部系統深度耦合，維運成本持續上升。希望提升交付效率與 API 化能力，但需兼顧敏感資料治理與穩定性。",
+    "style": "exec",
+    "strategy6R": "Replatform",
+    "complianceLevel": "critical",
+    "budget": "l"
+  },
+  {
+    "name": "新會員平台雲原生建置",
+    "desc": "新會員平台需支援跨子公司整合、行銷活動彈性擴展與未來 AI 推薦應用，希望採雲原生方式打造，但團隊雲端開發能力仍在建立中。",
+    "style": "pm",
+    "strategy6R": "Refactor",
+    "complianceLevel": "normal",
+    "budget": "m"
+  },
+  {
+    "name": "資料中台整併評估",
+    "desc": "目前數據來源分散，跨單位資料整合效率低，希望逐步整合成更一致的分析平台，支援治理、數據應用與未來模型場景。",
+    "style": "exec",
+    "strategy6R": "Rearchitect",
+    "complianceLevel": "critical",
+    "budget": "xl"
+  }
+]
