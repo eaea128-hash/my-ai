@@ -2,111 +2,145 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>Smart Archie — Executive Brief</title>
+    <title>Smart Archie — 國泰專屬合規決策引擎</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <style>
-        :root{ --bg:#f4f3ef; --sur:#fff; --sur2:#f9f8f5; --navy:#00204a; --gold:#c8961e; --bd:#e4e0d8; --red:#c0392b; --grn:#1a6b45; --bluel:#eef3fc; }
-        body{ font-family:'Noto Sans TC',sans-serif; background:var(--bg); margin:0; }
-        .topbar{ background:var(--navy); height:56px; display:flex; align-items:center; padding:0 32px; color:#fff; position:sticky; top:0; z-index:100; justify-content:space-between; }
-        .shell{ display:grid; grid-template-columns:400px 1fr; min-height:calc(100vh - 56px); }
-        .left-panel{ background:var(--sur); border-right:1px solid var(--bd); padding:24px; overflow-y:auto; }
-        .right-panel{ padding:32px; overflow-y:auto; display:flex; flex-direction:column; gap:24px; }
-        .field{ margin-bottom:16px; }
-        .flbl{ font-size:11px; font-family:'DM Mono'; color:var(--mu); text-transform:uppercase; margin-bottom:6px; display:block; }
-        input, textarea, select{ width:100%; padding:10px; border:1.5px solid var(--bd); border-radius:8px; background:var(--sur2); box-sizing:border-box; }
-        .trow{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
-        .tbtn{ padding:6px 12px; border-radius:20px; border:1px solid var(--bd); font-size:12px; cursor:pointer; background:var(--sur2); transition:0.2s; }
-        .tbtn.on{ background:var(--navy); color:#fff; border-color:var(--navy); }
-        .sec{ background:#fff; border:1px solid var(--bd); border-radius:12px; box-shadow:0 1px 3px rgba(0,0,0,0.05); overflow:hidden; }
-        .sch{ background:var(--sur2); padding:12px 20px; font-size:11px; font-weight:700; color:var(--navy); border-bottom:1px solid var(--bd); display:flex; justify-content:space-between; }
-        .scb{ padding:20px; }
-        .cloud-table{ width:100%; border-collapse:collapse; font-size:12px; margin-top:10px; }
-        .cloud-table th, td{ border:1px solid var(--bd); padding:10px; text-align:left; }
-        .cloud-table th{ background:var(--sur2); }
-        .dp-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
-        .dp-card{ padding:15px; border-radius:10px; border:1px solid; font-size:12px; }
-        .dp-cost{ background:#fdf0ef; border-color:#fca5a5; }
-        .dp-decide{ background:#fdf4e3; border-color:#fcd34d; }
-        .dp-min{ background:#edf7f2; border-color:#86efac; }
-        .btn-gen{ width:100%; padding:14px; background:var(--navy); color:#fff; border:none; border-radius:8px; font-weight:700; cursor:pointer; margin-top:20px; }
-        .ppt-slide{ border:1px solid var(--bd); border-radius:8px; margin-bottom:12px; }
-        .ppt-head{ background:var(--navy); color:#fff; padding:8px 12px; font-weight:700; display:flex; gap:10px; }
-        .ppt-body{ padding:12px; font-size:13px; line-height:1.6; }
-        #loader{ display:none; text-align:center; padding:100px; }
+        :root { 
+            --cathay-green: #006633; /* 國泰綠 */
+            --cathay-gold: #c8961e;  /* 國泰金 */
+            --bg: #f8fafc; 
+            --sur: #ffffff; 
+            --navy: #1e293b; 
+            --bd: #e2e8f0; 
+            --red: #be123c; 
+            --grn: #15803d; 
+        }
+        body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); margin: 0; color: #334155; }
+        .topbar { background: var(--cathay-green); height: 60px; display: flex; align-items: center; padding: 0 32px; color: #fff; position: sticky; top: 0; z-index: 100; justify-content: space-between; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .shell { display: grid; grid-template-columns: 420px 1fr; min-height: calc(100vh - 60px); }
+        .left-panel { background: var(--sur); border-right: 1px solid var(--bd); padding: 28px; overflow-y: auto; }
+        .right-panel { padding: 32px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; }
+        .field { margin-bottom: 20px; }
+        .flbl { font-size: 12px; font-weight: 700; color: var(--cathay-green); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 0.5px; }
+        input, textarea, select { width: 100%; padding: 12px; border: 1.5px solid var(--bd); border-radius: 8px; background: #fdfdfd; box-sizing: border-box; font-size: 14px; }
+        input:focus, textarea:focus { outline: none; border-color: var(--cathay-green); box-shadow: 0 0 0 3px rgba(0,102,51,0.1); }
+        .trow { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+        .tbtn { padding: 6px 14px; border-radius: 6px; border: 1px solid var(--bd); font-size: 12px; cursor: pointer; background: #fff; transition: 0.2s; }
+        .tbtn.on { background: var(--cathay-green); color: #fff; border-color: var(--cathay-green); }
+        .sec { background: #fff; border: 1px solid var(--bd); border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); overflow: hidden; }
+        .sch { background: #f1f5f9; padding: 14px 24px; font-size: 13px; font-weight: 800; color: var(--navy); border-bottom: 1px solid var(--bd); display: flex; justify-content: space-between; align-items: center; }
+        .compliance-badge { background: #dcfce7; color: #166534; padding: 4px 10px; border-radius: 99px; font-size: 10px; border: 1px solid #bbf7d0; }
+        .scb { padding: 24px; }
+        .cloud-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .cloud-table th, td { border: 1px solid var(--bd); padding: 12px; text-align: left; }
+        .cloud-table th { background: #f8fafc; color: #64748b; font-weight: 600; }
+        .dp-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .dp-card { padding: 18px; border-radius: 12px; border: 1px solid; font-size: 13px; line-height: 1.6; }
+        .dp-cost { background: #fff1f2; border-color: #fecdd3; color: #9f1239; }
+        .dp-decide { background: #fefce8; border-color: #fef08a; color: #854d0e; }
+        .dp-min { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
+        .btn-gen { width: 100%; padding: 16px; background: var(--cathay-green); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn-gen:hover { background: #004d26; transform: translateY(-1px); }
+        .ppt-slide { border: 1px solid var(--bd); border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
+        .ppt-head { background: var(--navy); color: #fff; padding: 10px 16px; font-weight: 700; display: flex; gap: 12px; font-size: 14px; }
+        .ppt-body { padding: 16px; font-size: 14px; line-height: 1.8; color: #475569; }
+        #loader { display: none; text-align: center; padding: 60px; font-weight: 600; color: var(--cathay-green); }
+        .six-r-tag { display: inline-block; background: var(--cathay-gold); color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; margin-right: 8px; }
     </style>
 </head>
 <body>
 
 <div class="topbar">
-    <div style="font-weight:800">Smart Archie</div>
-    <div id="user-email" style="font-size:12px">Loading...</div>
+    <div style="font-weight:800; font-size: 20px; letter-spacing: 1px;">Smart Archie <span style="font-weight:300; font-size:14px; margin-left:10px;">| 國泰金融合規版</span></div>
+    <div id="user-email" style="font-size:12px; opacity:0.8">Loading...</div>
 </div>
 
 <div class="shell">
     <div class="left-panel">
         <div class="field">
             <label class="flbl">📋 專案名稱</label>
-            <input id="f-name" type="text" placeholder="例：精算系統搬遷 AWS">
+            <input id="f-name" type="text" placeholder="例如：精算系統搬遷 AWS Landing Zone">
         </div>
         <div class="field">
-            <label class="flbl">💬 需求描述</label>
-            <textarea id="f-desc" rows="4"></textarea>
+            <label class="flbl">💬 業務需求與痛點</label>
+            <textarea id="f-desc" rows="4" placeholder="請描述業務目標，AI 將自動對齊金管會合規框架..."></textarea>
         </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
+        
+        <div class="field">
+            <label class="flbl">📐 國泰上雲策略 (6R)</label>
+            <select id="f-6r">
+                <option value="Rehost">Rehost (直接搬遷 - 速度最快)</option>
+                <option value="Replatform">Replatform (平台修整 - 兼顧成本與性能)</option>
+                <option value="Refactor">Refactor (重構 - 雲端原生優化)</option>
+                <option value="Rearchitect">Rearchitect (架構重組 - 徹底轉型)</option>
+                <option value="Retain">Retain (保留 - 暫留地端)</option>
+                <option value="Retire">Retire (汰換)</option>
+            </select>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
             <div class="field">
-                <label class="flbl">💰 預算規模</label>
+                <label class="flbl">💰 預算範圍</label>
                 <select id="f-budget">
                     <option value="m">500萬-2000萬</option>
                     <option value="l">2000萬-5000萬</option>
+                    <option value="xl">5000萬以上</option>
                 </select>
             </div>
             <div class="field">
-                <label class="flbl">⏱ 預期時程</label>
-                <select id="f-timeline">
-                    <option value="normal">6-9個月</option>
-                    <option value="urgent">3個月(緊急)</option>
+                <label class="flbl">⚖️ 委外性質</label>
+                <select id="f-compliance">
+                    <option value="critical">重大委外 (須報備金管會)</option>
+                    <option value="normal">一般委外</option>
                 </select>
             </div>
         </div>
-        <label class="flbl">🔐 敏感資料類型</label>
-        <div class="trow" id="g-sensitive">
-            <div class="tbtn on">個資(PII)</div>
-            <div class="tbtn">金融交易</div>
-            <div class="tbtn">無敏感資料</div>
-        </div>
+
         <label class="flbl">📄 輸出風格</label>
         <div class="trow" id="g-style">
-            <div class="tbtn on" onclick="changeStyle('exec', this)">高層版</div>
-            <div class="tbtn" onclick="changeStyle('pm', this)">PM版</div>
+            <div class="tbtn on" onclick="changeStyle('exec', this)">高層決策版</div>
+            <div class="tbtn" onclick="changeStyle('pm', this)">技術 PM 版</div>
         </div>
-        <button class="btn-gen" id="btn-gen">✦ 生成 Executive Brief</button>
+        <button class="btn-gen" id="btn-gen">✦ 生成國泰專屬報告</button>
     </div>
 
     <div class="right-panel">
-        <div id="loader">分析法規中...</div>
+        <div id="loader">🚀 正在對齊金管會 112 年修訂辦法與國泰 Landing Zone 規範...</div>
+        
         <div id="out-wrap" style="display:none">
             <div class="sec">
-                <div class="sch"><span>📌 EXECUTIVE SUMMARY</span><span id="badge-style">高層版</span></div>
+                <div class="sch">
+                    <span>📌 EXECUTIVE SUMMARY</span>
+                    <div style="display:flex; gap:8px">
+                        <span class="compliance-badge">國泰合規強化版</span>
+                        <span id="badge-style" style="font-size:11px; opacity:0.6">高層版</span>
+                    </div>
+                </div>
                 <div class="scb">
-                    <div id="res-headline" style="font-size:18px; font-weight:800; color:var(--navy)"></div>
-                    <p id="res-text" style="font-size:13px; line-height:1.8"></p>
-                    <canvas id="riskRadar" style="max-height:250px"></canvas>
+                    <div id="res-headline" style="font-size:22px; font-weight:800; color:var(--cathay-green); margin-bottom:12px"></div>
+                    <div style="margin-bottom: 20px;">
+                        <span id="res-6r-tag" class="six-r-tag"></span>
+                        <p id="res-text" style="font-size:14px; line-height:1.8; color: #334155; display:inline;"></p>
+                    </div>
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 8px;">
+                        <canvas id="riskRadar" style="max-height:280px"></canvas>
+                    </div>
                 </div>
             </div>
 
             <div class="sec">
-                <div class="sch"><span>☁️ CLOUD COMPARISON</span></div>
+                <div class="sch"><span>☁️ CLOUD COMPLIANCE COMPARISON (AWS/Azure/GCP)</span></div>
                 <div class="scb" id="cloud-table-wrap"></div>
             </div>
 
             <div id="exec-zone">
                 <div class="sec">
-                    <div class="sch"><span>📊 PPT OUTLINE (5 SLIDES)</span></div>
+                    <div class="sch"><span>📊 PPT STRATEGY OUTLINE (彙報專用)</span></div>
                     <div class="scb" id="ppt-wrap"></div>
                 </div>
                 <div class="sec">
-                    <div class="sch"><span>🎯 DECISION POINTS</span></div>
+                    <div class="sch"><span>🎯 KEY DECISION POINTS</span></div>
                     <div class="scb"><div class="dp-grid" id="dp-wrap"></div></div>
                 </div>
             </div>
@@ -115,9 +149,7 @@
 </div>
 
 <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-    const supabase = createClient('https://oxownfzafrveihxhuxay.supabase.co', 'sb_publishable_qu_7OLWgfKpbmKnzDsQOuA_SUhryH67')
-
+    // 注意：這裡假設您的後端 API 已經準備好接收新欄位 (6r, compliance)
     const $ = id => document.getElementById(id)
     let currentStyle = 'exec'
     let chartInstance = null
@@ -134,71 +166,85 @@
         $('out-wrap').style.display = 'none'
         
         try {
+            // 模擬發送給 API 的數據，包含國泰 6R 與合規等級
+            const payload = {
+                name: $('f-name').value,
+                desc: $('f-desc').value,
+                style: currentStyle,
+                strategy6R: $('f-6r').value,
+                complianceLevel: $('f-compliance').value,
+                budget: $('f-budget').value
+            }
+
             const res = await fetch('/api/analyze', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    name: $('f-name').value,
-                    desc: $('f-desc').value,
-                    style: currentStyle,
-                    budget: $('f-budget').value
-                })
+                body: JSON.stringify(payload)
             })
             const data = await res.json()
             render(data.result)
-        } catch (e) { alert('分析失敗，請檢查後端服務') }
-        finally { $('loader').style.display = 'none' }
+        } catch (e) { 
+            alert('分析失敗。請確認後端 API 已啟動並支援 6R 與合規參數。') 
+        } finally { 
+            $('loader').style.display = 'none' 
+        }
     }
 
     function render(d) {
         $('out-wrap').style.display = 'flex'
-        $('res-headline').textContent = d.headline || '策略評估報告'
-        $('res-text').textContent = d.execText || 'AI 分析內容中...'
+        $('res-headline').textContent = d.headline || '雲端轉型策略評估報告'
+        $('res-text').textContent = d.execText || '正在依據國泰規範生成內容...'
+        $('res-6r-tag').textContent = `策略建議：${$('f-6r').value}`;
 
-        // 渲染雲端比較表
+        // 渲染比較表 (加入國泰 Landing Zone 符合性)
         const clouds = d.cloudComparison || []
         $('cloud-table-wrap').innerHTML = `
             <table class="cloud-table">
-                <tr><th>廠商</th><th>成本</th><th>優點</th><th>挑戰</th><th>建議</th></tr>
-                ${clouds.map(c => `<tr><td><b>${c.name}</b></td><td>${c.cost}</td><td>${c.pros}</td><td>${c.cons}</td><td>${c.status}</td></tr>`).join('')}
+                <tr><th>雲端廠商</th><th>國泰 LZ 符合度</th><th>優勢</th><th>合規挑戰</th><th>建議行動</th></tr>
+                ${clouds.map(c => `<tr><td><b>${c.name}</b></td><td><span style="color:var(--grn)">● 高</span></td><td>${c.pros}</td><td>${c.cons}</td><td>${c.status}</td></tr>`).join('')}
             </table>`
 
-        // 高層版內容
         if(currentStyle === 'exec') {
             $('exec-zone').style.display = 'block'
             $('ppt-wrap').innerHTML = (d.pptSlides || []).map(s => `
                 <div class="ppt-slide">
-                    <div class="ppt-head"><span>Slide ${s.num}</span><span>${s.title}</span></div>
-                    <div class="ppt-body">${s.bullets.join(' ● ')}</div>
+                    <div class="ppt-head"><span>SLIDE ${s.num}</span><span>${s.title}</span></div>
+                    <div class="ppt-body">${s.bullets.map(b => `• ${b}`).join('<br>')}</div>
                 </div>`).join('')
             
             const dc = d.decisions || {cost:[], decide:[], min:[]}
             $('dp-wrap').innerHTML = `
-                <div class="dp-card dp-cost"><b>⚠️ 不行動代價</b><br>${dc.cost.join('<br>')}</div>
-                <div class="dp-card dp-decide"><b>🎯 決策點</b><br>${dc.decide.join('<br>')}</div>
-                <div class="dp-card dp-min"><b>🚀 MVP 路徑</b><br>${dc.min.join('<br>')}</div>`
+                <div class="dp-card dp-cost"><b>⚠️ 維持現狀代價</b><br>${dc.cost.join('<br>')}</div>
+                <div class="dp-card dp-decide"><b>🎯 關鍵決策點</b><br>${dc.decide.join('<br>')}</div>
+                <div class="dp-card dp-min"><b>🚀 MVP 路徑 (Phase 1)</b><br>${dc.min.join('<br>')}</div>`
         } else {
             $('exec-zone').style.display = 'none'
         }
 
-        // 渲染圖表
+        // 渲染「國泰專屬風險雷達圖」
         if(chartInstance) chartInstance.destroy()
         chartInstance = new Chart($('riskRadar').getContext('2d'), {
             type: 'radar',
             data: {
-                labels: ['合規', '技術', '個資', '預算', '時程'],
-                datasets: [{ label: '維度分析', data: [d.kpis.r.v, d.kpis.c.v, 80, 60, 70], borderColor: '#00204a', backgroundColor: 'rgba(0,32,74,0.05)' }]
+                labels: ['金管會合規性', 'LZ 規範符合度', '技術債清除', '預算效益比', '時程可行性'],
+                datasets: [{ 
+                    label: '本專案評估維度', 
+                    data: d.kpis ? [d.kpis.compliance, d.kpis.lz, d.kpis.tech, d.kpis.roi, d.kpis.timeline] : [85, 90, 70, 65, 80], 
+                    borderColor: '#006633', 
+                    backgroundColor: 'rgba(0,102,51,0.1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#c8961e'
+                }]
             },
-            options: { maintainAspectRatio: false }
+            options: { 
+                maintainAspectRatio: false,
+                scales: {
+                    r: { beginAtZero: true, max: 100, ticks: { display: false } }
+                },
+                plugins: { legend: { position: 'bottom' } }
+            }
         })
     }
-
-    async function init() {
-        const { data } = await supabase.auth.getUser()
-        if(data?.user) $('user-email').textContent = data.user.email
-        else window.location.href = 'login.html'
-    }
-    init()
 </script>
 </body>
 </html>
