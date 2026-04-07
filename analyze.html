@@ -515,16 +515,14 @@
 }`;
 
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 2000,
-          system: systemPrompt,
-          messages: [{ role: 'user', content: userPrompt }]
-        })
-      });
+     const res = await fetch('/api/analyze', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    name, desc, strategy6R: r6, budget, complianceLevel: compliance,
+    style, systemPrompt, userPrompt
+  })
+});
 
       if (!res.ok) throw new Error(`API 錯誤：${res.status}`);
 
