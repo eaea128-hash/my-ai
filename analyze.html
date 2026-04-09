@@ -7,8 +7,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
-    /* 這裡保留您原本精美的 CSS 樣式，不做更動以維持視覺一致性 */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --green: #006633; --green-dark: #004d26; --gold: #c8961e; --bg: #f8fafc;
       --sur: #ffffff; --navy: #1e293b; --bd: #e2e8f0; --muted: #64748b;
@@ -16,51 +14,54 @@
       --yel-bg: #fefce8; --yel-bd: #fef08a; --yel-tx: #854d0e;
       --grn-bg: #f0fdf4; --grn-bd: #bbf7d0; --grn-tx: #166534;
     }
-    body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
     .topbar { background: var(--green); height: 58px; display: flex; align-items: center; padding: 0 28px; color: #fff; position: sticky; top: 0; z-index: 200; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
     .topbar-brand { font-size: 18px; font-weight: 700; }
     .shell { display: grid; grid-template-columns: 400px 1fr; min-height: calc(100vh - 58px); }
     .left-panel { background: var(--sur); border-right: 1px solid var(--bd); padding: 24px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
-    .field label { font-size: 11px; font-weight: 700; color: var(--green); margin-bottom: 6px; display: block; }
-    input, textarea, select { width: 100%; padding: 10px 12px; border: 1.5px solid var(--bd); border-radius: 8px; font-size: 13px; }
-    .sbtn { padding: 7px 15px; border-radius: 7px; border: 1.5px solid var(--bd); font-size: 12px; cursor: pointer; background: #fff; }
+    .field label { font-size: 11px; font-weight: 700; color: var(--green); margin-bottom: 6px; display: block; text-transform: uppercase; }
+    input, textarea, select { width: 100%; padding: 10px 12px; border: 1.5px solid var(--bd); border-radius: 8px; font-size: 13px; font-family: inherit; }
+    .sbtn { padding: 7px 15px; border-radius: 7px; border: 1.5px solid var(--bd); font-size: 12px; cursor: pointer; background: #fff; transition: 0.2s; }
     .sbtn.on { background: var(--green); color: #fff; border-color: var(--green); }
-    .btn-gen { width: 100%; padding: 14px; background: var(--green); color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+    .btn-gen { width: 100%; padding: 14px; background: var(--green); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+    .btn-gen:disabled { background: #94a3b8; cursor: not-allowed; }
     .right-panel { padding: 28px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
-    .sec { background: var(--sur); border: 1px solid var(--bd); border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
-    .sch { background: #f1f5f9; padding: 12px 20px; font-size: 11px; font-weight: 700; border-bottom: 1px solid var(--bd); display: flex; justify-content: space-between; }
+    .sec { background: var(--sur); border: 1px solid var(--bd); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .sch { background: #f1f5f9; padding: 12px 20px; font-size: 11px; font-weight: 700; color: var(--navy); border-bottom: 1px solid var(--bd); display: flex; justify-content: space-between; }
     .scb { padding: 20px; }
     .headline { font-size: 21px; font-weight: 800; color: var(--green); margin-bottom: 10px; }
     .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 15px; }
+    .kpi-item { text-align: center; }
     .kpi-val { font-size: 18px; font-weight: 700; color: var(--green); }
     .kpi-bar-bg { height: 5px; background: var(--bd); border-radius: 3px; margin: 5px 0; overflow: hidden; }
     .kpi-bar { height: 100%; background: var(--green); width: 0%; transition: width 1s ease; }
+    .kpi-label { font-size: 10px; color: var(--muted); }
     .dp-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-    .dp-card { padding: 16px; border-radius: 10px; border: 1px solid; font-size: 12px; }
+    .dp-card { padding: 16px; border-radius: 10px; border: 1px solid; font-size: 12px; line-height: 1.7; }
+    .dp-card b { display: block; margin-bottom: 8px; font-size: 11px; text-transform: uppercase; }
     .dp-cost { background: var(--red-bg); border-color: var(--red-bd); color: var(--red-tx); }
     .dp-decide { background: var(--yel-bg); border-color: var(--yel-bd); color: var(--yel-tx); }
     .dp-min { background: var(--grn-bg); border-color: var(--grn-bd); color: var(--grn-tx); }
-    .ppt-slide { border: 1px solid var(--bd); border-radius: 8px; margin-bottom: 12px; }
-    .ppt-head { background: var(--navy); color: #fff; padding: 10px 16px; font-weight: 700; font-size: 13px; }
-    .ppt-body { padding: 14px 16px; font-size: 13px; color: var(--muted); line-height: 1.6; }
-    .cloud-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-    .cloud-table th, .cloud-table td { padding: 10px; border-bottom: 1px solid var(--bd); text-align: left; }
+    .ppt-slide { border: 1px solid var(--bd); border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+    .ppt-head { background: var(--navy); color: #fff; padding: 10px 16px; font-weight: 700; font-size: 13px; display: flex; gap: 10px; }
+    .ppt-body { padding: 14px 16px; font-size: 13px; color: var(--text); background: #fff; }
     .loader { padding: 80px; text-align: center; color: var(--green); }
-    .spinner { width: 30px; height: 30px; border: 3px solid #eee; border-top-color: var(--green); border-radius: 50%; animation: spin 1s infinite linear; margin: 0 auto 15px; }
+    .spinner { width: 32px; height: 32px; border: 3px solid #eee; border-top-color: var(--green); border-radius: 50%; animation: spin 1s infinite linear; margin: 0 auto 15px; }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div><span class="topbar-brand">Smart Archie</span><span style="opacity:0.6; font-size:12px; margin-left:8px;">| 金融合規引擎</span></div>
-  <div id="user-email" style="font-size:12px;"></div>
+  <div class="topbar-brand">Smart Archie <span style="font-weight:300; font-size:12px; opacity:0.7">| 金融合規引擎</span></div>
+  <div id="user-email" style="font-size:12px; opacity:0.8"></div>
 </div>
 
 <div class="shell">
   <div class="left-panel">
-    <div class="field"><label>專案名稱</label><input id="f-name" type="text" placeholder="輸入專案名稱..."></div>
-    <div class="field"><label>業務痛點描述</label><textarea id="f-desc" placeholder="請描述現狀..."></textarea></div>
+    <div class="field"><label>專案名稱</label><input id="f-name" type="text" placeholder="例：AWS 核心系統遷移"></div>
+    <div class="field"><label>業務痛點與目標</label><textarea id="f-desc" placeholder="描述現狀與目標..."></textarea></div>
     <div class="field"><label>6R 策略</label>
       <select id="f-6r">
         <option value="Rehost">Rehost - 直接搬遷</option>
@@ -70,23 +71,23 @@
     </div>
     <div class="row2">
       <div class="field"><label>預算</label>
-        <select id="f-budget"><option value="m">500萬-2000萬</option><option value="l">2000萬-5000萬</option></select>
+        <select id="f-budget"><option value="m">中 (500-2000萬)</option><option value="l">高 (2000-5000萬)</option></select>
       </div>
       <div class="field"><label>委外性質</label>
         <select id="f-compliance"><option value="critical">重大委外</option><option value="normal">一般委外</option></select>
       </div>
     </div>
-    <div class="field"><label>風格</label>
+    <div class="field"><label>報告風格</label>
       <div class="style-btns">
-        <button class="sbtn on" id="btn-exec">高層決策版</button>
-        <button class="sbtn" id="btn-pm">技術 PM 版</button>
+        <button class="sbtn on" id="btn-exec" onclick="changeStyle('exec')">高層決策版</button>
+        <button class="sbtn" id="btn-pm" onclick="changeStyle('pm')">技術 PM 版</button>
       </div>
     </div>
-    <button class="btn-gen" id="btn-gen">✦ 生成分析報告</button>
+    <button class="btn-gen" id="btn-gen" onclick="generate()">✦ 生成分析報告</button>
   </div>
 
   <div class="right-panel" id="right-panel">
-    <div style="text-align:center; padding-top:100px; color:#94a3b8;">請填寫左側資訊並點擊生成。</div>
+    <div style="text-align:center; padding:100px; color:#94a3b8;">請填寫左側需求並生成報告。</div>
   </div>
 </div>
 
@@ -95,15 +96,18 @@
   let chartInstance = null;
   const $ = id => document.getElementById(id);
 
-  // 風格切換
-  $('btn-exec').onclick = function() { currentStyle = 'exec'; this.classList.add('on'); $('btn-pm').classList.remove('on'); };
-  $('btn-pm').onclick = function() { currentStyle = 'pm'; this.classList.add('on'); $('btn-exec').classList.remove('on'); };
+  function changeStyle(s) {
+    currentStyle = s;
+    $('btn-exec').classList.toggle('on', s === 'exec');
+    $('btn-pm').classList.toggle('on', s === 'pm');
+  }
 
   async function generate() {
     const name = $('f-name').value || '未命名專案';
     const desc = $('f-desc').value;
+    if(!desc) { alert('請填寫業務描述'); return; }
+
     const btn = $('btn-gen');
-    
     btn.disabled = true;
     $('right-panel').innerHTML = `<div class="loader"><div class="spinner"></div><div>AI 正在依據金管會規範進行合規建模...</div></div>`;
 
@@ -120,25 +124,31 @@
         })
       });
 
+      if (res.status === 500) throw new Error("後端伺服器 500 錯誤，可能 AI 處理逾時或金鑰問題。");
+
       const data = await res.json();
-      // 關鍵：修正資料抓取邏輯，適配不同的後端回傳格式
-      let resultText = "";
-      if (data.result) resultText = data.result;
-      else if (data.content) resultText = data.content.map(c => c.text).join('');
+      let resultText = data.result || (data.content ? data.content.map(c => c.text).join('') : "");
       
       const cleaned = resultText.replace(/```json|```/gi, '').trim();
       const d = JSON.parse(cleaned);
       
       renderResult(d);
     } catch (e) {
-      $('right-panel').innerHTML = `<div class="loader" style="color:red;">分析發生錯誤：${e.message}</div>`;
+      console.error(e);
+      $('right-panel').innerHTML = `
+        <div class="loader" style="color:#be123c;">
+          <div style="font-size:30px; margin-bottom:10px;">⚠️</div>
+          <b>分析發生錯誤</b><br>
+          <small>${e.message}</small><br>
+          <button onclick="generate()" style="margin-top:15px; padding:5px 15px; cursor:pointer;">重試</button>
+        </div>`;
     } finally {
       btn.disabled = false;
     }
   }
 
   function renderResult(d) {
-    const kpis = d.kpis || { compliance: 70, lz: 70, tech: 70, roi: 70, timeline: 70 };
+    const kpis = d.kpis || { compliance: 75, lz: 80, tech: 60, roi: 65, timeline: 70 };
     const styleLabel = currentStyle === 'exec' ? '高層決策版' : '技術 PM 版';
     
     let html = `
@@ -146,38 +156,30 @@
         <div class="sch">EXECUTIVE SUMMARY <span style="opacity:0.5">${styleLabel}</span></div>
         <div class="scb">
           <div class="headline">${d.headline || '策略評估報告'}</div>
-          <p style="font-size:13px; line-height:1.7;">${d.execText || ''}</p>
+          <p style="font-size:13px; color:var(--text); line-height:1.8;">${d.execText || '正在產出分析...'}</p>
           <div class="kpi-grid">
-            ${['compliance', 'lz', 'tech', 'roi', 'timeline'].map(k => `
+            ${Object.keys(kpis).map(k => `
               <div class="kpi-item">
                 <div class="kpi-val">${kpis[k]}</div>
                 <div class="kpi-bar-bg"><div class="kpi-bar" id="bar-${k}" style="width:0%"></div></div>
-                <div class="kpi-label">${k}</div>
+                <div class="kpi-label">${k.toUpperCase()}</div>
               </div>
             `).join('')}
           </div>
           <div style="height:250px; margin-top:20px;"><canvas id="radarCanvas"></canvas></div>
         </div>
       </div>
-
-      <div class="sec">
-        <div class="sch">☁️ 雲端廠商合規比對</div>
-        <table class="cloud-table">
-          <tr><th>廠商</th><th>符合度</th><th>建議行動</th></tr>
-          ${(d.cloudComparison || []).map(c => `<tr><td><b>${c.name}</b></td><td>${c.lz}</td><td>${c.action}</td></tr>`).join('')}
-        </table>
-      </div>
     `;
 
-    // 只有高層版顯示 PPT 與 決策點
+    // 針對「高層版」強制顯示 PPT 與 決策點
     if (currentStyle === 'exec') {
       html += `
         <div class="sec">
-          <div class="sch">📊 PPT 策略大綱</div>
+          <div class="sch">📊 PPT 策略彙報大綱 (5 Slides)</div>
           <div class="scb">
-            ${(d.pptSlides || []).map(s => `
+            ${(d.pptSlides || d.ppt_outline || []).map(s => `
               <div class="ppt-slide">
-                <div class="ppt-head">SLIDE ${s.num}: ${s.title}</div>
+                <div class="ppt-head"><span>SLIDE ${s.num || ''}</span> ${s.title || ''}</div>
                 <div class="ppt-body">${(s.bullets || []).map(b => `• ${b}<br>`).join('')}</div>
               </div>
             `).join('')}
@@ -185,12 +187,12 @@
         </div>
 
         <div class="sec">
-          <div class="sch">🎯 KEY DECISION POINTS</div>
+          <div class="sch">🎯 KEY DECISION POINTS / 決策點分析</div>
           <div class="scb">
             <div class="dp-grid">
-              <div class="dp-card dp-cost"><b>不行動代價</b><br>${(d.decisions?.cost || []).join('<br>')}</div>
-              <div class="dp-card dp-decide"><b>關鍵決策點</b><br>${(d.decisions?.decide || []).join('<br>')}</div>
-              <div class="dp-card dp-min"><b>MVP 必做</b><br>${(d.decisions?.min || []).join('<br>')}</div>
+              <div class="dp-card dp-cost"><b>不行動代價</b><br>${(d.decisions?.cost || d.decision_points?.cost || []).map(i => `• ${i}`).join('<br>')}</div>
+              <div class="dp-card dp-decide"><b>核心決策點</b><br>${(d.decisions?.decide || d.decision_points?.decide || []).map(i => `• ${i}`).join('<br>')}</div>
+              <div class="dp-card dp-min"><b>MVP 必做項目</b><br>${(d.decisions?.min || d.decision_points?.min || []).map(i => `• ${i}`).join('<br>')}</div>
             </div>
           </div>
         </div>
@@ -199,11 +201,10 @@
 
     $('right-panel').innerHTML = html;
 
-    // 動態條動畫
+    // 動態進度條
     setTimeout(() => {
       Object.keys(kpis).forEach(k => {
-        const bar = $('bar-' + k);
-        if (bar) bar.style.width = kpis[k] + '%';
+        if($('bar-' + k)) $('bar-' + k).style.width = kpis[k] + '%';
       });
     }, 100);
 
@@ -213,18 +214,17 @@
     chartInstance = new Chart(ctx, {
       type: 'radar',
       data: {
-        labels: ['合規', 'LZ', '技術債', '效益', '時程'],
+        labels: ['合規', 'Landing Zone', '技術債', 'ROI', '時程'],
         datasets: [{
-          label: '專案評分',
-          data: [kpis.compliance, kpis.lz, kpis.tech, kpis.roi, kpis.timeline],
-          borderColor: '#006633', backgroundColor: 'rgba(0,102,51,0.05)'
+          label: '評分維度',
+          data: Object.values(kpis),
+          borderColor: '#006633', backgroundColor: 'rgba(0,102,51,0.05)',
+          pointBackgroundColor: '#c8961e'
         }]
       },
-      options: { maintainAspectRatio: false }
+      options: { maintainAspectRatio: false, scales: { r: { min: 0, max: 100 } } }
     });
   }
-
-  $('btn-gen').onclick = generate;
 </script>
 
 </body>
