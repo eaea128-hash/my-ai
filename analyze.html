@@ -1,4 +1,110 @@
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Archie — 金融合規決策引擎</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #006633; --green-dark: #004d26; --bg: #f8fafc;
+      --sur: #ffffff; --navy: #1e293b; --bd: #e2e8f0; --muted: #64748b;
+      --text: #334155; --red-bg: #fff1f2; --red-bd: #fecdd3; --red-tx: #9f1239;
+      --yel-bg: #fefce8; --yel-bd: #fef08a; --yel-tx: #854d0e;
+      --grn-bg: #f0fdf4; --grn-bd: #bbf7d0; --grn-tx: #166534;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+    .topbar { background: var(--green); height: 58px; display: flex; align-items: center; padding: 0 28px; color: #fff; position: sticky; top: 0; z-index: 200; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .topbar-brand { font-size: 18px; font-weight: 700; }
+    .shell { display: grid; grid-template-columns: 400px 1fr; min-height: calc(100vh - 58px); }
+    .left-panel { background: var(--sur); border-right: 1px solid var(--bd); padding: 24px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+    .field label { font-size: 11px; font-weight: 700; color: var(--green); margin-bottom: 6px; display: block; text-transform: uppercase; }
+    input, textarea, select { width: 100%; padding: 10px 12px; border: 1.5px solid var(--bd); border-radius: 8px; font-size: 13px; font-family: inherit; background: #fff; color: var(--text); }
+    textarea { min-height: 100px; resize: vertical; }
+    .sbtn { padding: 7px 15px; border-radius: 7px; border: 1.5px solid var(--bd); font-size: 12px; cursor: pointer; background: #fff; transition: 0.2s; }
+    .sbtn.on { background: var(--green); color: #fff; border-color: var(--green); }
+    .style-btns { display: flex; gap: 8px; }
+    .btn-gen { width: 100%; padding: 14px; background: var(--green); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+    .btn-gen:hover:not(:disabled) { background: var(--green-dark); }
+    .btn-gen:disabled { background: #94a3b8; cursor: not-allowed; }
+    .right-panel { padding: 28px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+    .sec { background: var(--sur); border: 1px solid var(--bd); border-radius: 12px; overflow: hidden; }
+    .sch { background: #f1f5f9; padding: 12px 20px; font-size: 11px; font-weight: 700; color: var(--navy); border-bottom: 1px solid var(--bd); display: flex; justify-content: space-between; }
+    .scb { padding: 20px; }
+    .headline { font-size: 21px; font-weight: 800; color: var(--green); margin-bottom: 10px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 15px; }
+    .kpi-item { text-align: center; }
+    .kpi-val { font-size: 18px; font-weight: 700; color: var(--green); }
+    .kpi-bar-bg { height: 5px; background: var(--bd); border-radius: 3px; margin: 5px 0; overflow: hidden; }
+    .kpi-bar { height: 100%; background: var(--green); width: 0%; transition: width 1s ease; }
+    .kpi-label { font-size: 10px; color: var(--muted); }
+    .dp-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .dp-card { padding: 16px; border-radius: 10px; border: 1px solid; font-size: 12px; line-height: 1.7; }
+    .dp-card b { display: block; margin-bottom: 8px; font-size: 11px; text-transform: uppercase; }
+    .dp-cost { background: var(--red-bg); border-color: var(--red-bd); color: var(--red-tx); }
+    .dp-decide { background: var(--yel-bg); border-color: var(--yel-bd); color: var(--yel-tx); }
+    .dp-min { background: var(--grn-bg); border-color: var(--grn-bd); color: var(--grn-tx); }
+    .ppt-slide { border: 1px solid var(--bd); border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+    .ppt-head { background: var(--navy); color: #fff; padding: 10px 16px; font-weight: 700; font-size: 13px; display: flex; gap: 10px; }
+    .ppt-body { padding: 14px 16px; font-size: 13px; color: var(--text); background: #fff; }
+    .loader { padding: 80px; text-align: center; color: var(--green); }
+    .spinner { width: 32px; height: 32px; border: 3px solid #eee; border-top-color: var(--green); border-radius: 50%; animation: spin 1s infinite linear; margin: 0 auto 15px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .quota-bar { background: #f1f5f9; border-radius: 6px; padding: 8px 12px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+    .quota-track { flex: 1; height: 6px; background: var(--bd); border-radius: 3px; overflow: hidden; }
+    .quota-fill { height: 100%; background: var(--green); border-radius: 3px; transition: width 0.5s; }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">Smart Archie <span style="font-weight:300; font-size:12px; opacity:0.7">| 金融合規引擎</span></div>
+  <div style="font-size:12px; display:flex; gap:12px; align-items:center;">
+    <span id="user-email"></span>
+    <a id="btn-logout" href="#" style="color:#fff; opacity:0.7; text-decoration:underline; display:none;">登出</a>
+  </div>
+</div>
+
+<div class="shell">
+  <div class="left-panel">
+    <div class="quota-bar" id="quota-display" style="display:none;">
+      <span>本月用量</span>
+      <div class="quota-track"><div class="quota-fill" id="quota-fill" style="width:0%"></div></div>
+      <span id="quota-text">0/10</span>
+    </div>
+    <div class="field"><label>專案名稱</label><input id="f-name" type="text" placeholder="例：AWS 核心系統遷移"></div>
+    <div class="field"><label>業務痛點與目標</label><textarea id="f-desc" placeholder="描述現狀與目標..."></textarea></div>
+    <div class="field"><label>6R 策略</label>
+      <select id="f-6r">
+        <option value="Rehost">Rehost - 直接搬遷</option>
+        <option value="Replatform">Replatform - 平台修整</option>
+        <option value="Refactor">Refactor - 重構</option>
+      </select>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+      <div class="field"><label>預算</label>
+        <select id="f-budget"><option value="m">中 (500-2000萬)</option><option value="l">高 (2000-5000萬)</option></select>
+      </div>
+      <div class="field"><label>委外性質</label>
+        <select id="f-compliance"><option value="critical">重大委外</option><option value="normal">一般委外</option></select>
+      </div>
+    </div>
+    <div class="field"><label>報告風格</label>
+      <div class="style-btns">
+        <button class="sbtn on" id="btn-exec" onclick="changeStyle('exec')">高層決策版</button>
+        <button class="sbtn" id="btn-pm" onclick="changeStyle('pm')">技術 PM 版</button>
+      </div>
+    </div>
+    <button class="btn-gen" id="btn-gen" onclick="generate()">✦ 生成分析報告</button>
+  </div>
+  <div class="right-panel" id="right-panel">
+    <div style="text-align:center; padding:100px; color:#94a3b8;">請填寫左側需求並生成報告。</div>
+  </div>
+</div>
+
 <script>
   const SUPABASE_URL = 'https://oxownfzafrveihxhuxay.supabase.co';
   const SUPABASE_ANON = 'sb_publishable_qu_70LWgfKpbmKnzDsQOuA_SUhryH67';
@@ -6,35 +112,50 @@
 
   let currentStyle = 'exec';
   let chartInstance = null;
-  let currentUser = null;ㄑ
-  const $ = id => document.getElementById(id);
+  let currentUser = null;
+
+  function $(id) { return document.getElementById(id); }
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
 
   window.addEventListener('DOMContentLoaded', async () => {
     const { data: { session } } = await sb.auth.getSession();
     if (!session) { window.location.href = '/login.html'; return; }
     currentUser = session.user;
-    if ($('user-email')) $('user-email').textContent = currentUser.email;
-    $('btn-logout').style.display = 'inline';
+
+    const emailEl = $('user-email');
+    if (emailEl) emailEl.textContent = currentUser.email;
+
+    const logoutEl = $('btn-logout');
+    if (logoutEl) {
+      logoutEl.style.display = 'inline';
+      logoutEl.addEventListener('click', async (e) => {
+        e.preventDefault();
+        await sb.auth.signOut();
+        window.location.href = '/login.html';
+      });
+    }
+
     await loadQuota();
-  });
-const logoutBtn = document.getElementById('btn-logout');
-if (logoutBtn) logoutBtn.addEventListener('click', async (e) => {
-    e.preventDefault();
-    await sb.auth.signOut();
-    window.location.href = '/login.html';
   });
 
   async function loadQuota() {
     try {
-      const { count } = await sb.from('usage_log').select('id', { count: 'exact', head: true })
+      const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
+      const { count } = await sb.from('usage_log')
+        .select('id', { count: 'exact', head: true })
         .eq('user_id', currentUser.id)
-        .gte('created_at', new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString());
+        .gte('created_at', monthStart);
       const used = count || 0;
       const limit = 10;
-      $('quota-display').style.display = 'flex';
-      $('quota-fill').style.width = Math.min((used/limit)*100, 100) + '%';
-      $('quota-text').textContent = `${used}/${limit}`;
-    } catch(e) { console.warn('quota', e); }
+      const displayEl = $('quota-display');
+      if (displayEl) displayEl.style.display = 'flex';
+      const fillEl = $('quota-fill');
+      if (fillEl) fillEl.style.width = Math.min((used / limit) * 100, 100) + '%';
+      const textEl = $('quota-text');
+      if (textEl) textEl.textContent = `${used}/${limit}`;
+    } catch(e) { console.warn('quota load failed', e); }
   }
 
   function changeStyle(s) {
@@ -47,56 +168,123 @@ if (logoutBtn) logoutBtn.addEventListener('click', async (e) => {
     const name = $('f-name').value.trim() || '未命名專案';
     const desc = $('f-desc').value.trim();
     if (!desc) { alert('請填寫業務描述'); return; }
+
     const btn = $('btn-gen');
     btn.disabled = true;
     $('right-panel').innerHTML = `<div class="loader"><div class="spinner"></div><div>AI 正在依據金管會規範進行合規建模...</div></div>`;
+
     try {
       const { data: { session } } = await sb.auth.getSession();
       if (!session) throw new Error('登入已過期，請重新登入');
+
       const res = await fetch('/api/analyze', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
-        body: JSON.stringify({ projectName: name, description: desc, style: currentStyle, strategy: $('f-6r').value, compliance: $('f-compliance').value, budget: $('f-budget').value })
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify({
+          projectName: name,
+          description: desc,
+          style: currentStyle,
+          strategy: $('f-6r').value,
+          compliance: $('f-compliance').value,
+          budget: $('f-budget').value
+        })
       });
+
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.error || `伺服器錯誤 ${res.status}`);
       }
+
       const data = await res.json();
       const text = data.result || (data.content || []).map(c => c.text || '').join('');
-      const d = JSON.parse(text.replace(/```json[\s\S]*?```|```/gi, '').trim());
+      const cleaned = text.replace(/```json[\s\S]*?```|```/gi, '').trim();
+      const d = JSON.parse(cleaned);
       renderResult(d);
       await loadQuota();
+
     } catch (err) {
       console.error(err);
-      $('right-panel').innerHTML = `<div class="loader" style="color:#be123c;"><div style="font-size:30px">⚠️</div><b>分析失敗</b><p style="font-size:12px;margin-top:8px">${err.message}</p><button onclick="generate()" style="margin-top:15px;padding:8px 20px;cursor:pointer;border-radius:8px;border:1px solid #bd2c2c;background:#fff1f2;color:#9f1239">重新嘗試</button></div>`;
+      $('right-panel').innerHTML = `
+        <div class="loader" style="color:#be123c;">
+          <div style="font-size:30px">⚠️</div>
+          <b>分析失敗</b>
+          <p style="font-size:12px;margin-top:8px">${err.message}</p>
+          <button onclick="generate()" style="margin-top:15px;padding:8px 20px;cursor:pointer;border-radius:8px;border:1px solid #bd2c2c;background:#fff1f2;color:#9f1239">重新嘗試</button>
+        </div>`;
     } finally {
       btn.disabled = false;
     }
   }
 
-  function escHtml(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
   function renderResult(d) {
     const kpis = d.kpis || { compliance:75, lz:80, tech:60, roi:65, timeline:70 };
     const styleLabel = currentStyle === 'exec' ? '高層決策版' : '技術 PM 版';
-    let html = `<div class="sec"><div class="sch">EXECUTIVE SUMMARY <span style="opacity:0.5">${styleLabel}</span></div><div class="scb"><div class="headline">${escHtml(d.headline||'策略評估報告')}</div><p style="font-size:13px;line-height:1.8">${escHtml(d.execText||'')}</p><div class="kpi-grid">${Object.keys(kpis).map(k=>`<div class="kpi-item"><div class="kpi-val">${kpis[k]}</div><div class="kpi-bar-bg"><div class="kpi-bar" id="bar-${k}"></div></div><div class="kpi-label">${k.toUpperCase()}</div></div>`).join('')}</div><div style="height:250px;margin-top:20px"><canvas id="radarCanvas"></canvas></div></div></div>`;
+
+    let html = `
+      <div class="sec">
+        <div class="sch">EXECUTIVE SUMMARY <span style="opacity:0.5">${styleLabel}</span></div>
+        <div class="scb">
+          <div class="headline">${escHtml(d.headline || '策略評估報告')}</div>
+          <p style="font-size:13px;line-height:1.8">${escHtml(d.execText || '')}</p>
+          <div class="kpi-grid">
+            ${Object.keys(kpis).map(k => `
+              <div class="kpi-item">
+                <div class="kpi-val">${kpis[k]}</div>
+                <div class="kpi-bar-bg"><div class="kpi-bar" id="bar-${k}"></div></div>
+                <div class="kpi-label">${k.toUpperCase()}</div>
+              </div>`).join('')}
+          </div>
+          <div style="height:250px;margin-top:20px"><canvas id="radarCanvas"></canvas></div>
+        </div>
+      </div>`;
+
     if (currentStyle === 'exec') {
       const slides = d.pptSlides || d.ppt_outline || [];
       const dec = d.decisions || d.decision_points || {};
-      html += `<div class="sec"><div class="sch">📊 PPT 策略彙報大綱</div><div class="scb">${slides.map(s=>`<div class="ppt-slide"><div class="ppt-head"><span>SLIDE ${s.num}</span> ${escHtml(s.title||'')}</div><div class="ppt-body">${(s.bullets||[]).map(b=>`• ${escHtml(b)}<br>`).join('')}</div></div>`).join('')}</div></div>`;
-      html += `<div class="sec"><div class="sch">🎯 KEY DECISION POINTS</div><div class="scb"><div class="dp-grid"><div class="dp-card dp-cost"><b>不行動代價</b>${(dec.cost||[]).map(i=>`• ${escHtml(i)}<br>`).join('')}</div><div class="dp-card dp-decide"><b>核心決策點</b>${(dec.decide||[]).map(i=>`• ${escHtml(i)}<br>`).join('')}</div><div class="dp-card dp-min"><b>MVP 必做項目</b>${(dec.min||[]).map(i=>`• ${escHtml(i)}<br>`).join('')}</div></div></div></div>`;
+      html += `
+        <div class="sec">
+          <div class="sch">📊 PPT 策略彙報大綱</div>
+          <div class="scb">
+            ${slides.map(s => `
+              <div class="ppt-slide">
+                <div class="ppt-head"><span>SLIDE ${s.num}</span> ${escHtml(s.title || '')}</div>
+                <div class="ppt-body">${(s.bullets||[]).map(b => `• ${escHtml(b)}<br>`).join('')}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+        <div class="sec">
+          <div class="sch">🎯 KEY DECISION POINTS</div>
+          <div class="scb">
+            <div class="dp-grid">
+              <div class="dp-card dp-cost"><b>不行動代價</b>${(dec.cost||[]).map(i=>`• ${escHtml(i)}<br>`).join('')}</div>
+              <div class="dp-card dp-decide"><b>核心決策點</b>${(dec.decide||[]).map(i=>`• ${escHtml(i)}<br>`).join('')}</div>
+              <div class="dp-card dp-min"><b>MVP 必做項目</b>${(dec.min||[]).map(i=>`• ${escHtml(i)}<br>`).join('')}</div>
+            </div>
+          </div>
+        </div>`;
     }
+
     $('right-panel').innerHTML = html;
-    setTimeout(() => { Object.keys(kpis).forEach(k => { const b=$('bar-'+k); if(b) b.style.width=kpis[k]+'%'; }); }, 100);
+
+    setTimeout(() => {
+      Object.keys(kpis).forEach(k => {
+        const bar = $('bar-' + k);
+        if (bar) bar.style.width = kpis[k] + '%';
+      });
+    }, 100);
+
     const ctx = $('radarCanvas').getContext('2d');
     if (chartInstance) chartInstance.destroy();
     chartInstance = new Chart(ctx, {
       type: 'radar',
-      data: { labels:['合規','Landing Zone','技術債','ROI','時程'], datasets:[{ label:'評分維度', data:Object.values(kpis), borderColor:'#006633', backgroundColor:'rgba(0,102,51,0.05)', pointBackgroundColor:'#c8961e' }] },
-      options: { maintainAspectRatio:false, scales:{ r:{ min:0, max:100 } } }
+      data: {
+        labels: ['合規','Landing Zone','技術債','ROI','時程'],
+        datasets: [{ label:'評分維度', data:Object.values(kpis), borderColor:'#006633', backgroundColor:'rgba(0,102,51,0.05)', pointBackgroundColor:'#c8961e' }]
+      },
+      options: { maintainAspectRatio: false, scales: { r: { min:0, max:100 } } }
     });
   }
 </script>
