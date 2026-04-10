@@ -1,9 +1,10 @@
 {
-  "name": "smart-archie",
+  "name": "my-ai",
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "openai": "^4.0.0",
-    "@supabase/supabase-js": "^2.0.0"
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@supabase/supabase-js": "^2.49.0",
+    "stripe": "^17.0.0"
   }
 }
