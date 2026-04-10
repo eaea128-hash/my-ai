@@ -1,0 +1,27 @@
+{
+  "global_practices": [
+    {
+      "bank": "Capital One",
+      "practice": "全面雲端化並採用 DevSecOps 與自動化治理"
+    },
+    {
+      "bank": "HSBC",
+      "practice": "多帳戶 Landing Zone 架構"
+    },
+    {
+      "bank": "ING",
+      "practice": "微服務與 API-first 架構"
+    },
+    {
+      "bank": "Goldman Sachs",
+      "practice": "混合雲與高安全要求並行"
+    }
+  ],
+  "architecture_patterns": [
+    "Landing Zone",
+    "Multi-account strategy",
+    "Central logging",
+    "Zero trust security",
+    "Disaster recovery design"
+  ]
+}
