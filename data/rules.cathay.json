@@ -1,0 +1,15 @@
+{
+  "company": "Cathay Financial",
+  "cloud_principles": [
+    "敏感資料需有存取控管與資料分級",
+    "跨子公司平台需明確權限隔離",
+    "新系統優先採 API-first 架構",
+    "需具備高可用與災難復原設計"
+  ],
+  "governance": [
+    "需建立 Landing Zone",
+    "需集中式 IAM 管理",
+    "需統一日誌與監控",
+    "需有資安審計與追蹤能力"
+  ]
+}
