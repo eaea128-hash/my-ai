@@ -111,26 +111,57 @@
     btn.disabled = true;
     $('right-panel').innerHTML = `<div class="loader"><div class="spinner"></div><div>AI 正在依據金管會規範進行合規建模...</div></div>`;
 
-    try {
+   try {
       const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          projectName: name, 
-          description: desc, 
+        body: JSON.stringify({
+          projectName: name,
+          description: desc,
           style: currentStyle,
           strategy: $('f-6r').value,
-          compliance: $('f-compliance').value
+          compliance: $('f-compliance').value,
+          // 💡 加入此參數引導後端縮短產出，避免 Vercel 500 逾時
+          max_tokens: 1000 
         })
       });
 
-      if (res.status === 500) throw new Error("後端伺服器 500 錯誤，可能 AI 處理逾時或金鑰問題。");
+      // 檢查是否報 500 錯誤
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error || `伺服器回應錯誤 ${res.status}`);
+      }
 
       const data = await res.json();
+      
+      // 💡 強化：自動適配 result 或 content 格式
       let resultText = data.result || (data.content ? data.content.map(c => c.text).join('') : "");
       
+      // 💡 強化：更乾淨的 JSON 清理邏輯
       const cleaned = resultText.replace(/```json|```/gi, '').trim();
-      const d = JSON.parse(cleaned);
+      let d;
+      try {
+        d = JSON.parse(cleaned);
+      } catch (e) {
+        console.error("JSON 解析失敗，原始文字：", cleaned);
+        throw new Error("AI 回傳格式不正確，請縮短需求描述後重試。");
+      }
+
+      // 💡 核心：將分析結果傳給渲染函數
+      renderResult(d);
+
+    } catch (err) {
+      console.error(err);
+      $('right-panel').innerHTML = `
+        <div class="loader" style="color:#be123c;">
+          <div style="font-size:30px; margin-bottom:10px;">⚠️</div>
+          <b>分析失敗</b><br>
+          <p style="font-size:12px; margin-top:8px;">${err.message}</p>
+          <button onclick="generate()" style="margin-top:15px; padding:6px 15px; cursor:pointer;">重新嘗試</button>
+        </div>`;
+    } finally {
+      btn.disabled = false;
+    }
       
       renderResult(d);
     } catch (e) {
