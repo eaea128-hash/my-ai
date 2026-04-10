@@ -13,7 +13,7 @@ function safeJsonParse(text) {
   try {
     return JSON.parse(text);
   } catch {
-    return null;
+    return null;ㄑ
   }
 }
 
@@ -144,7 +144,7 @@ export default async function handler(req, res) {
         tokens_used: 0,
         plan,
         note: 'mock_mode'
-      }).catch(() => null);
+      });
 
       return res.status(200).json({
         result: JSON.stringify(mockResult),
@@ -177,7 +177,7 @@ export default async function handler(req, res) {
         tokens_used: 0,
         plan,
         note: 'cache_hit'
-      }).catch(() => null);
+      });
 
       return res.status(200).json({
         result: JSON.stringify(cached.result_json),
