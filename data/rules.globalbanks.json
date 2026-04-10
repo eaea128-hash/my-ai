@@ -1,27 +1,24 @@
 {
-  "global_practices": [
-    {
-      "bank": "Capital One",
-      "practice": "全面雲端化並採用 DevSecOps 與自動化治理"
-    },
-    {
-      "bank": "HSBC",
-      "practice": "多帳戶 Landing Zone 架構"
-    },
-    {
-      "bank": "ING",
-      "practice": "微服務與 API-first 架構"
-    },
-    {
-      "bank": "Goldman Sachs",
-      "practice": "混合雲與高安全要求並行"
-    }
+  "regulator": "FSC Taiwan",
+  "rules": [
+    "涉及核心系統、重要資訊系統或敏感資料時，可能屬重大委外範疇",
+    "需符合金融機構作業委外相關管理要求",
+    "需評估個資保護、存取紀錄、稽核追蹤與資料安全",
+    "若涉及跨境資料傳輸，需特別審視合規與風險控管",
+    "需具備營運持續計畫與災難復原能力"
   ],
-  "architecture_patterns": [
-    "Landing Zone",
-    "Multi-account strategy",
-    "Central logging",
-    "Zero trust security",
-    "Disaster recovery design"
+  "checkpoints": [
+    "是否涉及重大委外申報或內部審查",
+    "是否完成資料分級與敏感資料辨識",
+    "是否具備供應商管理與契約控管機制",
+    "是否具備身分權限、日誌與監控機制",
+    "是否有備援、DR 與事故應變設計"
+  ],
+  "risk_focus": [
+    "供應商集中風險",
+    "資料外洩風險",
+    "權限控管不足風險",
+    "跨境與法遵風險",
+    "營運中斷風險"
   ]
 }
