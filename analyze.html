@@ -6,14 +6,14 @@
 
   let currentStyle = 'exec';
   let chartInstance = null;
-  let currentUser = null;
+  let currentUser = null;ㄑ
   const $ = id => document.getElementById(id);
 
   window.addEventListener('DOMContentLoaded', async () => {
     const { data: { session } } = await sb.auth.getSession();
     if (!session) { window.location.href = '/login.html'; return; }
     currentUser = session.user;
-    $('user-email').textContent = currentUser.email;
+    if ($('user-email')) $('user-email').textContent = currentUser.email;
     $('btn-logout').style.display = 'inline';
     await loadQuota();
   });
