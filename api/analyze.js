@@ -1,45 +1,72 @@
-// --- 替換開始 ---
-const payload = {
-    name,
-    desc,
-    style,
-    strategy6R: r6,
-    complianceLevel: compliance,
-    budget,
-    // 加入提示，縮短 AI 思考時間避免 Vercel 500 逾時
-    max_tokens: 1500, 
-    isQuickAnalysis: true 
-};
+import OpenAI from "openai";
 
-const res = await fetch('/api/analyze', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-});
+export default async function handler(req, res) {
+  // 1. 強制檢查是否為 POST 請求
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
-// 處理 500 錯誤或其他異常
-if (!res.ok) {
-    let errMsg = `HTTP ${res.status}`;
-    try {
-        const errJson = await res.json();
-        errMsg = errJson.error || errMsg;
-    } catch(e) {
-        // 如果後端沒噴 JSON，就用原始文字
+  try {
+    // 2. 從前端請求中解析資料
+    // 對齊前端傳來的鍵值：projectName, description, style, strategy, compliance
+    const { projectName, description, style, strategy, compliance } = req.body;
+
+    // 防止 ReferenceError，確保 projectName 有預設值
+    const name = projectName || "未命名專案";
+
+    // 檢查 API Key 是否存在
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error("OpenAI API Key is missing in environment variables.");
     }
-    throw new Error(`分析失敗：${errMsg}。建議：請嘗試縮短需求描述再重試一次。`);
+
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+
+    // 3. 呼叫 OpenAI 進行分析
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini", // 使用 mini 版本速度較快，避免 Vercel 逾時
+      messages: [
+        {
+          role: "system",
+          content: `你是一位專精於台灣金融業的數位轉型專家，精通金管會「金融機構作業委外辦法」。
+          你必須回傳 JSON 格式。
+          如果風格為 "exec" (高層版)，輸出內容必須包含：
+          - headline (String)
+          - execText (String)
+          - kpis (Object: {compliance, lz, tech, roi, timeline})
+          - pptSlides (Array: [{num, title, bullets: []}])
+          - decisions (Object: {cost: [], decide: [], min: []})
+          
+          如果風格為 "pm"，則著重於風險與時程。`
+        },
+        {
+          role: "user",
+          content: `專案名稱：${name}
+          業務痛點：${description}
+          上雲策略：${strategy}
+          合規等級：${compliance}
+          風格：${style}`
+        }
+      ],
+      response_format: { type: "json_object" },
+      max_tokens: 1500,
+      temperature: 0.7
+    });
+
+    // 4. 解析 AI 回傳的 JSON 文字
+    const aiResponseContent = response.choices[0].message.content;
+    const result = JSON.parse(aiResponseContent);
+
+    // 5. 將解析後的物件回傳給前端
+    return res.status(200).json({ result });
+
+  } catch (error) {
+    console.error("後端處理錯誤:", error.message);
+    // 回傳 500 錯誤並附帶訊息，方便前端除錯
+    return res.status(500).json({ 
+      error: "分析失敗", 
+      message: error.message 
+    });
+  }
 }
-
-const data = await res.json();
-
-// 強化：自動相容不同的後端回傳結構
-let d = data.result || data; 
-
-// 如果 d 是字串（有時候 AI 會直接回傳字串），嘗試解析它
-if (typeof d === 'string') {
-    try {
-        d = JSON.parse(d.replace(/```json|```/gi, '').trim());
-    } catch(e) {
-        throw new Error("AI 回傳格式解析失敗");
-    }
-}
-// --- 替換結束 ---
