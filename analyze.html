@@ -17,8 +17,8 @@
     $('btn-logout').style.display = 'inline';
     await loadQuota();
   });
-
-  document.getElementById('btn-logout').addEventListener('click', async (e) => {
+const logoutBtn = document.getElementById('btn-logout');
+if (logoutBtn) logoutBtn.addEventListener('click', async (e) => {
     e.preventDefault();
     await sb.auth.signOut();
     window.location.href = '/login.html';
