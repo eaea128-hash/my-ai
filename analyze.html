@@ -138,6 +138,22 @@
     }
 
     await loadQuota();
+
+    // 重播歷史報告
+    if (new URLSearchParams(location.search).get('replay')) {
+      const replay = sessionStorage.getItem('archie_replay');
+      if (replay) {
+        try {
+          const { projectName, strategy, compliance, budget, result } = JSON.parse(replay);
+          sessionStorage.removeItem('archie_replay');
+          if (projectName) $('f-name').value = projectName;
+          if (strategy) $('f-6r').value = strategy;
+          if (compliance) $('f-compliance').value = compliance;
+          if (budget) $('f-budget').value = budget;
+          if (result) renderResult(typeof result === 'string' ? JSON.parse(result) : result);
+        } catch(e) { console.warn('replay failed', e); }
+      }
+    }
   });
 
   async function loadQuota() {

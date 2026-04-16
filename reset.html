@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>重設密碼 — Smart Archie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --green: #006633; --green-dark: #004d26; --bd: #e2e8f0; --text: #334155; --muted: #64748b; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans TC', sans-serif; background: #f8fafc; color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .card { background: #fff; border: 1px solid var(--bd); border-radius: 16px; padding: 40px 36px; width: 100%; max-width: 400px; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+    .logo { text-align: center; margin-bottom: 28px; }
+    .logo h1 { font-size: 22px; font-weight: 700; color: var(--green); }
+    .logo p { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    label { font-size: 11px; font-weight: 700; color: var(--green); text-transform: uppercase; display: block; margin-bottom: 6px; }
+    input { width: 100%; padding: 11px 13px; border: 1.5px solid var(--bd); border-radius: 8px; font-size: 14px; font-family: inherit; outline: none; transition: 0.2s; }
+    input:focus { border-color: var(--green); }
+    .field { margin-bottom: 16px; }
+    .btn { width: 100%; padding: 13px; background: var(--green); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 8px; transition: 0.2s; font-family: inherit; }
+    .btn:hover:not(:disabled) { background: var(--green-dark); }
+    .btn:disabled { background: #94a3b8; cursor: not-allowed; }
+    .msg { margin-top: 14px; font-size: 13px; text-align: center; min-height: 20px; }
+    .msg.error { color: #9f1239; }
+    .msg.success { color: #166534; }
+    .invalid { text-align: center; padding: 40px 0; color: #9f1239; }
+    .invalid a { color: var(--green); }
+  </style>
+</head>
+<body>
+
+<div class="card" id="card">
+  <div class="logo">
+    <h1>Smart Archie</h1>
+    <p>設定新密碼</p>
+  </div>
+  <div id="form-area">
+    <div class="field"><label>新密碼</label><input type="password" id="password" placeholder="至少 6 個字元" /></div>
+    <div class="field"><label>確認新密碼</label><input type="password" id="password2" placeholder="再輸入一次" onkeydown="if(event.key==='Enter')resetPassword()" /></div>
+    <button class="btn" id="btn-reset" onclick="resetPassword()">更新密碼</button>
+    <p class="msg" id="msg"></p>
+  </div>
+</div>
+
+<script type="module">
+  import { supabase } from './supabase.js'
+
+  function setMsg(text, type) {
+    const el = document.getElementById('msg')
+    el.textContent = text
+    el.className = 'msg ' + (type || '')
+  }
+
+  // Supabase 重設連結會把 token 放在 URL hash (#access_token=...&type=recovery)
+  // onAuthStateChange 會自動處理並建立 session
+  supabase.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      // session 已建立，等待用戶輸入新密碼
+    } else if (event !== 'PASSWORD_RECOVERY' && !session) {
+      // 沒有有效 token，顯示錯誤
+      document.getElementById('form-area').innerHTML = `
+        <div class="invalid">
+          <p>連結無效或已過期。</p>
+          <p style="margin-top:12px"><a href="/login.html">返回登入頁</a>重新申請重設連結</p>
+        </div>`
+    }
+  })
+
+  async function resetPassword() {
+    const password = document.getElementById('password').value
+    const password2 = document.getElementById('password2').value
+    if (!password) { setMsg('請輸入新密碼', 'error'); return }
+    if (password !== password2) { setMsg('兩次密碼不一致', 'error'); return }
+    if (password.length < 6) { setMsg('密碼至少需要 6 個字元', 'error'); return }
+
+    const btn = document.getElementById('btn-reset')
+    btn.disabled = true
+    setMsg('更新中...')
+
+    const { error } = await supabase.auth.updateUser({ password })
+    if (error) {
+      setMsg('更新失敗：' + error.message, 'error')
+      btn.disabled = false
+      return
+    }
+    setMsg('密碼已更新！即將跳轉至登入頁...', 'success')
+    setTimeout(() => { window.location.href = '/login.html' }, 2000)
+  }
+
+  window.resetPassword = resetPassword
+</script>
+</body>
+</html>

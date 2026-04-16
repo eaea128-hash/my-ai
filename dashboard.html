@@ -1,277 +1,181 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard</title>
+  <title>Dashboard — Smart Archie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f6f7fb;
-      margin: 0;
-      padding: 0;
-      color: #222;
+    :root {
+      --green: #006633; --green-dark: #004d26; --bg: #f8fafc;
+      --sur: #ffffff; --navy: #1e293b; --bd: #e2e8f0; --muted: #64748b; --text: #334155;
     }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+    .topbar { background: var(--green); height: 58px; display: flex; align-items: center; padding: 0 28px; color: #fff; position: sticky; top: 0; z-index: 200; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .topbar-brand { font-size: 18px; font-weight: 700; }
+    .topbar-right { font-size: 12px; display: flex; gap: 12px; align-items: center; }
+    .topbar-right a { color: #fff; opacity: 0.75; text-decoration: underline; cursor: pointer; }
 
-    .container {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 24px;
-    }
+    .container { max-width: 900px; margin: 36px auto; padding: 0 20px; display: flex; flex-direction: column; gap: 20px; }
 
-    .header-card,
-    .history-card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-      margin-bottom: 20px;
-    }
+    .welcome-card { background: var(--sur); border: 1px solid var(--bd); border-radius: 14px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .welcome-text h2 { font-size: 20px; font-weight: 700; color: var(--navy); }
+    .welcome-text p { font-size: 13px; color: var(--muted); margin-top: 6px; }
+    .btn-new { padding: 12px 24px; background: var(--green); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; text-decoration: none; display: inline-block; transition: 0.2s; font-family: inherit; }
+    .btn-new:hover { background: var(--green-dark); }
 
-    h1, h2 {
-      margin-top: 0;
-    }
+    .quota-bar { background: var(--sur); border: 1px solid var(--bd); border-radius: 14px; padding: 16px 24px; display: flex; align-items: center; gap: 14px; font-size: 13px; }
+    .quota-label { color: var(--muted); white-space: nowrap; }
+    .quota-track { flex: 1; height: 8px; background: var(--bd); border-radius: 4px; overflow: hidden; }
+    .quota-fill { height: 100%; background: var(--green); border-radius: 4px; transition: width 0.5s; }
+    .quota-count { font-weight: 700; color: var(--navy); white-space: nowrap; }
 
-    .subtext {
-      color: #666;
-      margin-bottom: 20px;
-    }
+    .history-card { background: var(--sur); border: 1px solid var(--bd); border-radius: 14px; overflow: hidden; }
+    .history-header { background: #f1f5f9; padding: 14px 24px; font-size: 11px; font-weight: 700; color: var(--navy); border-bottom: 1px solid var(--bd); text-transform: uppercase; letter-spacing: 0.05em; }
+    .history-body { padding: 8px 0; }
 
-    .user-line {
-      margin-bottom: 16px;
-      font-size: 15px;
-    }
+    .h-item { padding: 16px 24px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 16px; transition: background 0.15s; }
+    .h-item:last-child { border-bottom: none; }
+    .h-item:hover { background: #f8fafc; }
+    .h-icon { width: 40px; height: 40px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .h-info { flex: 1; min-width: 0; }
+    .h-name { font-size: 14px; font-weight: 700; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .h-meta { font-size: 12px; color: var(--muted); margin-top: 3px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .h-tag { background: #f1f5f9; border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 500; color: var(--text); }
+    .btn-view { padding: 7px 16px; border: 1.5px solid var(--green); color: var(--green); background: #fff; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: inherit; transition: 0.2s; flex-shrink: 0; }
+    .btn-view:hover { background: var(--green); color: #fff; }
 
-    .actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    button,
-    a.button-link {
-      border: none;
-      border-radius: 10px;
-      padding: 12px 18px;
-      font-size: 15px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .primary-btn {
-      background: #1f6feb;
-      color: white;
-    }
-
-    .secondary-btn {
-      background: #e9edf5;
-      color: #222;
-    }
-
-    .history-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .history-item {
-      border-bottom: 1px solid #eee;
-      padding: 14px 0;
-    }
-
-    .history-item:last-child {
-      border-bottom: none;
-    }
-
-    .history-title {
-      font-weight: bold;
-      font-size: 16px;
-      margin-bottom: 6px;
-    }
-
-    .history-meta {
-      font-size: 13px;
-      color: #777;
-      margin-bottom: 8px;
-    }
-
-    .history-preview {
-      color: #444;
-      line-height: 1.6;
-    }
-
-    .empty-text {
-      color: #666;
-    }
-
-    .result-preview-box {
-      background: #f8fafc;
-      border: 1px solid #e5eaf0;
-      border-radius: 8px;
-      padding: 12px;
-      margin-top: 10px;
-      white-space: pre-wrap;
-      display: none;
-    }
-
-    .toggle-btn {
-      margin-top: 10px;
-      background: #eef4ff;
-      color: #234;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 12px;
-      cursor: pointer;
-    }
-
-    .error-text {
-      color: #c62828;
-      font-weight: bold;
-    }
+    .empty { padding: 60px; text-align: center; color: var(--muted); font-size: 14px; }
+    .loading { padding: 40px; text-align: center; color: var(--green); font-size: 13px; }
+    .spinner { width: 24px; height: 24px; border: 2px solid #eee; border-top-color: var(--green); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 10px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .err { padding: 24px; color: #9f1239; font-size: 13px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header-card">
-      <h1>Dashboard</h1>
-      <p class="subtext">歡迎回來，這裡可以開始新的分析，也可以查看最近分析紀錄。</p>
 
-      <div class="user-line">
-        目前使用者：<span id="user-email">載入中...</span>
-      </div>
+<div class="topbar">
+  <div class="topbar-brand">Smart Archie <span style="font-weight:300;font-size:12px;opacity:0.7">| 金融合規引擎</span></div>
+  <div class="topbar-right">
+    <span id="user-email"></span>
+    <a id="btn-logout">登出</a>
+  </div>
+</div>
 
-      <div class="actions">
-        <a class="button-link primary-btn" href="/analyze.html">前往分析頁</a>
-        <button id="logout-btn" class="secondary-btn">登出</button>
-      </div>
+<div class="container">
+  <div class="welcome-card">
+    <div class="welcome-text">
+      <h2>歡迎回來</h2>
+      <p>開始新的合規分析，或查看過往報告。</p>
     </div>
-
-    <div class="history-card">
-      <h2>最近分析紀錄</h2>
-      <ul id="history" class="history-list"></ul>
-    </div>
+    <a class="btn-new" href="/analyze.html">✦ 新增分析</a>
   </div>
 
-  <script type="module">
-    import { supabase } from './supabase.js'
+  <div class="quota-bar">
+    <span class="quota-label">本月用量</span>
+    <div class="quota-track"><div class="quota-fill" id="quota-fill" style="width:0%"></div></div>
+    <span class="quota-count" id="quota-text">載入中...</span>
+  </div>
 
-    const userEmailEl = document.getElementById('user-email')
-    const historyEl = document.getElementById('history')
-    const logoutBtn = document.getElementById('logout-btn')
+  <div class="history-card">
+    <div class="history-header">歷史分析報告</div>
+    <div class="history-body" id="history-body">
+      <div class="loading"><div class="spinner"></div>載入中...</div>
+    </div>
+  </div>
+</div>
 
-    function escapeHtml(text) {
-      if (text === null || text === undefined) return ''
-      return String(text)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;')
-    }
+<script type="module">
+  import { supabase } from './supabase.js'
 
-    function formatDate(dateString) {
-      if (!dateString) return ''
-      const d = new Date(dateString)
-      return d.toLocaleString('zh-TW')
-    }
+  const STRATEGY_LABEL = { Rehost: 'Rehost 搬遷', Replatform: 'Replatform 修整', Refactor: 'Refactor 重構' }
+  const COMPLIANCE_LABEL = { critical: '重大委外', normal: '一般委外' }
 
-    function getShortText(text, maxLength = 60) {
-      if (!text) return ''
-      return text.length > maxLength ? text.slice(0, maxLength) + '...' : text
-    }
+  function esc(s) {
+    return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+  }
 
-    async function checkUser() {
-      const { data, error } = await supabase.auth.getUser()
+  function formatDate(d) {
+    return new Date(d).toLocaleString('zh-TW', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' })
+  }
 
-      if (error || !data?.user) {
-        alert('請先登入')
-        window.location.href = '/login.html'
-        return null
-      }
+  async function init() {
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) { window.location.href = '/login.html'; return }
+    const user = session.user
 
-      userEmailEl.textContent = data.user.email || '未知使用者'
-      return data.user
-    }
-
-    async function loadHistory(user) {
-      historyEl.innerHTML = '<li>載入中...</li>'
-
-      const { data, error } = await supabase
-        .from('analyses')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(5)
-
-      if (error) {
-        console.error(error)
-        historyEl.innerHTML = `<li class="error-text">讀取歷史紀錄失敗：${escapeHtml(error.message)}</li>`
-        return
-      }
-
-      if (!data || data.length === 0) {
-        historyEl.innerHTML = '<li class="empty-text">目前尚無分析紀錄，先去做第一筆分析吧。</li>'
-        return
-      }
-
-      historyEl.innerHTML = ''
-
-      data.forEach((item, index) => {
-        const li = document.createElement('li')
-        li.className = 'history-item'
-
-        const previewTitle = getShortText(item.input_text || '未命名分析', 45)
-        const createdAt = formatDate(item.created_at)
-
-        let resultPreview = '無結果資料'
-        if (item.result && typeof item.result === 'object') {
-          resultPreview = item.result.summary || JSON.stringify(item.result, null, 2)
-        } else if (item.result) {
-          resultPreview = String(item.result)
-        }
-
-        li.innerHTML = `
-          <div class="history-title">${escapeHtml(previewTitle)}</div>
-          <div class="history-meta">${escapeHtml(createdAt)}</div>
-          <div class="history-preview">輸入內容：${escapeHtml(getShortText(item.input_text || '', 90))}</div>
-          <button class="toggle-btn" data-index="${index}">查看分析結果</button>
-          <div class="result-preview-box" id="result-box-${index}">${escapeHtml(resultPreview)}</div>
-        `
-
-        historyEl.appendChild(li)
-      })
-
-      const toggleButtons = document.querySelectorAll('.toggle-btn')
-      toggleButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const idx = btn.getAttribute('data-index')
-          const box = document.getElementById(`result-box-${idx}`)
-          const isOpen = box.style.display === 'block'
-          box.style.display = isOpen ? 'none' : 'block'
-          btn.textContent = isOpen ? '查看分析結果' : '收起分析結果'
-        })
-      })
-    }
-
-    async function logout() {
-      const { error } = await supabase.auth.signOut()
-      if (error) {
-        alert('登出失敗：' + error.message)
-        return
-      }
+    document.getElementById('user-email').textContent = user.email
+    document.getElementById('btn-logout').addEventListener('click', async () => {
+      await supabase.auth.signOut()
       window.location.href = '/login.html'
+    })
+
+    await Promise.all([loadQuota(user), loadHistory(user)])
+  }
+
+  async function loadQuota(user) {
+    const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
+    const { count } = await supabase.from('usage_log')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+      .gte('created_at', monthStart)
+    const used = count || 0
+    const limit = 10
+    document.getElementById('quota-fill').style.width = Math.min((used / limit) * 100, 100) + '%'
+    document.getElementById('quota-text').textContent = `${used} / ${limit} 次`
+  }
+
+  async function loadHistory(user) {
+    const body = document.getElementById('history-body')
+    const { data, error } = await supabase
+      .from('analysis_cache')
+      .select('id, project_name, strategy, compliance, budget, created_at, result_json')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(20)
+
+    if (error) {
+      body.innerHTML = `<div class="err">讀取失敗：${esc(error.message)}</div>`
+      return
     }
 
-    logoutBtn.addEventListener('click', logout)
-
-    async function init() {
-      const user = await checkUser()
-      if (!user) return
-      await loadHistory(user)
+    if (!data || data.length === 0) {
+      body.innerHTML = `<div class="empty">尚無分析紀錄，點右上角「新增分析」開始第一筆。</div>`
+      return
     }
 
-    init()
-  </script>
+    body.innerHTML = data.map((item, i) => `
+      <div class="h-item">
+        <div class="h-icon">📊</div>
+        <div class="h-info">
+          <div class="h-name">${esc(item.project_name || '未命名專案')}</div>
+          <div class="h-meta">
+            <span>${formatDate(item.created_at)}</span>
+            ${item.strategy ? `<span class="h-tag">${esc(STRATEGY_LABEL[item.strategy] || item.strategy)}</span>` : ''}
+            ${item.compliance ? `<span class="h-tag">${esc(COMPLIANCE_LABEL[item.compliance] || item.compliance)}</span>` : ''}
+          </div>
+        </div>
+        <button class="btn-view" data-index="${i}">查看報告</button>
+      </div>
+    `).join('')
+
+    body.querySelectorAll('.btn-view').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = data[parseInt(btn.dataset.index)]
+        sessionStorage.setItem('archie_replay', JSON.stringify({
+          projectName: item.project_name,
+          strategy: item.strategy,
+          compliance: item.compliance,
+          budget: item.budget,
+          result: item.result_json
+        }))
+        window.location.href = '/analyze.html?replay=1'
+      })
+    })
+  }
+
+  init()
+</script>
 </body>
 </html>
